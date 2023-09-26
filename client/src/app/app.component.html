@@ -1,0 +1,36 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand fa fa-university" href="#">&nbsp;Lithium</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li *ngIf="isPatient()" class="nav-item">
+        <a class="nav-link fa fa-user" [routerLink]="['/', 'patient', getUsername()]" routerLinkActive="active"
+          [ngbTooltip]="getUsername()">&nbsp;Patient</a>
+      </li>
+      <li *ngIf="isDoctor()" class="nav-item">
+        <a class="nav-link fa fa-user-md" [routerLink]="['/', 'doctor', getUsername()]" routerLinkActive="active"
+          [ngbTooltip]="getUsername()">&nbsp;Doctor</a>
+      </li>
+      <li *ngIf="isAdmin()" class="nav-item">
+        <a class="nav-link fa fa-user-circle" [routerLink]="['/', 'admin', getUsername()]" routerLinkActive="active"
+          [ngbTooltip]="getUsername()">&nbsp;Admin</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link fa fa-sign-in" *ngIf="!authService.loggedIn()" routerLink="/login" routerLinkActive="active">&nbsp;Login</a>
+        <a class="nav-link fa fa-sign-out mr-2" style="cursor: pointer" *ngIf="authService.loggedIn()"
+          (click)="logoutUser()">
+          Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
