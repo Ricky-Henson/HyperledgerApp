@@ -10,7 +10,8 @@ cd addHosp3
 ./addHosp3.sh up
 ```
 
-If you used `network.sh` to create a channel other than the default `hospitalchannel`, you need pass that name to the `addHosp3.sh` script.
+If you used `network.sh` to create a channel other than the default `officechannel`, you need pass that name to the `addHosp3.sh` script.
+
 ```
 ./network.sh up createChannel -c channel1
 cd addHosp3
@@ -18,6 +19,7 @@ cd addHosp3
 ```
 
 You can also re-run the `addHosp3.sh` script to add Org3 to additional channels.
+
 ```
 cd ..
 ./network.sh createChannel -c channel2

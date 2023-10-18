@@ -377,7 +377,7 @@ MAX_RETRY=5
 # default for delay between commands
 CLI_DELAY=3
 # channel name defaults to "mychannel"
-CHANNEL_NAME="hospitalchannel"
+CHANNEL_NAME="officechannel"
 # chaincode name defaults to "basic"
 CC_NAME="patient"
 # chaincode path defaults to "NA"

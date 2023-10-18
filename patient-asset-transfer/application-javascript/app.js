@@ -6,20 +6,23 @@
  * @desc The file which interacts with the fabric network.
  */
 
+const { Gateway, Wallets } = require("fabric-network");
+const FabricCAServices = require("fabric-ca-client");
+const path = require("path");
+const { buildCAClient, registerAndEnrollUser } = require("./CAUtil.js");
+const {
+  buildCCPHosp3,
+  buildCCPHosp2,
+  buildCCPHosp1,
+  buildWallet,
+} = require("./AppUtil.js");
 
-const {Gateway, Wallets} = require('fabric-network');
-const FabricCAServices = require('fabric-ca-client');
-const path = require('path');
-const {buildCAClient, registerAndEnrollUser} = require('./CAUtil.js');
-const {buildCCPHosp3, buildCCPHosp2, buildCCPHosp1, buildWallet} = require('./AppUtil.js');
-
-const channelName = 'hospitalchannel';
-const chaincodeName = 'patient';
-const mspOrg1 = 'hosp1MSP';
-const mspOrg2 = 'hosp2MSP';
-const mspOrg3 = 'hosp3MSP';
-const walletPath = path.join(__dirname, 'wallet');
-
+const channelName = "officechannel";
+const chaincodeName = "patient";
+const mspOrg1 = "hosp1MSP";
+const mspOrg2 = "hosp2MSP";
+const mspOrg3 = "hosp3MSP";
+const walletPath = path.join(__dirname, "wallet");
 
 /**
  * @author Jathin Sreenivas
@@ -29,32 +32,48 @@ const walletPath = path.join(__dirname, 'wallet');
  * @description Connects to the network using the username - doctorID, networkObj contains the paramters using which
  * @description a connection to the fabric network is possible.
  */
-exports.connectToNetwork = async function(doctorID) {
+exports.connectToNetwork = async function (doctorID) {
   const gateway = new Gateway();
   const ccp = buildCCPHosp1();
 
   try {
-    const walletPath = path.join(process.cwd(), '../patient-asset-transfer/application-javascript/wallet/');
+    const walletPath = path.join(
+      process.cwd(),
+      "../patient-asset-transfer/application-javascript/wallet/"
+    );
 
     const wallet = await buildWallet(Wallets, walletPath);
 
     const userExists = await wallet.get(doctorID);
     if (!userExists) {
-      console.log('An identity for the doctorID: ' + doctorID + ' does not exist in the wallet');
-      console.log('Create the doctorID before retrying');
+      console.log(
+        "An identity for the doctorID: " +
+          doctorID +
+          " does not exist in the wallet"
+      );
+      console.log("Create the doctorID before retrying");
       const response = {};
-      response.error = 'An identity for the user ' + doctorID + ' does not exist in the wallet. Register ' + doctorID + ' first';
+      response.error =
+        "An identity for the user " +
+        doctorID +
+        " does not exist in the wallet. Register " +
+        doctorID +
+        " first";
       return response;
     }
 
     /**
-    * setup the gateway instance
-    *  he user will now be able to create connections to the fabric network and be able to
-    * ubmit transactions and query. All transactions submitted by this gateway will be
-    * signed by this user using the credentials stored in the wallet.
-    */
+     * setup the gateway instance
+     *  he user will now be able to create connections to the fabric network and be able to
+     * ubmit transactions and query. All transactions submitted by this gateway will be
+     * signed by this user using the credentials stored in the wallet.
+     */
     // using asLocalhost as this gateway is using a fabric network deployed locally
-    await gateway.connect(ccp, {wallet, identity: doctorID, discovery: {enabled: true, asLocalhost: true}});
+    await gateway.connect(ccp, {
+      wallet,
+      identity: doctorID,
+      discovery: { enabled: true, asLocalhost: true },
+    });
 
     // Build a network instance based on the channel where the smart contract is deployed
     const network = await gateway.getNetwork(channelName);
@@ -67,7 +86,7 @@ exports.connectToNetwork = async function(doctorID) {
       network: network,
       gateway: gateway,
     };
-    console.log('Succesfully connected to the network.');
+    console.log("Succesfully connected to the network.");
     return networkObj;
   } catch (error) {
     console.log(`Error processing transaction. ${error}`);
@@ -77,7 +96,6 @@ exports.connectToNetwork = async function(doctorID) {
     return response;
   }
 };
-
 
 /**
  * @author Jathin Sreenivas
@@ -89,10 +107,13 @@ exports.connectToNetwork = async function(doctorID) {
  * @return {string} response error otherwise
  * @description A common function to interact with the ledger
  */
-exports.invoke = async function(networkObj, isQuery, func, args= '') {
+exports.invoke = async function (networkObj, isQuery, func, args = "") {
   try {
     if (isQuery === true) {
-      const response = await networkObj.contract.evaluateTransaction(func, args);
+      const response = await networkObj.contract.evaluateTransaction(
+        func,
+        args
+      );
       console.log(response);
       await networkObj.gateway.disconnect();
       return response;
@@ -119,14 +140,15 @@ exports.invoke = async function(networkObj, isQuery, func, args= '') {
  * @description For patient attributes also contain the patient object
  * @description Creates a patient/doctor and adds to the wallet to the given hospitalId
  */
-exports.registerUser = async function(attributes) {
+exports.registerUser = async function (attributes) {
   const attrs = JSON.parse(attributes);
   const hospitalId = parseInt(attrs.hospitalId);
   const userId = attrs.userId;
 
   if (!userId || !hospitalId) {
     const response = {};
-    response.error = 'Error! You need to fill all fields before you can register!';
+    response.error =
+      "Error! You need to fill all fields before you can register!";
     return response;
   }
 
@@ -135,19 +157,52 @@ exports.registerUser = async function(attributes) {
     // TODO: Must be handled in a config file instead of using if
     if (hospitalId === 1) {
       const ccp = buildCCPHosp1();
-      const caClient = buildCAClient(FabricCAServices, ccp, 'ca.hosp1.lithium.com');
-      await registerAndEnrollUser(caClient, wallet, mspOrg1, userId, 'hosp1admin', attributes);
+      const caClient = buildCAClient(
+        FabricCAServices,
+        ccp,
+        "ca.hosp1.lithium.com"
+      );
+      await registerAndEnrollUser(
+        caClient,
+        wallet,
+        mspOrg1,
+        userId,
+        "hosp1admin",
+        attributes
+      );
     } else if (hospitalId === 2) {
       const ccp = buildCCPHosp2();
-      const caClient = buildCAClient(FabricCAServices, ccp, 'ca.hosp2.lithium.com');
-      await registerAndEnrollUser(caClient, wallet, mspOrg2, userId, 'hosp2admin', attributes);
+      const caClient = buildCAClient(
+        FabricCAServices,
+        ccp,
+        "ca.hosp2.lithium.com"
+      );
+      await registerAndEnrollUser(
+        caClient,
+        wallet,
+        mspOrg2,
+        userId,
+        "hosp2admin",
+        attributes
+      );
     } else if (hospitalId === 3) {
       const ccp = buildCCPHosp3();
-      const caClient = buildCAClient(FabricCAServices, ccp, 'ca.hosp3.lithium.com');
-      await registerAndEnrollUser(caClient, wallet, mspOrg3, userId, 'hosp3admin', attributes);
+      const caClient = buildCAClient(
+        FabricCAServices,
+        ccp,
+        "ca.hosp3.lithium.com"
+      );
+      await registerAndEnrollUser(
+        caClient,
+        wallet,
+        mspOrg3,
+        userId,
+        "hosp3admin",
+        attributes
+      );
     }
     console.log(`Successfully registered user: + ${userId}`);
-    const response = 'Successfully registered user: '+ userId;
+    const response = "Successfully registered user: " + userId;
     return response;
   } catch (error) {
     console.error(`Failed to register user + ${userId} + : ${error}`);
@@ -163,7 +218,7 @@ exports.registerUser = async function(attributes) {
  * @return {JSON} Returns an JSON array consisting of all doctor object.
  * @description Retrieves all the users(doctors) based on user type(doctor) and hospitalId
  */
-exports.getAllDoctorsByHospitalId = async function(networkObj, hospitalId) {
+exports.getAllDoctorsByHospitalId = async function (networkObj, hospitalId) {
   // Get the User from the identity context
   const users = networkObj.gateway.identityContext.user;
   let caClient;
@@ -172,13 +227,13 @@ exports.getAllDoctorsByHospitalId = async function(networkObj, hospitalId) {
     // TODO: Must be handled in a config file instead of using if
     if (hospitalId === 1) {
       const ccp = buildCCPHosp1();
-      caClient = buildCAClient(FabricCAServices, ccp, 'ca.hosp1.lithium.com');
+      caClient = buildCAClient(FabricCAServices, ccp, "ca.hosp1.lithium.com");
     } else if (hospitalId === 2) {
       const ccp = buildCCPHosp2();
-      caClient = buildCAClient(FabricCAServices, ccp, 'ca.hosp2.lithium.com');
+      caClient = buildCAClient(FabricCAServices, ccp, "ca.hosp2.lithium.com");
     } else if (hospitalId === 3) {
       const ccp = buildCCPHosp3();
-      caClient = buildCAClient(FabricCAServices, ccp, 'ca.hosp3.lithium.com');
+      caClient = buildCAClient(FabricCAServices, ccp, "ca.hosp3.lithium.com");
     }
 
     // Use the identity service to get the user enrolled using the respective CA
@@ -190,13 +245,17 @@ exports.getAllDoctorsByHospitalId = async function(networkObj, hospitalId) {
 
     for (let i = 0; i < identities.length; i++) {
       tmp = {};
-      if (identities[i].type === 'client') {
+      if (identities[i].type === "client") {
         tmp.id = identities[i].id;
         tmp.role = identities[i].type;
         attributes = identities[i].attrs;
         // Doctor object will consist of firstName and lastName
         for (let j = 0; j < attributes.length; j++) {
-          if (attributes[j].name.endsWith('Name') || attributes[j].name === 'role' || attributes[j].name === 'speciality') {
+          if (
+            attributes[j].name.endsWith("Name") ||
+            attributes[j].name === "role" ||
+            attributes[j].name === "speciality"
+          ) {
             tmp[attributes[j].name] = attributes[j].value;
           }
         }
@@ -209,9 +268,7 @@ exports.getAllDoctorsByHospitalId = async function(networkObj, hospitalId) {
     response.error = error;
     return response;
   }
-  return result.filter(
-    function(result) {
-      return result.role === 'doctor';
-    },
-  );
+  return result.filter(function (result) {
+    return result.role === "doctor";
+  });
 };

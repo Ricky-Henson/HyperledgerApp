@@ -2,7 +2,7 @@
 
 source scriptUtils.sh
 
-CHANNEL_NAME=${1:-"hospitalchannel"}
+CHANNEL_NAME=${1:-"officechannel"}
 CC_NAME=${2:-"patient"}
 CC_SRC_PATH=${3:-"NA"}
 CC_SRC_LANGUAGE=${4:-"javascript"}

@@ -224,7 +224,7 @@ CLI_TIMEOUT=10
 #default for delay
 CLI_DELAY=3
 # channel name defaults to "mychannel"
-CHANNEL_NAME="hospitalchannel"
+CHANNEL_NAME="officechannel"
 # use this as the docker compose couch file
 COMPOSE_FILE_COUCH_ORG3=docker/docker-compose-couch-hosp3.yaml
 # use this as the default docker-compose yaml definition
