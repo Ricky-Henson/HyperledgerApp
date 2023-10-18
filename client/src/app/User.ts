@@ -12,11 +12,11 @@ export class User {
   }
 }
 
-export class HospitalUser extends User {
-  hospitalId: number;
+export class OfficeUser extends User {
+  officeId: number;
 
-  constructor(role: string, hospitalId: number, username: string, pwd: string) {
+  constructor(role: string, officeId: number, username: string, pwd: string) {
     super(role, username, pwd);
-    this.hospitalId = hospitalId;
+    this.officeId = officeId;
   }
 }

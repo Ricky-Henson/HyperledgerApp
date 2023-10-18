@@ -3,44 +3,43 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-version: '2'
+version: "2"
 
 networks:
-  hospital:
+  office:
 
 services:
-
-  ca_hosp1:
+  ca_office1:
     image: hyperledger/fabric-ca:$IMAGE_TAG
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca-hosp1
+      - FABRIC_CA_SERVER_CA_NAME=ca-office1
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_PORT=7054
     ports:
       - "7054:7054"
-    command: sh -c 'fabric-ca-server start -b hosp1admin:hosp1lithium -d'
+    command: sh -c 'fabric-ca-server start -b office1admin:office1lithium -d'
     volumes:
-      - ../organizations/fabric-ca/hosp1:/etc/hyperledger/fabric-ca-server
-    container_name: ca_hosp1
+      - ../organizations/fabric-ca/office1:/etc/hyperledger/fabric-ca-server
+    container_name: ca_office1
     networks:
-      - hospital
+      - office
 
-  ca_hosp2:
+  ca_office2:
     image: hyperledger/fabric-ca:$IMAGE_TAG
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca-hosp2
+      - FABRIC_CA_SERVER_CA_NAME=ca-office2
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_PORT=8054
     ports:
       - "8054:8054"
-    command: sh -c 'fabric-ca-server start -b hosp2admin:hosp2lithium -d'
+    command: sh -c 'fabric-ca-server start -b office2admin:office2lithium -d'
     volumes:
-      - ../organizations/fabric-ca/hosp2:/etc/hyperledger/fabric-ca-server
-    container_name: ca_hosp2
+      - ../organizations/fabric-ca/office2:/etc/hyperledger/fabric-ca-server
+    container_name: ca_office2
     networks:
-      - hospital
+      - office
 
   ca_orderer:
     image: hyperledger/fabric-ca:$IMAGE_TAG
@@ -56,4 +55,4 @@ services:
       - ../organizations/fabric-ca/ordererOrg:/etc/hyperledger/fabric-ca-server
     container_name: ca_orderer
     networks:
-      - hospital
+      - office

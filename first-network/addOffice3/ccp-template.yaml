@@ -1,19 +1,19 @@
 ---
-name: hospital-network-hosp${ORG}
+name: office-network-office${ORG}
 version: 1.0.0
 client:
-  organization: hosp${ORG}
+  organization: office${ORG}
   connection:
     timeout:
       peer:
-        endorser: '300'
+        endorser: "300"
 organizations:
   Org${ORG}:
-    mspid: hosp${ORG}MSP
+    mspid: office${ORG}MSP
     peers:
-    - peer0.hosp${ORG}.lithium.com
+      - peer0.office${ORG}.lithium.com
     certificateAuthorities:
-    - ca.hosp${ORG}.lithium.com
+      - ca.office${ORG}.lithium.com
 peers:
   peer0.org${ORG}.lithium.com:
     url: grpcs://localhost:${P0PORT}
@@ -21,12 +21,12 @@ peers:
       pem: |
         ${PEERPEM}
     grpcOptions:
-      ssl-target-name-override: peer0.hosp${ORG}.lithium.com
-      hostnameOverride: peer0.hosp${ORG}.lithium.com
+      ssl-target-name-override: peer0.office${ORG}.lithium.com
+      hostnameOverride: peer0.office${ORG}.lithium.com
 certificateAuthorities:
   ca.org${ORG}.lithium.com:
     url: https://localhost:${CAPORT}
-    caName: ca-hosp${ORG}
+    caName: ca-office${ORG}
     tlsCACerts:
       pem: |
         ${CAPEM}

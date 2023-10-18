@@ -1,28 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 import { tap } from 'rxjs/operators';
 
-import { HospitalUser, User } from '../../User';
+import { OfficeUser, User } from '../../User';
 import { BrowserStorageFields } from '../../utils';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   private serverUrl = 'http://localhost:3001';
   private loginUrl = `${this.serverUrl}/login`;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) {}
 
-  public loginAdminUser(adminUser: HospitalUser): any {
+  public loginAdminUser(adminUser: OfficeUser): any {
     return this.http.post<any>(this.loginUrl, adminUser);
   }
 
-  public loginDoctorUser(doctorUser: HospitalUser): any {
+  public loginDoctorUser(doctorUser: OfficeUser): any {
     return this.http.post<any>(this.loginUrl, doctorUser);
   }
 
@@ -31,18 +29,25 @@ export class AuthService {
   }
 
   public getNewAccessToken(): any {
-    return this.http.post(`${this.serverUrl}/token`, { token: this.getRefreshToken() })
+    return this.http
+      .post(`${this.serverUrl}/token`, { token: this.getRefreshToken() })
       .pipe(
         tap((res: any) => {
           this.setToken(res.accessToken);
-        }));
+        })
+      );
   }
 
-  public setHeaders(res: any, role: string, hospitalId: number, username: string): void {
+  public setHeaders(
+    res: any,
+    role: string,
+    officeId: number,
+    username: string
+  ): void {
     localStorage.setItem(BrowserStorageFields.TOKEN, res.accessToken);
     localStorage.setItem(BrowserStorageFields.REFRESH_TOKEN, res.refreshToken);
     localStorage.setItem(BrowserStorageFields.USER_ROLE, role);
-    localStorage.setItem(BrowserStorageFields.HOSPITAL_ID, String(hospitalId));
+    localStorage.setItem(BrowserStorageFields.OFFICE_ID, String(officeId));
     localStorage.setItem(BrowserStorageFields.USERNAME, username);
   }
 
@@ -76,8 +81,10 @@ export class AuthService {
     return localStorage.getItem(BrowserStorageFields.USER_ROLE) as string;
   }
 
-  public getHospitalId(): string {
-    return JSON.parse(localStorage.getItem(BrowserStorageFields.HOSPITAL_ID) as string);
+  public getOfficeId(): string {
+    return JSON.parse(
+      localStorage.getItem(BrowserStorageFields.OFFICE_ID) as string
+    );
   }
 
   public getUsername(): string {
@@ -88,7 +95,7 @@ export class AuthService {
     localStorage.removeItem(BrowserStorageFields.TOKEN);
     localStorage.removeItem(BrowserStorageFields.REFRESH_TOKEN);
     localStorage.removeItem(BrowserStorageFields.USER_ROLE);
-    localStorage.removeItem(BrowserStorageFields.HOSPITAL_ID);
+    localStorage.removeItem(BrowserStorageFields.OFFICE_ID);
     localStorage.removeItem(BrowserStorageFields.USERNAME);
   }
 }

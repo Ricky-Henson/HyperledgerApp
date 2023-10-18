@@ -12,45 +12,77 @@
           <form #loginForm="ngForm" class="form">
             <div class="form-group">
               <label for="role">Role</label>
-              <select name="role" class="form-control rounded-1" required placeholder="Select a user role"
-                [(ngModel)]="role" (ngModelChange)="roleChanged()">
+              <select
+                name="role"
+                class="form-control rounded-1"
+                required
+                placeholder="Select a user role"
+                [(ngModel)]="role"
+                (ngModelChange)="roleChanged()"
+              >
                 <option value="admin">Admin</option>
                 <option value="doctor">Doctor</option>
                 <option value="patient">Patient</option>
               </select>
             </div>
-            <div class="form-group mt-3" *ngIf="showHospList">
-              <label for="hospitalName">Hospital</label>
-              <select name="hospital" class="form-control rounded-1" required placeholder="Select a hospital you belong"
-                [(ngModel)]="hospitalId">
-                <option value="1">Hospital 1</option>
-                <option value="2">Hospital 2</option>
-                <option value="3">Hospital 3</option>
+            <div class="form-group mt-3" *ngIf="showOfficeList">
+              <label for="officeName">Office</label>
+              <select
+                name="office"
+                class="form-control rounded-1"
+                required
+                placeholder="Select an office you belong"
+                [(ngModel)]="officeId"
+              >
+                <option value="1">Office 1</option>
+                <option value="2">Office 2</option>
+                <option value="3">Office 3</option>
               </select>
             </div>
             <div class="form-group mt-3">
               <label for="name">Username</label>
-              <input type="text" name="username" class="form-control rounded-1" required
-                [(ngModel)]="username">
+              <input
+                type="text"
+                name="username"
+                class="form-control rounded-1"
+                required
+                [(ngModel)]="username"
+              />
             </div>
             <div class="form-group mt-3">
               <label for="password">Password</label>
-              <input type="password" name="password" class="form-control rounded-1" required
-                [(ngModel)]="pwd">
+              <input
+                type="password"
+                name="password"
+                class="form-control rounded-1"
+                required
+                [(ngModel)]="pwd"
+              />
             </div>
             <div *ngIf="error.message">
-              <p class="alert alert alert-danger">{{error.message}}</p>
+              <p class="alert alert alert-danger">{{ error.message }}</p>
             </div>
             <ng-container *ngIf="createNewPwd">
               <div>
-                <p class="alert alert alert-danger">Please change the temporary password immediately.</p>
+                <p class="alert alert alert-danger">
+                  Please change the temporary password immediately.
+                </p>
               </div>
-              <button type="button" class="btn btn-success float-right mt-2" (click)="loginPatient(patientPassword)">
+              <button
+                type="button"
+                class="btn btn-success float-right mt-2"
+                (click)="loginPatient(patientPassword)"
+              >
                 Create new password
               </button>
             </ng-container>
-            <button *ngIf="!createNewPwd" type="button" class="btn btn-success float-right mt-2" [disabled]="loginForm.invalid"
-                    (click)="loginUser()">
+            <button
+              *ngIf="!createNewPwd"
+              type="button"
+              class="btn btn-success float-right mt-2"
+              [disabled]="loginForm.invalid"
+              (click)="loginUser()"
+            >
               Login
             </button>
           </form>
@@ -64,23 +96,44 @@
 
 <ng-template #patientPassword let-close="close" let-dismiss="dismiss">
   <div class="modal-header">
-    <h4 class="modal-title">
-      <i class="fa fa-key mr-2"></i>Password
-    </h4>
-    <button type="button" class="close" aria-label="Close" (click)="dismiss('Cross click')">
+    <h4 class="modal-title"><i class="fa fa-key mr-2"></i>Password</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="dismiss('Cross click')"
+    >
       <span aria-hidden="true">x</span>
     </button>
   </div>
   <div class="modal-body">
     <p>Enter new password for authentication</p>
     <div class="form-group">
-      <input type="password" name="password" class="form-control rounded-1" required [(ngModel)]="newPwd">
+      <input
+        type="password"
+        name="password"
+        class="form-control rounded-1"
+        required
+        [(ngModel)]="newPwd"
+      />
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" id="patientPwd" class="btn btn-danger" [disabled]="!pwd" (click)="close('Confirm password')">
+    <button
+      type="button"
+      id="patientPwd"
+      class="btn btn-danger"
+      [disabled]="!pwd"
+      (click)="close('Confirm password')"
+    >
       Confirm password and login
     </button>
-    <button type="button" class="btn btn-outline-dark" (click)="dismiss('Cancel click')">Cancel</button>
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="dismiss('Cancel click')"
+    >
+      Cancel
+    </button>
   </div>
 </ng-template>

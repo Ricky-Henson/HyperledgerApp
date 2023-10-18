@@ -14,7 +14,7 @@ CC_COLL_CONFIG=${9:-"../../private-collections/private-collections.json"}
 DELAY=${10:-"3"}
 MAX_RETRY=${11:-"5"}
 VERBOSE=${12:-"false"}
-HOSP3=${13:-"false"}
+OFFICE3=${13:-"false"}
 
 println "executing with the following"
 println "- CHANNEL_NAME: ${C_GREEN}${CHANNEL_NAME}${C_RESET}"
@@ -29,7 +29,7 @@ println "- CC_INIT_FCN: ${C_GREEN}${CC_INIT_FCN}${C_RESET}"
 println "- DELAY: ${C_GREEN}${DELAY}${C_RESET}"
 println "- MAX_RETRY: ${C_GREEN}${MAX_RETRY}${C_RESET}"
 println "- VERBOSE: ${C_GREEN}${VERBOSE}${C_RESET}"
-println "- HOSP3: ${C_GREEN}${HOSP3}${C_RESET}"
+println "- OFFICE3: ${C_GREEN}${OFFICE3}${C_RESET}"
 
 CC_SRC_LANGUAGE=$(echo "$CC_SRC_LANGUAGE" | tr [:upper:] [:lower:])
 
@@ -98,8 +98,8 @@ installChaincode() {
   res=$?
   { set +x; } 2>/dev/null
   cat log.txt
-  verifyResult $res "Chaincode installation on peer0.hosp${ORG} has failed"
-  successln "Chaincode is installed on peer0.hosp${ORG}"
+  verifyResult $res "Chaincode installation on peer0.office${ORG} has failed"
+  successln "Chaincode is installed on peer0.office${ORG}"
 }
 
 # queryInstalled PEER ORG
@@ -112,8 +112,8 @@ queryInstalled() {
   { set +x; } 2>/dev/null
   cat log.txt
   PACKAGE_ID=$(sed -n "/${CC_NAME}_${CC_VERSION}/{s/^Package ID: //; s/, Label:.*$//; p;}" log.txt)
-  verifyResult $res "Query installed on peer0.hosp${ORG} has failed"
-  successln "Query installed successful on peer0.hosp${ORG} on channel"
+  verifyResult $res "Query installed on peer0.office${ORG} has failed"
+  successln "Query installed successful on peer0.office${ORG} on channel"
 }
 
 # approveForMyOrg VERSION PEER ORG
@@ -125,8 +125,8 @@ approveForMyOrg() {
   res=$?
   { set +x; } 2>/dev/null
   cat log.txt
-  verifyResult $res "Chaincode definition approved on peer0.hosp${ORG} on channel '$CHANNEL_NAME' failed"
-  successln "Chaincode definition approved on peer0.hosp${ORG} on channel '$CHANNEL_NAME'"
+  verifyResult $res "Chaincode definition approved on peer0.office${ORG} on channel '$CHANNEL_NAME' failed"
+  successln "Chaincode definition approved on peer0.office${ORG} on channel '$CHANNEL_NAME'"
 }
 
 # checkCommitReadiness VERSION PEER ORG
@@ -134,14 +134,14 @@ checkCommitReadiness() {
   ORG=$1
   shift 1
   setGlobals $ORG
-  infoln "Checking the commit readiness of the chaincode definition on peer0.hosp${ORG} on channel '$CHANNEL_NAME'..."
+  infoln "Checking the commit readiness of the chaincode definition on peer0.office${ORG} on channel '$CHANNEL_NAME'..."
   local rc=1
   local COUNTER=1
   # continue to poll
   # we either get a successful response, or reach MAX RETRY
   while [ $rc -ne 0 -a $COUNTER -lt $MAX_RETRY ]; do
     sleep $DELAY
-    infoln "Attempting to check the commit readiness of the chaincode definition on peer0.hosp${ORG}, Retry after $DELAY seconds."
+    infoln "Attempting to check the commit readiness of the chaincode definition on peer0.office${ORG}, Retry after $DELAY seconds."
     set -x
     peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME --name ${CC_NAME} --version ${CC_VERSION} --sequence ${CC_SEQUENCE} ${INIT_REQUIRED} ${CC_END_POLICY} ${CC_COLL_CONFIG} --output json >&log.txt
     res=$?
@@ -154,9 +154,9 @@ checkCommitReadiness() {
   done
   cat log.txt
   if test $rc -eq 0; then
-    infoln "Checking the commit readiness of the chaincode definition successful on peer0.hosp${ORG} on channel '$CHANNEL_NAME'"
+    infoln "Checking the commit readiness of the chaincode definition successful on peer0.office${ORG} on channel '$CHANNEL_NAME'"
   else
-    fatalln "After $MAX_RETRY attempts, Check commit readiness result on peer0.hosp${ORG} is INVALID!"
+    fatalln "After $MAX_RETRY attempts, Check commit readiness result on peer0.office${ORG} is INVALID!"
   fi
 }
 
@@ -174,7 +174,7 @@ commitChaincodeDefinition() {
   res=$?
   { set +x; } 2>/dev/null
   cat log.txt
-  verifyResult $res "Chaincode definition commit failed on peer0.hosp${ORG} on channel '$CHANNEL_NAME' failed"
+  verifyResult $res "Chaincode definition commit failed on peer0.office${ORG} on channel '$CHANNEL_NAME' failed"
   successln "Chaincode definition committed on channel '$CHANNEL_NAME'"
 }
 
@@ -183,14 +183,14 @@ queryCommitted() {
   ORG=$1
   setGlobals $ORG
   EXPECTED_RESULT="Version: ${CC_VERSION}, Sequence: ${CC_SEQUENCE}, Endorsement Plugin: escc, Validation Plugin: vscc"
-  infoln "Querying chaincode definition on peer0.hosp${ORG} on channel '$CHANNEL_NAME'..."
+  infoln "Querying chaincode definition on peer0.office${ORG} on channel '$CHANNEL_NAME'..."
   local rc=1
   local COUNTER=1
   # continue to poll
   # we either get a successful response, or reach MAX RETRY
   while [ $rc -ne 0 -a $COUNTER -lt $MAX_RETRY ]; do
     sleep $DELAY
-    infoln "Attempting to Query committed status on peer0.hosp${ORG}, Retry after $DELAY seconds."
+    infoln "Attempting to Query committed status on peer0.office${ORG}, Retry after $DELAY seconds."
     set -x
     peer lifecycle chaincode querycommitted --channelID $CHANNEL_NAME --name ${CC_NAME} >&log.txt
     res=$?
@@ -201,9 +201,9 @@ queryCommitted() {
   done
   cat log.txt
   if test $rc -eq 0; then
-    successln "Query chaincode definition successful on peer0.hosp${ORG} on channel '$CHANNEL_NAME'"
+    successln "Query chaincode definition successful on peer0.office${ORG} on channel '$CHANNEL_NAME'"
   else
-    fatalln "After $MAX_RETRY attempts, Query chaincode definition result on peer0.hosp${ORG} is INVALID!"
+    fatalln "After $MAX_RETRY attempts, Query chaincode definition result on peer0.office${ORG} is INVALID!"
   fi
 }
 
@@ -229,14 +229,14 @@ chaincodeInvokeInit() {
 chaincodeQuery() {
   ORG=$1
   setGlobals $ORG
-  infoln "Querying on peer0.hosp${ORG} on channel '$CHANNEL_NAME'..."
+  infoln "Querying on peer0.office${ORG} on channel '$CHANNEL_NAME'..."
   local rc=1
   local COUNTER=1
   # continue to poll
   # we either get a successful response, or reach MAX RETRY
   while [ $rc -ne 0 -a $COUNTER -lt $MAX_RETRY ]; do
     sleep $DELAY
-    infoln "Attempting to Query peer0.hosp${ORG}, Retry after $DELAY seconds."
+    infoln "Attempting to Query peer0.office${ORG}, Retry after $DELAY seconds."
     set -x
     peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c '{"Args":["queryAllCars"]}' >&log.txt
     res=$?
@@ -246,9 +246,9 @@ chaincodeQuery() {
   done
   cat log.txt
   if test $rc -eq 0; then
-    successln "Query successful on peer0.hosp${ORG} on channel '$CHANNEL_NAME'"
+    successln "Query successful on peer0.office${ORG} on channel '$CHANNEL_NAME'"
   else
-    fatalln "After $MAX_RETRY attempts, Query result on peer0.hosp${ORG} is INVALID!"
+    fatalln "After $MAX_RETRY attempts, Query result on peer0.office${ORG} is INVALID!"
   fi
 }
 
@@ -256,12 +256,12 @@ chaincodeQuery() {
 packageChaincode
 
 ## Install chaincode on peer0.org1 and peer0.org2
-infoln "Installing chaincode on peer0.hosp1..."
+infoln "Installing chaincode on peer0.office1..."
 installChaincode 1
-infoln "Install chaincode on peer0.hosp2..."
+infoln "Install chaincode on peer0.office2..."
 installChaincode 2
-if [ "$HOSP3" = "true" ]; then
-  infoln "Install chaincode on peer0.hosp3..."
+if [ "$OFFICE3" = "true" ]; then
+  infoln "Install chaincode on peer0.office3..."
   installChaincode 3
 fi
 
@@ -270,58 +270,58 @@ fi
 queryInstalled 1
 ## query whether the chaincode is installed
 queryInstalled 2
-if [ "$HOSP3" = "true" ]; then
+if [ "$OFFICE3" = "true" ]; then
   ## query whether the chaincode is installed
   queryInstalled 3
 fi
 
-if [ "$HOSP3" = "true" ]; then
-  ## approve the definition for hosp1
+if [ "$OFFICE3" = "true" ]; then
+  ## approve the definition for office1
   approveForMyOrg 1
 
   ## check whether the chaincode definition is ready to be committed
   ## expect org1 to have approved and org2 not to
-  checkCommitReadiness 1 "\"hosp1MSP\": true" "\"hosp2MSP\": false" "\"hosp3MSP\": false"
-  checkCommitReadiness 2 "\"hosp1MSP\": true" "\"hosp2MSP\": false" "\"hosp3MSP\": false"
-  checkCommitReadiness 3 "\"hosp1MSP\": true" "\"hosp2MSP\": false" "\"hosp3MSP\": false"
+  checkCommitReadiness 1 "\"office1MSP\": true" "\"office2MSP\": false" "\"office3MSP\": false"
+  checkCommitReadiness 2 "\"office1MSP\": true" "\"office2MSP\": false" "\"office3MSP\": false"
+  checkCommitReadiness 3 "\"office1MSP\": true" "\"office2MSP\": false" "\"office3MSP\": false"
 
-  ## now approve also for hosp2
+  ## now approve also for office2
   approveForMyOrg 2
 
   ## check whether the chaincode definition is ready to be committed
   ## expect them both to have approved
-  checkCommitReadiness 1 "\"hosp1MSP\": true" "\"hosp2MSP\": true" "\"hosp3MSP\": false"
-  checkCommitReadiness 2 "\"hosp1MSP\": true" "\"hosp2MSP\": true" "\"hosp3MSP\": false"
-  checkCommitReadiness 3 "\"hosp1MSP\": true" "\"hosp2MSP\": true" "\"hosp3MSP\": false"
+  checkCommitReadiness 1 "\"office1MSP\": true" "\"office2MSP\": true" "\"office3MSP\": false"
+  checkCommitReadiness 2 "\"office1MSP\": true" "\"office2MSP\": true" "\"office3MSP\": false"
+  checkCommitReadiness 3 "\"office1MSP\": true" "\"office2MSP\": true" "\"office3MSP\": false"
 
-  ## now approve also for hosp3
+  ## now approve also for office3
   approveForMyOrg 3
 
   ## check whether the chaincode definition is ready to be committed
   ## expect them both to have approved
-  checkCommitReadiness 1 "\"hosp1MSP\": true" "\"hosp2MSP\": true" "\"hosp3MSP\": true"
-  checkCommitReadiness 2 "\"hosp1MSP\": true" "\"hosp2MSP\": true" "\"hosp3MSP\": true"
-  checkCommitReadiness 3 "\"hosp1MSP\": true" "\"hosp2MSP\": true" "\"hosp3MSP\": true"
+  checkCommitReadiness 1 "\"office1MSP\": true" "\"office2MSP\": true" "\"office3MSP\": true"
+  checkCommitReadiness 2 "\"office1MSP\": true" "\"office2MSP\": true" "\"office3MSP\": true"
+  checkCommitReadiness 3 "\"office1MSP\": true" "\"office2MSP\": true" "\"office3MSP\": true"
 
   ## now that we know for sure both orgs have approved, commit the definition
   commitChaincodeDefinition 1 2 3
 else
-  ## approve the definition for hosp1
+  ## approve the definition for office1
   approveForMyOrg 1
 
   ## check whether the chaincode definition is ready to be committed
   ## expect org1 to have approved and org2 not to
-  checkCommitReadiness 1 "\"hosp1MSP\": true" "\"hosp2MSP\": false"
-  checkCommitReadiness 2 "\"hosp1MSP\": true" "\"hosp2MSP\": false"
-  #checkCommitReadiness 3 "\"hosp1MSP\": true" "\"hosp2MSP\": false" "\"hosp3MSP\": false"
+  checkCommitReadiness 1 "\"office1MSP\": true" "\"office2MSP\": false"
+  checkCommitReadiness 2 "\"office1MSP\": true" "\"office2MSP\": false"
+  #checkCommitReadiness 3 "\"office1MSP\": true" "\"office2MSP\": false" "\"office3MSP\": false"
 
-  ## now approve also for hosp2
+  ## now approve also for office2
   approveForMyOrg 2
 
   ## check whether the chaincode definition is ready to be committed
   ## expect them both to have approved
-  checkCommitReadiness 1 "\"hosp1MSP\": true" "\"hosp2MSP\": true"
-  checkCommitReadiness 2 "\"hosp1MSP\": true" "\"hosp2MSP\": true"
+  checkCommitReadiness 1 "\"office1MSP\": true" "\"office2MSP\": true"
+  checkCommitReadiness 2 "\"office1MSP\": true" "\"office2MSP\": true"
 
   ## now that we know for sure both orgs have approved, commit the definition
   commitChaincodeDefinition 1 2
@@ -330,7 +330,7 @@ fi
 ## query on both orgs to see that the definition committed successfully
 queryCommitted 1
 queryCommitted 2
-if [ "$HOSP3" = "true" ]; then
+if [ "$OFFICE3" = "true" ]; then
   queryCommitted 3
 fi
 

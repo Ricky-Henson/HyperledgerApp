@@ -12,7 +12,7 @@
 #
 
 echo
-echo "========= Getting hosp3 on to your hospital network ========= "
+echo "========= Getting office3 on to your office network ========= "
 echo
 CHANNEL_NAME="$1"
 DELAY="$2"
@@ -26,7 +26,7 @@ COUNTER=1
 MAX_RETRY=5
 
 # import environment variables
-. scripts/hosp3-scripts/envVarCLI.sh
+. scripts/office3-scripts/envVarCLI.sh
 
 ## Sometimes Join takes time hence RETRY at least 5 times
 joinChannelWithRetry() {
@@ -40,13 +40,13 @@ joinChannelWithRetry() {
   cat log.txt
   if [ $res -ne 0 -a $COUNTER -lt $MAX_RETRY ]; then
     COUNTER=$(expr $COUNTER + 1)
-    echo "peer0.hosp${ORG} failed to join the channel, Retry after $DELAY seconds"
+    echo "peer0.office${ORG} failed to join the channel, Retry after $DELAY seconds"
     sleep $DELAY
     joinChannelWithRetry $PEER $ORG
   else
     COUNTER=1
   fi
-  verifyResult $res "After $MAX_RETRY attempts, peer0.hosp${ORG} has failed to join channel '$CHANNEL_NAME' "
+  verifyResult $res "After $MAX_RETRY attempts, peer0.office${ORG} has failed to join channel '$CHANNEL_NAME' "
 }
 
 
@@ -59,10 +59,10 @@ cat log.txt
 verifyResult $res "Fetching config block from orderer has Failed"
 
 joinChannelWithRetry 3
-echo "===================== peer0.hosp3 joined channel '$CHANNEL_NAME' ===================== "
+echo "===================== peer0.office3 joined channel '$CHANNEL_NAME' ===================== "
 
 echo
-echo "========= Finished adding hosp3 to your hospital network! ========= "
+echo "========= Finished adding office3 to your office network! ========= "
 echo
 
 exit 0

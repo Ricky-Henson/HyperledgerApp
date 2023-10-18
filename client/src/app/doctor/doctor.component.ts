@@ -9,11 +9,10 @@ import { AuthService } from '../core/auth/auth.service';
 import { DoctorViewRecord } from './doctor';
 import { DoctorService } from './doctor.service';
 
-
 @Component({
   selector: 'app-doctor',
   templateUrl: './doctor.component.html',
-  styleUrls: ['./doctor.component.scss']
+  styleUrls: ['./doctor.component.scss'],
 })
 export class DoctorComponent implements OnInit, OnDestroy {
   public doctorId: any;
@@ -24,14 +23,13 @@ export class DoctorComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly doctorService: DoctorService,
     private readonly authService: AuthService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.sub = this.route.params
-      .subscribe((params: Params) => {
-        this.doctorId = params.doctorId;
-        this.refresh();
-      });
+    this.sub = this.route.params.subscribe((params: Params) => {
+      this.doctorId = params.doctorId;
+      this.refresh();
+    });
   }
 
   ngOnDestroy(): void {
@@ -39,7 +37,10 @@ export class DoctorComponent implements OnInit, OnDestroy {
   }
 
   public refresh(): void {
-    this.doctorRecordObs = this.doctorService.getDoctorByHospitalId(this.authService.getHospitalId(), this.doctorId);
+    this.doctorRecordObs = this.doctorService.getDoctorByOfficeId(
+      this.authService.getOfficeId(),
+      this.doctorId
+    );
   }
 
   public isDoctor(): boolean {

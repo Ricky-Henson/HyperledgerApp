@@ -5,9 +5,9 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-# This script is designed to be run in the hosp3cli container as the
+# This script is designed to be run in the office3cli container as the
 # first step of the EYFN tutorial.  It creates and submits a
-# configuration transaction to add hosp3 to the hospital network
+# configuration transaction to add office3 to the office network
 #
 
 CHANNEL_NAME="$1"
@@ -23,7 +23,7 @@ MAX_RETRY=5
 
 
 # import environment variables
-. scripts/hosp3-scripts/envVarCLI.sh
+. scripts/office3-scripts/envVarCLI.sh
 
 
 # fetchChannelConfig <channel_id> <output_json>
@@ -79,7 +79,7 @@ signConfigtxAsPeerOrg() {
 }
 
 echo
-echo "========= Creating config transaction to add hosp3 to network =========== "
+echo "========= Creating config transaction to add office3 to network =========== "
 echo
 
 # Fetch the config for the channel, writing it to config.json
@@ -87,30 +87,30 @@ fetchChannelConfig 1 ${CHANNEL_NAME} config.json
 
 # Modify the configuration to append the new org
 set -x
-jq -s '.[0] * {"channel_group":{"groups":{"Application":{"groups": {"hosp3MSP":.[1]}}}}}' config.json ./organizations/peerOrganizations/hosp3.lithium.com/hosp3.json > modified_config.json
+jq -s '.[0] * {"channel_group":{"groups":{"Application":{"groups": {"office3MSP":.[1]}}}}}' config.json ./organizations/peerOrganizations/office3.lithium.com/office3.json > modified_config.json
 { set +x; } 2>/dev/null
 
-# Compute a config update, based on the differences between config.json and modified_config.json, write it as a transaction to hosp3_update_in_envelope.pb
-createConfigUpdate ${CHANNEL_NAME} config.json modified_config.json hosp3_update_in_envelope.pb
+# Compute a config update, based on the differences between config.json and modified_config.json, write it as a transaction to office3_update_in_envelope.pb
+createConfigUpdate ${CHANNEL_NAME} config.json modified_config.json office3_update_in_envelope.pb
 
 echo
-echo "========= Config transaction to add hosp3 to network created ===== "
+echo "========= Config transaction to add office3 to network created ===== "
 echo
 
 echo "Signing config transaction"
 echo
-signConfigtxAsPeerOrg 1 hosp3_update_in_envelope.pb
+signConfigtxAsPeerOrg 1 office3_update_in_envelope.pb
 
 echo
-echo "========= Submitting transaction from a different peer (peer0.hosp2) which also signs it ========= "
+echo "========= Submitting transaction from a different peer (peer0.office2) which also signs it ========= "
 echo
 setGlobals 2
 set -x
-peer channel update -f hosp3_update_in_envelope.pb -c ${CHANNEL_NAME} -o orderer.lithium.com:7050 --ordererTLSHostnameOverride orderer.lithium.com --tls --cafile ${ORDERER_CA}
+peer channel update -f office3_update_in_envelope.pb -c ${CHANNEL_NAME} -o orderer.lithium.com:7050 --ordererTLSHostnameOverride orderer.lithium.com --tls --cafile ${ORDERER_CA}
 { set +x; } 2>/dev/null
 
 echo
-echo "========= Config transaction to add hosp3 to network submitted! =========== "
+echo "========= Config transaction to add office3 to network submitted! =========== "
 echo
 
 exit 0

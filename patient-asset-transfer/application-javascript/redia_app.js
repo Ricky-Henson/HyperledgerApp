@@ -1,31 +1,31 @@
-const client = require('./lib/init_redis')({
-  host: 'localhost',
+const client = require("./lib/init_redis")({
+  host: "localhost",
   port: 6379,
 });
-client.auth('hosp1lithium');
+client.auth("office1lithium");
 
-client.SET('key1', 'val1');
+client.SET("key1", "val1");
 
-client.GET('key1', (err, val) => {
+client.GET("key1", (err, val) => {
   if (err) console.error(err.message);
 
-  console.log('Value for key1 is ' + val);
+  console.log("Value for key1 is " + val);
 });
 
-client.SET('key1', 123);
+client.SET("key1", 123);
 
-client.GET('key1', (err, val) => {
+client.GET("key1", (err, val) => {
   if (err) console.error(err.message);
 
-  console.log('Value for key1 is ' + val);
+  console.log("Value for key1 is " + val);
 });
 
-client.DEL('key1', (err) => {
+client.DEL("key1", (err) => {
   if (err) console.error(err.message);
 });
 
-client.GET('key1', (err, val) => {
+client.GET("key1", (err, val) => {
   if (err) console.error(err.message);
 
-  console.log('Value for key1 is ' + val);
+  console.log("Value for key1 is " + val);
 });

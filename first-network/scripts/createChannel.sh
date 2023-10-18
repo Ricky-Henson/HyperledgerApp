@@ -32,7 +32,7 @@ createChannelTx() {
 
 createAnchorPeerTx() {
 
-	for orgmsp in hosp1MSP hosp2MSP; do
+	for orgmsp in office1MSP office2MSP; do
 
 	infoln "Generating anchor peer update transaction for ${orgmsp}"
 	set -x
@@ -81,7 +81,7 @@ joinChannel() {
 		COUNTER=$(expr $COUNTER + 1)
 	done
 	cat log.txt
-	verifyResult $res "After $MAX_RETRY attempts, peer0.hosp${ORG} has failed to join channel '$CHANNEL_NAME' "
+	verifyResult $res "After $MAX_RETRY attempts, peer0.office${ORG} has failed to join channel '$CHANNEL_NAME' "
 }
 
 updateAnchorPeers() {
@@ -128,15 +128,15 @@ infoln "Creating channel ${CHANNEL_NAME}"
 createChannel
 
 ## Join all the peers to the channel
-infoln "Join Hospital 1 peers to the channel..."
+infoln "Join Office 1 peers to the channel..."
 joinChannel 1
-infoln "Join Hospital 2 peers to the channel..."
+infoln "Join Office 2 peers to the channel..."
 joinChannel 2
 
 ## Set the anchor peers for each org in the channel
-infoln "Updating anchor peers for Hospital 1..."
+infoln "Updating anchor peers for Office 1..."
 updateAnchorPeers 1
-infoln "Updating anchor peers for Hospital 2..."
+infoln "Updating anchor peers for Office 2..."
 updateAnchorPeers 2
 
 successln "Channel successfully joined"

@@ -6,14 +6,14 @@
  * @modify date 2021-02-03 23:03:13
  * @desc Utils methods
  */
-const redis = require('redis');
-const util = require('util');
+const redis = require("redis");
+const util = require("util");
 
-exports.ROLE_ADMIN = 'admin';
-exports.ROLE_DOCTOR = 'doctor';
-exports.ROLE_PATIENT = 'patient';
+exports.ROLE_ADMIN = "admin";
+exports.ROLE_DOCTOR = "doctor";
+exports.ROLE_PATIENT = "patient";
 
-exports.CHANGE_TMP_PASSWORD = 'CHANGE_TMP_PASSWORD';
+exports.CHANGE_TMP_PASSWORD = "CHANGE_TMP_PASSWORD";
 
 /**
  * @param  {Boolean} isError Returns a success msg if False else a success message
@@ -24,11 +24,11 @@ exports.CHANGE_TMP_PASSWORD = 'CHANGE_TMP_PASSWORD';
  * @description Return a simple JSON message based on success or failure
  * @example returns {success:message} or {error:message}
  */
-exports.getMessage = function(isError, message, id = '', password = '') {
+exports.getMessage = function (isError, message, id = "", password = "") {
   if (isError) {
-    return {error: message};
+    return { error: message };
   } else {
-    return {success: message, id: id, password: password};
+    return { success: message, id: id, password: password };
   }
 };
 
@@ -39,10 +39,16 @@ exports.getMessage = function(isError, message, id = '', password = '') {
  * @description Validation of the role
  * @example roles - 'patient|doctor' reqRole - 'admin' returns 401
  */
-exports.validateRole = async function(roles, reqRole, res) {
-  if (!reqRole || !roles || reqRole.length === 0 || roles.length === 0 || !roles.includes(reqRole)) {
+exports.validateRole = async function (roles, reqRole, res) {
+  if (
+    !reqRole ||
+    !roles ||
+    reqRole.length === 0 ||
+    roles.length === 0 ||
+    !roles.includes(reqRole)
+  ) {
     // user's role is not authorized
-    return res.sendStatus(401).json({message: 'Unauthorized Role'});
+    return res.sendStatus(401).json({ message: "Unauthorized Role" });
   }
 };
 
@@ -51,27 +57,27 @@ exports.validateRole = async function(roles, reqRole, res) {
  * @return {String} First letter capitalized string
  * @description Capitalizes the first letter of the string
  */
-exports.capitalize = function(s) {
-  if (typeof s !== 'string') return '';
+exports.capitalize = function (s) {
+  if (typeof s !== "string") return "";
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
 /**
- * @param  {int} hospitalId
- * @description Creates a redis client based on the hospitalID and allows promisify methods using util
+ * @param  {int} officeId
+ * @description Creates a redis client based on the officeID and allows promisify methods using util
  */
-exports.createRedisClient = async function(hospitalId) {
+exports.createRedisClient = async function (officeId) {
   // TODO: Handle using config file
   let redisPassword;
-  if (hospitalId === 1) {
-    redisUrl = 'redis://127.0.0.1:6379';
-    redisPassword = 'hosp1lithium';
-  } else if (hospitalId === 2) {
-    redisUrl = 'redis://127.0.0.1:6380';
-    redisPassword = 'hosp2lithium';
-  } else if (hospitalId === 3) {
-    redisUrl = 'redis://127.0.0.1:6381';
-    redisPassword = 'hosp3lithium';
+  if (officeId === 1) {
+    redisUrl = "redis://127.0.0.1:6379";
+    redisPassword = "office1lithium";
+  } else if (officeId === 2) {
+    redisUrl = "redis://127.0.0.1:6380";
+    redisPassword = "office2lithium";
+  } else if (officeId === 3) {
+    redisUrl = "redis://127.0.0.1:6381";
+    redisPassword = "office3lithium";
   }
   const redisClient = redis.createClient(redisUrl);
   redisClient.AUTH(redisPassword);

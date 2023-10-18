@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -10,16 +10,16 @@ import { AuthService } from '../../core/auth/auth.service';
 @Component({
   selector: 'app-doctor-new',
   templateUrl: './doctor-register.component.html',
-  styleUrls: ['./doctor-register.component.scss']
+  styleUrls: ['./doctor-register.component.scss'],
 })
 export class DoctorRegisterComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   public error: any = null;
 
-  public hospitalList = [
-    {id: '1', name: 'Hospital 1'},
-    {id: '2', name: 'Hospital 2'},
-    {id: '3', name: 'Hospital 3'}
+  public officeList = [
+    { id: '1', name: 'Office 1' },
+    { id: '2', name: 'Office 2' },
+    { id: '3', name: 'Office 3' },
   ];
   private sub?: Subscription;
 
@@ -32,10 +32,10 @@ export class DoctorRegisterComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      hospitalId: ['', Validators.required],
+      officeId: ['', Validators.required],
       speciality: ['', Validators.required],
       username: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
     });
   }
 
@@ -57,12 +57,14 @@ export class DoctorRegisterComponent implements OnInit, OnDestroy {
 
   public save(): void {
     console.log(this.form.value);
-    this.sub = this.doctorService.createDoctor(this.form.value).subscribe(x => {
-      const docRegResponse = x;
-      if (docRegResponse.error) {
-        this.error = docRegResponse.error;
-      }
-      this.router.navigate(['/', 'admin', this.getAdminUsername()]);
-    });
+    this.sub = this.doctorService
+      .createDoctor(this.form.value)
+      .subscribe((x) => {
+        const docRegResponse = x;
+        if (docRegResponse.error) {
+          this.error = docRegResponse.error;
+        }
+        this.router.navigate(['/', 'admin', this.getAdminUsername()]);
+      });
   }
 }

@@ -7,9 +7,13 @@
  */
 
 // Bring common classes into scope, and Fabric SDK network class
-const {ROLE_DOCTOR, capitalize, getMessage, validateRole} = require('../utils.js');
-const network = require('../../patient-asset-transfer/application-javascript/app.js');
-
+const {
+  ROLE_DOCTOR,
+  capitalize,
+  getMessage,
+  validateRole,
+} = require("../utils.js");
+const network = require("../../patient-asset-transfer/application-javascript/app.js");
 
 /**
  * @param  {Request} req Body must be a json, role in the header and patientId in the url
@@ -23,16 +27,23 @@ exports.updatePatientMedicalDetails = async (req, res) => {
   let args = req.body;
   args.patientId = req.params.patientId;
   args.changedBy = req.headers.username;
-  args= [JSON.stringify(args)];
+  args = [JSON.stringify(args)];
   // Set up and connect to Fabric Gateway
   const networkObj = await network.connectToNetwork(req.headers.username);
   // Invoke the smart contract function
-  const response = await network.invoke(networkObj, false, capitalize(userRole) + 'Contract:updatePatientMedicalDetails', args);
-  (response.error) ? res.status(500).send(response.error) : res.status(200).send(getMessage(false, 'Successfully Updated Patient.'));
+  const response = await network.invoke(
+    networkObj,
+    false,
+    capitalize(userRole) + "Contract:updatePatientMedicalDetails",
+    args
+  );
+  response.error
+    ? res.status(500).send(response.error)
+    : res.status(200).send(getMessage(false, "Successfully Updated Patient."));
 };
 
 /**
- * @param  {Request} req role in the header and hospitalId, doctorId in the url
+ * @param  {Request} req role in the header and officeId, doctorId in the url
  * @param  {Response} res A 200 response if doctor is present else a 500 response with a error json
  * @description This method retrives an existing doctor
  */
@@ -40,17 +51,24 @@ exports.getDoctorById = async (req, res) => {
   // User role from the request header is validated
   const userRole = req.headers.role;
   await validateRole([ROLE_DOCTOR], userRole, res);
-  const hospitalId = parseInt(req.params.hospitalId);
+  const officeId = parseInt(req.params.officeId);
   // Set up and connect to Fabric Gateway
-  const userId = hospitalId === 1 ? 'hosp1admin' : hospitalId === 2 ? 'hosp2admin' : 'hosp3admin';
+  const userId =
+    officeId === 1
+      ? "office1admin"
+      : officeId === 2
+      ? "office2admin"
+      : "office3admin";
   const doctorId = req.params.doctorId;
   const networkObj = await network.connectToNetwork(userId);
   // Use the gateway and identity service to get all users enrolled by the CA
-  const response = await network.getAllDoctorsByHospitalId(networkObj, hospitalId);
+  const response = await network.getAllDoctorsByOfficeId(networkObj, officeId);
   // Filter the result using the doctorId
-  (response.error) ? res.status(500).send(response.error) : res.status(200).send(response.filter(
-    function(response) {
-      return response.id === doctorId;
-    },
-  )[0]);
+  response.error
+    ? res.status(500).send(response.error)
+    : res.status(200).send(
+        response.filter(function (response) {
+          return response.id === doctorId;
+        })[0]
+      );
 };

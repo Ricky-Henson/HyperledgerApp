@@ -6,24 +6,32 @@
  * @desc Referenced from https://github.com/hyperledger/fabric-samples/tree/master/test-application/javascript
  */
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 /**
  * @author Jathin Sreenivas
  * @return {ccp} ccp
- * @description Creates a connection profile and returns the network config to Hospital 1. Reads the JSON file created
- * @description When CA is created there is a json for each hospital which specfies the connection profile.
+ * @description Creates a connection profile and returns the network config to Office 1. Reads the JSON file created
+ * @description When CA is created there is a json for each office which specfies the connection profile.
  */
-exports.buildCCPHosp1 = () => {
+exports.buildCCPOffice1 = () => {
   // load the common connection configuration file
-  const ccpPath = path.resolve(__dirname, '..', '..', 'first-network',
-    'organizations', 'peerOrganizations', 'hosp1.lithium.com', 'connection-hosp1.json');
+  const ccpPath = path.resolve(
+    __dirname,
+    "..",
+    "..",
+    "first-network",
+    "organizations",
+    "peerOrganizations",
+    "office1.lithium.com",
+    "connection-office1.json"
+  );
   const fileExists = fs.existsSync(ccpPath);
   if (!fileExists) {
     throw new Error(`no such file or directory: ${ccpPath}`);
   }
-  const contents = fs.readFileSync(ccpPath, 'utf8');
+  const contents = fs.readFileSync(ccpPath, "utf8");
 
   // build a JSON object from the file contents
   const ccp = JSON.parse(contents);
@@ -35,18 +43,26 @@ exports.buildCCPHosp1 = () => {
 /**
  * @author Jathin Sreenivas
  * @return {ccp} ccp
- * @description Creates a connection profile and returns the network config to Hospital 2. Reads the JSON file created
- * @description When CA is created there is a json for each hospital which specfies the connection profile.
+ * @description Creates a connection profile and returns the network config to Office 2. Reads the JSON file created
+ * @description When CA is created there is a json for each office which specfies the connection profile.
  */
-exports.buildCCPHosp2 = () => {
+exports.buildCCPOffice2 = () => {
   // load the common connection configuration file
-  const ccpPath = path.resolve(__dirname, '..', '..', 'first-network',
-    'organizations', 'peerOrganizations', 'hosp2.lithium.com', 'connection-hosp2.json');
+  const ccpPath = path.resolve(
+    __dirname,
+    "..",
+    "..",
+    "first-network",
+    "organizations",
+    "peerOrganizations",
+    "office2.lithium.com",
+    "connection-office2.json"
+  );
   const fileExists = fs.existsSync(ccpPath);
   if (!fileExists) {
     throw new Error(`no such file or directory: ${ccpPath}`);
   }
-  const contents = fs.readFileSync(ccpPath, 'utf8');
+  const contents = fs.readFileSync(ccpPath, "utf8");
 
   // build a JSON object from the file contents
   const ccp = JSON.parse(contents);
@@ -58,18 +74,26 @@ exports.buildCCPHosp2 = () => {
 /**
  * @author Jathin Sreenivas
  * @return {ccp} ccp
- * @description Creates a connection profile and returns the network config to Hospital 3. Reads the JSON file created
- * @description When CA is created there is a json for each hospital which specfies the connection profile.
+ * @description Creates a connection profile and returns the network config to Office 3. Reads the JSON file created
+ * @description When CA is created there is a json for each office which specfies the connection profile.
  */
-exports.buildCCPHosp3 = () => {
+exports.buildCCPOffice3 = () => {
   // load the common connection configuration file
-  const ccpPath = path.resolve(__dirname, '..', '..', 'first-network',
-    'organizations', 'peerOrganizations', 'hosp3.lithium.com', 'connection-hosp3.json');
+  const ccpPath = path.resolve(
+    __dirname,
+    "..",
+    "..",
+    "first-network",
+    "organizations",
+    "peerOrganizations",
+    "office3.lithium.com",
+    "connection-office3.json"
+  );
   const fileExists = fs.existsSync(ccpPath);
   if (!fileExists) {
     throw new Error(`no such file or directory: ${ccpPath}`);
   }
-  const contents = fs.readFileSync(ccpPath, 'utf8');
+  const contents = fs.readFileSync(ccpPath, "utf8");
 
   // build a JSON object from the file contents
   const ccp = JSON.parse(contents);
@@ -94,7 +118,7 @@ exports.buildWallet = async (Wallets, walletPath) => {
     console.log(`Built a file system wallet at ${walletPath}`);
   } else {
     wallet = await Wallets.newInMemoryWallet();
-    console.log('Built an in memory wallet');
+    console.log("Built an in memory wallet");
   }
 
   return wallet;
