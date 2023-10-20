@@ -1,9 +1,21 @@
-<app-toolbar text="Admin {{adminId}}">
-  <app-toolbar-link text="Create Patient" icon="plus" routerLink="/patient/edit/new"></app-toolbar-link>
-  <app-toolbar-link text="Create Doctor" icon="plus" routerLink="/doctor/register"></app-toolbar-link>
-  <app-toolbar-button text="Refresh" icon="refresh" (click)="refresh()"></app-toolbar-button>
+<app-toolbar text="Admin {{ adminId }}">
+  <app-toolbar-link
+    text="Create Patient"
+    icon="plus"
+    routerLink="/patient/edit/new"
+  ></app-toolbar-link>
+  <app-toolbar-link
+    text="Create Employee"
+    icon="plus"
+    routerLink="/employee/register"
+  ></app-toolbar-link>
+  <app-toolbar-button
+    text="Refresh"
+    icon="refresh"
+    (click)="refresh()"
+  ></app-toolbar-button>
 </app-toolbar>
-<br><br><br>
+<br /><br /><br />
 
 <div class="sidebar-layout-bottom-row p-3 container-fluid">
   <p>List of all patients.</p>
@@ -12,7 +24,7 @@
       <thead class="thead-light">
         <tr>
           <th *ngFor="let column of headerNames" scope="col">
-            {{column.displayName}}
+            {{ column.displayName }}
           </th>
         </tr>
       </thead>
@@ -23,12 +35,12 @@
           </td>
         </tr>-->
         <tr *ngFor="let singleRecord of patientRecords$ | async">
-          <td>{{singleRecord.patientId}}</td>
-          <td>{{singleRecord.firstName}}</td>
-          <td>{{singleRecord.lastName}}</td>
+          <td>{{ singleRecord.patientId }}</td>
+          <td>{{ singleRecord.firstName }}</td>
+          <td>{{ singleRecord.lastName }}</td>
         </tr>
       </tbody>
     </table>
-    <span>Total count: {{(patientRecords$ | async)?.length}}</span>
+    <span>Total count: {{ (patientRecords$ | async)?.length }}</span>
   </div>
 </div>

@@ -67,7 +67,9 @@ export class PatientViewRecord {
     this.followUp = patientRecord.followUp;
     this.docType = patientRecord.docType;
     this.changedBy = patientRecord.changedBy;
-    this.Timestamp = patientRecord.Timestamp ? new Date(patientRecord.Timestamp.seconds.low * 1000).toDateString() : '';
+    this.Timestamp = patientRecord.Timestamp
+      ? new Date(patientRecord.Timestamp.seconds.low * 1000).toDateString()
+      : '';
   }
 }
 
@@ -89,7 +91,7 @@ export class PatientAdminViewRecord {
   }
 }
 
-export class PatientDoctorViewRecord {
+export class PatientEmployeeViewRecord {
   patientId = '';
   firstName = '';
   lastName = '';

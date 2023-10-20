@@ -1,15 +1,36 @@
-<app-toolbar text="Patient {{patientID}}">
-  <app-toolbar-link *ngIf="isPatient()" text="Edit personal details" icon="edit"
-    [routerLink]="['/patient/edit/', patientID]">
+<app-toolbar text="Patient {{ patientID }}">
+  <app-toolbar-link
+    *ngIf="isPatient()"
+    text="Edit personal details"
+    icon="edit"
+    [routerLink]="['/patient/edit/', patientID]"
+  >
   </app-toolbar-link>
-  <app-toolbar-link *ngIf="isDoctor()" text="Edit medical details" icon="edit"
-    [routerLink]="['/patient/edit/', patientID]">
+  <app-toolbar-link
+    *ngIf="isEmployee()"
+    text="Edit medical details"
+    icon="edit"
+    [routerLink]="['/patient/edit/', patientID]"
+  >
   </app-toolbar-link>
-  <app-toolbar-link *ngIf="isPatient()" text="View doctors" icon="user-md" routerLink="doctors/list"></app-toolbar-link>
-  <app-toolbar-link text="View history" icon="history" routerLink="history"></app-toolbar-link>
-  <app-toolbar-button text="Refresh" icon="refresh" (click)="refresh()"></app-toolbar-button>
+  <app-toolbar-link
+    *ngIf="isPatient()"
+    text="View employees"
+    icon="user-md"
+    routerLink="employees/list"
+  ></app-toolbar-link>
+  <app-toolbar-link
+    text="View history"
+    icon="history"
+    routerLink="history"
+  ></app-toolbar-link>
+  <app-toolbar-button
+    text="Refresh"
+    icon="refresh"
+    (click)="refresh()"
+  ></app-toolbar-button>
 </app-toolbar>
-<br><br><br>
+<br /><br /><br />
 
 <div class="sidebar-layout-bottom-row p-3 container-fluid">
   <div class="row">
@@ -21,57 +42,57 @@
             <span>
               <tr>
                 <td class="labels"><strong>Patient ID</strong></td>
-                <td>{{record.patientId}}</td>
+                <td>{{ record.patientId }}</td>
               </tr>
               <tr>
                 <td class="labels"><strong>First Name</strong></td>
-                <td>{{record.firstName}}</td>
+                <td>{{ record.firstName }}</td>
               </tr>
               <tr>
                 <td class="labels"><strong>Last Name</strong></td>
-                <td>{{record.lastName}}</td>
+                <td>{{ record.lastName }}</td>
               </tr>
               <tr>
                 <td class="labels"><strong>Age</strong></td>
-                <td>{{record.age}}</td>
+                <td>{{ record.age }}</td>
               </tr>
               <ng-container *ngIf="isPatient()">
                 <tr>
                   <td class="labels"><strong>Contact number</strong></td>
-                  <td>{{record.phoneNumber}}</td>
+                  <td>{{ record.phoneNumber }}</td>
                 </tr>
                 <tr>
                   <td class="labels"><strong>Emergency number</strong></td>
-                  <td>{{record.emergPhoneNumber}}</td>
+                  <td>{{ record.emergPhoneNumber }}</td>
                 </tr>
                 <tr>
                   <td class="labels"><strong>Address</strong></td>
-                  <td>{{record.address}}</td>
+                  <td>{{ record.address }}</td>
                 </tr>
               </ng-container>
               <tr>
                 <td class="labels"><strong>Blood Group</strong></td>
-                <td>{{record.bloodGroup}}</td>
+                <td>{{ record.bloodGroup }}</td>
               </tr>
               <tr>
                 <td class="labels"><strong>Allergies</strong></td>
-                <td>{{record.allergies}}</td>
+                <td>{{ record.allergies }}</td>
               </tr>
               <tr>
                 <td class="labels"><strong>Symptoms</strong></td>
-                <td>{{record.symptoms}}</td>
+                <td>{{ record.symptoms }}</td>
               </tr>
               <tr>
                 <td class="labels"><strong>Diagnosis</strong></td>
-                <td>{{record.diagnosis}}</td>
+                <td>{{ record.diagnosis }}</td>
               </tr>
               <tr>
                 <td class="labels"><strong>Treatment</strong></td>
-                <td>{{record.treatment}}</td>
+                <td>{{ record.treatment }}</td>
               </tr>
               <tr>
                 <td class="labels"><strong>Follow up period</strong></td>
-                <td>{{record.followUp}}</td>
+                <td>{{ record.followUp }}</td>
               </tr>
             </span>
           </table>

@@ -15,18 +15,18 @@ const AdminContract = require("./admin-contract.js");
 const PrimaryContract = require("./primary-contract.js");
 const { Context } = require("fabric-contract-api");
 
-class DoctorContract extends AdminContract {
+class EmployeeContract extends AdminContract {
   //Read patient details based on patientId
   async readPatient(ctx, patientId) {
     let asset = await PrimaryContract.prototype.readPatient(ctx, patientId);
 
-    // Get the doctorID, retrieves the id used to connect the network
-    const doctorId = await this.getClientId(ctx);
-    // Check if doctor has the permission to read the patient
+    // Get the employeeID, retrieves the id used to connect the network
+    const employeeId = await this.getClientId(ctx);
+    // Check if employee has the permission to read the patient
     const permissionArray = asset.permissionGranted;
-    if (!permissionArray.includes(doctorId)) {
+    if (!permissionArray.includes(employeeId)) {
       throw new Error(
-        `The doctor ${doctorId} does not have permission to patient ${patientId}`
+        `The employee ${employeeId} does not have permission to patient ${patientId}`
       );
     }
     asset = {
@@ -44,7 +44,7 @@ class DoctorContract extends AdminContract {
     return asset;
   }
 
-  //This function is to update patient medical details. This function should be called by only doctor.
+  //This function is to update patient medical details. This function should be called by only employee.
   async updatePatientMedicalDetails(ctx, args) {
     args = JSON.parse(args);
     let isDataChanged = false;
@@ -122,7 +122,7 @@ class DoctorContract extends AdminContract {
   }
 
   //Retrieves all patients details
-  async queryAllPatients(ctx, doctorId) {
+  async queryAllPatients(ctx, employeeId) {
     let resultsIterator = await ctx.stub.getStateByRange("", "");
     let asset = await this.getAllPatientResults(resultsIterator, false);
     const permissionedAssets = [];
@@ -130,7 +130,7 @@ class DoctorContract extends AdminContract {
       const obj = asset[i];
       if (
         "permissionGranted" in obj.Record &&
-        obj.Record.permissionGranted.includes(doctorId)
+        obj.Record.permissionGranted.includes(employeeId)
       ) {
         permissionedAssets.push(asset[i]);
       }
@@ -176,4 +176,4 @@ class DoctorContract extends AdminContract {
     return identity[1].toString("utf8");
   }
 }
-module.exports = DoctorContract;
+module.exports = EmployeeContract;

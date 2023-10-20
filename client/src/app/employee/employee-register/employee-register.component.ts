@@ -4,15 +4,15 @@ import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
-import { DoctorService } from '../doctor.service';
+import { EmployeeService } from '../employee.service';
 import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
-  selector: 'app-doctor-new',
-  templateUrl: './doctor-register.component.html',
-  styleUrls: ['./doctor-register.component.scss'],
+  selector: 'app-employee-new',
+  templateUrl: './employee-register.component.html',
+  styleUrls: ['./employee-register.component.scss'],
 })
-export class DoctorRegisterComponent implements OnInit, OnDestroy {
+export class EmployeeRegisterComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   public error: any = null;
 
@@ -27,7 +27,7 @@ export class DoctorRegisterComponent implements OnInit, OnDestroy {
     private readonly fb: FormBuilder,
     private readonly router: Router,
     private readonly authService: AuthService,
-    private readonly doctorService: DoctorService
+    private readonly employeeService: EmployeeService
   ) {
     this.form = this.fb.group({
       firstName: ['', Validators.required],
@@ -57,8 +57,8 @@ export class DoctorRegisterComponent implements OnInit, OnDestroy {
 
   public save(): void {
     console.log(this.form.value);
-    this.sub = this.doctorService
-      .createDoctor(this.form.value)
+    this.sub = this.employeeService
+      .createEmployee(this.form.value)
       .subscribe((x) => {
         const docRegResponse = x;
         if (docRegResponse.error) {

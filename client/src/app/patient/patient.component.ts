@@ -8,11 +8,10 @@ import { PatientViewRecord } from './patient';
 import { AuthService } from '../core/auth/auth.service';
 import { RoleEnum } from '../utils';
 
-
 @Component({
   selector: 'app-patient',
   templateUrl: './patient.component.html',
-  styleUrls: ['./patient.component.scss']
+  styleUrls: ['./patient.component.scss'],
 })
 export class PatientComponent implements OnInit, OnDestroy {
   public patientID: any;
@@ -23,14 +22,13 @@ export class PatientComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly patientService: PatientService,
     private readonly authService: AuthService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.sub = this.route.params
-      .subscribe((params: Params) => {
-        this.patientID = params.patientId;
-        this.refresh();
-      });
+    this.sub = this.route.params.subscribe((params: Params) => {
+      this.patientID = params.patientId;
+      this.refresh();
+    });
   }
 
   ngOnDestroy(): void {
@@ -45,7 +43,7 @@ export class PatientComponent implements OnInit, OnDestroy {
     return this.authService.getRole() === RoleEnum.PATIENT;
   }
 
-  public isDoctor(): boolean {
-    return this.authService.getRole() === RoleEnum.DOCTOR;
+  public isEmployee(): boolean {
+    return this.authService.getRole() === RoleEnum.EMPLOYEE;
   }
 }

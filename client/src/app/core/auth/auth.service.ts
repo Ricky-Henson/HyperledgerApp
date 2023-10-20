@@ -20,8 +20,8 @@ export class AuthService {
     return this.http.post<any>(this.loginUrl, adminUser);
   }
 
-  public loginDoctorUser(doctorUser: OfficeUser): any {
-    return this.http.post<any>(this.loginUrl, doctorUser);
+  public loginEmployeeUser(employeeUser: OfficeUser): any {
+    return this.http.post<any>(this.loginUrl, employeeUser);
   }
 
   public loginPatientUser(patientUser: User): any {

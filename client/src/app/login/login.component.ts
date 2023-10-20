@@ -56,9 +56,9 @@ export class LoginComponent implements OnInit {
             (err: any) => (this.error.message = err.message)
           );
         break;
-      case RoleEnum.DOCTOR:
+      case RoleEnum.EMPLOYEE:
         this.authService
-          .loginDoctorUser(
+          .loginEmployeeUser(
             new OfficeUser(this.role, this.officeId, this.username, this.pwd)
           )
           .subscribe(

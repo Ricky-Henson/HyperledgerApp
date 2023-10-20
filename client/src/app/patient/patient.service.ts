@@ -4,13 +4,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PatientService {
-
   private patientURL = 'http://localhost:3001/patients';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   public fetchAllPatients(): Observable<any> {
     return this.http.get(this.patientURL + '/_all');
@@ -36,11 +35,23 @@ export class PatientService {
     return this.http.patch(this.patientURL + `/${key}/details/medical`, data);
   }
 
-  public grantAccessToDoctor(patientId: string, doctorId: string): Observable<any> {
-    return this.http.patch(this.patientURL + `/${patientId}/grant/${doctorId}`, {});
+  public grantAccessToEmployee(
+    patientId: string,
+    employeeId: string
+  ): Observable<any> {
+    return this.http.patch(
+      this.patientURL + `/${patientId}/grant/${employeeId}`,
+      {}
+    );
   }
 
-  public revokeAccessFromDoctor(patientId: string, doctorId: string): Observable<any> {
-    return this.http.patch(this.patientURL + `/${patientId}/revoke/${doctorId}`, {});
+  public revokeAccessFromEmployee(
+    patientId: string,
+    employeeId: string
+  ): Observable<any> {
+    return this.http.patch(
+      this.patientURL + `/${patientId}/revoke/${employeeId}`,
+      {}
+    );
   }
 }

@@ -12,7 +12,7 @@ import { AuthService } from '../../core/auth/auth.service';
 @Component({
   selector: 'app-patient-new',
   templateUrl: './patient-edit.component.html',
-  styleUrls: ['./patient-edit.component.scss']
+  styleUrls: ['./patient-edit.component.scss'],
 })
 export class PatientEditComponent implements OnInit, OnDestroy {
   public form: FormGroup;
@@ -23,14 +23,14 @@ export class PatientEditComponent implements OnInit, OnDestroy {
   private allSub = new Subscription();
 
   public bloodGroupTypes = [
-    {id: 'a+', name: 'A +'},
-    {id: 'a-', name: 'A -'},
-    {id: 'b+', name: 'B +'},
-    {id: 'b-', name: 'B -'},
-    {id: 'ab+', name: 'AB +'},
-    {id: 'ab-', name: 'AB -'},
-    {id: 'o+', name: 'O +'},
-    {id: 'o-', name: 'O -'}
+    { id: 'a+', name: 'A +' },
+    { id: 'a-', name: 'A -' },
+    { id: 'b+', name: 'B +' },
+    { id: 'b-', name: 'B -' },
+    { id: 'ab+', name: 'AB +' },
+    { id: 'ab-', name: 'AB -' },
+    { id: 'o+', name: 'O +' },
+    { id: 'o-', name: 'O -' },
   ];
 
   constructor(
@@ -44,7 +44,15 @@ export class PatientEditComponent implements OnInit, OnDestroy {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       address: ['', Validators.required],
-      age: ['', [ Validators.required, Validators.min(0), Validators.max(150), Validators.maxLength(3)]],
+      age: [
+        '',
+        [
+          Validators.required,
+          Validators.min(0),
+          Validators.max(150),
+          Validators.maxLength(3),
+        ],
+      ],
       phoneNumber: ['', Validators.required],
       emergPhoneNumber: ['', Validators.required],
       bloodGroup: ['', Validators.required],
@@ -52,7 +60,7 @@ export class PatientEditComponent implements OnInit, OnDestroy {
       symptoms: [''],
       diagnosis: [''],
       treatment: [''],
-      followUp: ['']
+      followUp: [''],
     });
   }
 
@@ -73,10 +81,9 @@ export class PatientEditComponent implements OnInit, OnDestroy {
     this.setTitle();
     if (this.isNew()) {
       this.form.reset();
-    }
-    else {
+    } else {
       this.allSub.add(
-        this.patientService.getPatientByKey(this.patientId).subscribe(x => {
+        this.patientService.getPatientByKey(this.patientId).subscribe((x) => {
           const data = x as PatientRecord;
           this.loadRecord(data);
         })
@@ -93,8 +100,8 @@ export class PatientEditComponent implements OnInit, OnDestroy {
     return this.authService.getRole() === RoleEnum.PATIENT;
   }
 
-  public isDoctor(): boolean {
-    return this.authService.getRole() === RoleEnum.DOCTOR;
+  public isEmployee(): boolean {
+    return this.authService.getRole() === RoleEnum.EMPLOYEE;
   }
 
   public getAdminUsername(): string {
@@ -104,29 +111,33 @@ export class PatientEditComponent implements OnInit, OnDestroy {
   public save(): void {
     if (this.isNew()) {
       this.allSub.add(
-        this.patientService.createPatient(this.form.value).subscribe(x => this.newPatientData = x)
+        this.patientService
+          .createPatient(this.form.value)
+          .subscribe((x) => (this.newPatientData = x))
       );
-    }
-    else if (this.isPatient()) {
+    } else if (this.isPatient()) {
       this.allSub.add(
-        this.patientService.updatePatientPersonalDetails(this.patientId, this.form.value).subscribe(x => {
-          const response = x;
-          if (response.error) {
-            this.error = response.error;
-          }
-          this.router.navigate(['/', 'patient', this.patientId]);
-        })
+        this.patientService
+          .updatePatientPersonalDetails(this.patientId, this.form.value)
+          .subscribe((x) => {
+            const response = x;
+            if (response.error) {
+              this.error = response.error;
+            }
+            this.router.navigate(['/', 'patient', this.patientId]);
+          })
       );
-    }
-    else {
+    } else {
       this.allSub.add(
-        this.patientService.updatePatientMedicalDetails(this.patientId, this.form.value).subscribe(x => {
-          const response = x;
-          if (response.error) {
-            this.error = response.error;
-          }
-          this.router.navigate(['/', 'patient', this.patientId]);
-        })
+        this.patientService
+          .updatePatientMedicalDetails(this.patientId, this.form.value)
+          .subscribe((x) => {
+            const response = x;
+            if (response.error) {
+              this.error = response.error;
+            }
+            this.router.navigate(['/', 'patient', this.patientId]);
+          })
       );
     }
   }
@@ -147,7 +158,6 @@ export class PatientEditComponent implements OnInit, OnDestroy {
     this.router.navigate(['/', 'admin', this.getAdminUsername()]);
   }
 
-
   private setTitle(): void {
     this.title = (this.isNew() ? 'Create' : 'Edit') + ' Patient';
   }
@@ -161,16 +171,15 @@ export class PatientEditComponent implements OnInit, OnDestroy {
         address: record.address,
         age: record.age,
         phoneNumber: record.phoneNumber,
-        emergPhoneNumber: record.emergPhoneNumber
+        emergPhoneNumber: record.emergPhoneNumber,
       });
-    }
-    else {
+    } else {
       this.form.patchValue({
         allergies: record.allergies,
         symptoms: record.symptoms,
         diagnosis: record.diagnosis,
         treatment: record.treatment,
-        followUp: record.followUp
+        followUp: record.followUp,
       });
     }
   }

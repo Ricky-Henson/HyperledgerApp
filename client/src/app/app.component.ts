@@ -5,18 +5,16 @@ import { Subscription } from 'rxjs';
 import { AuthService } from './core/auth/auth.service';
 import { RoleEnum } from './utils';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnDestroy {
   title = 'client';
   private sub?: Subscription;
 
-  constructor(public authService: AuthService) {
-  }
+  constructor(public authService: AuthService) {}
 
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
@@ -26,8 +24,8 @@ export class AppComponent implements OnDestroy {
     return this.authService.getRole() === RoleEnum.PATIENT;
   }
 
-  public isDoctor(): boolean {
-    return this.authService.getRole() === RoleEnum.DOCTOR;
+  public isEmployee(): boolean {
+    return this.authService.getRole() === RoleEnum.EMPLOYEE;
   }
 
   public isAdmin(): boolean {

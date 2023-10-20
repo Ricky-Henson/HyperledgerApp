@@ -10,7 +10,7 @@ const redis = require("redis");
 const util = require("util");
 
 exports.ROLE_ADMIN = "admin";
-exports.ROLE_DOCTOR = "doctor";
+exports.ROLE_EMPLOYEE = "employee";
 exports.ROLE_PATIENT = "patient";
 
 exports.CHANGE_TMP_PASSWORD = "CHANGE_TMP_PASSWORD";
@@ -37,7 +37,7 @@ exports.getMessage = function (isError, message, id = "", password = "") {
  * @param  {String} reqRole The role to be validated
  * @param  {Response} res 401 is reqRole is not present n roles
  * @description Validation of the role
- * @example roles - 'patient|doctor' reqRole - 'admin' returns 401
+ * @example roles - 'patient|employee' reqRole - 'admin' returns 401
  */
 exports.validateRole = async function (roles, reqRole, res) {
   if (

@@ -10,22 +10,30 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { AdminComponent } from './admin/admin.component';
 import { PatientComponent } from './patient/patient.component';
-import { DoctorComponent } from './doctor/doctor.component';
+import { EmployeeComponent } from './employee/employee.component';
 import { AuthService } from './core/auth/auth.service';
 import { AuthGuard } from './core/auth/auth.guard';
 import { TokenInterceptorService } from './core/auth/token-interceptor.service';
-import { ToolbarButtonComponent, ToolbarLinkComponent, ToolbarComponent } from './sidebar';
-import { SearchComboComponent, SearchService, SearchTextComponent } from './search';
+import {
+  ToolbarButtonComponent,
+  ToolbarLinkComponent,
+  ToolbarComponent,
+} from './sidebar';
+import {
+  SearchComboComponent,
+  SearchService,
+  SearchTextComponent,
+} from './search';
 import { AdminService } from './admin/admin.service';
 import { PatientService } from './patient/patient.service';
-import { DoctorService } from './doctor/doctor.service';
+import { EmployeeService } from './employee/employee.service';
 import { PatientEditComponent } from './patient/patient-register/patient-edit.component';
-import { DoctorRegisterComponent } from './doctor/doctor-register/doctor-register.component';
+import { EmployeeRegisterComponent } from './employee/employee-register/employee-register.component';
 import { PatientHistoryComponent } from './patient/patient-history/patient-history.component';
 import { PatientDetailsMedicalEditComponent } from './patient/patient-details-medical-edit/patient-details-medical-edit.component';
 import { PatientDetailsPersonalEditComponent } from './patient/patient-details-personal-edit/patient-details-personal-edit.component';
-import { DoctorListForPatientComponent } from './doctor/doctor-list-for-patient/doctor-list-for-patient.component';
-import { PatientListForDoctorComponent } from './doctor/patient-list-for-doctor/patient-list-for-doctor.component';
+import { EmployeeListForPatientComponent } from './employee/employee-list-for-patient/employee-list-for-patient.component';
+import { PatientListForEmployeeComponent } from './employee/patient-list-for-employee/patient-list-for-employee.component';
 import { LoadingPipe } from './loading.pipe';
 
 const components = [
@@ -37,20 +45,18 @@ const components = [
   PatientHistoryComponent,
   PatientDetailsMedicalEditComponent,
   PatientDetailsPersonalEditComponent,
-  PatientListForDoctorComponent,
-  DoctorListForPatientComponent,
-  DoctorComponent,
-  DoctorRegisterComponent,
+  PatientListForEmployeeComponent,
+  EmployeeListForPatientComponent,
+  EmployeeComponent,
+  EmployeeRegisterComponent,
   ToolbarComponent,
   ToolbarButtonComponent,
   ToolbarLinkComponent,
   SearchComboComponent,
-  SearchTextComponent
+  SearchTextComponent,
 ];
 
-const pipes = [
-  LoadingPipe
-];
+const pipes = [LoadingPipe];
 
 @NgModule({
   declarations: [...components, ...pipes],
@@ -61,15 +67,21 @@ const pipes = [
     AppRoutingModule,
     ReactiveFormsModule,
     NgSelectModule,
-    NgbTooltipModule
+    NgbTooltipModule,
   ],
-  providers: [ AuthService, AuthGuard, SearchService, AdminService, PatientService, DoctorService,
+  providers: [
+    AuthService,
+    AuthGuard,
+    SearchService,
+    AdminService,
+    PatientService,
+    EmployeeService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,
-      multi: true
-    }
+      multi: true,
+    },
   ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

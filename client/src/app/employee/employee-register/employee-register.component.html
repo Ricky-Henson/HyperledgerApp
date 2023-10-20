@@ -1,4 +1,4 @@
-<app-toolbar text="Create Doctor">
+<app-toolbar text="Create Employee">
   <app-toolbar-button
     text="Refresh"
     icon="refresh"
@@ -12,9 +12,9 @@
     <div class="offset-xl-3 col-xl-6 col-sm-8">
       <div class="card">
         <div class="card-body">
-          <p>Please fill out doctor details. All fields are required.</p>
+          <p>Please fill out employee details. All fields are required.</p>
           <form
-            #registerDoctor="ngForm"
+            #registerEmployee="ngForm"
             (ngSubmit)="save()"
             class="form-horizontal form-standard"
             [formGroup]="form"
@@ -69,7 +69,7 @@
                   class="form-control"
                   name="username"
                   formControlName="username"
-                  placeholder="Enter doctor's username."
+                  placeholder="Enter employee's username."
                 />
               </div>
               <div class="form-group">
@@ -79,7 +79,7 @@
                   class="form-control"
                   name="password"
                   formControlName="password"
-                  placeholder="Enter doctor's password."
+                  placeholder="Enter employee's password."
                 />
               </div>
               <div *ngIf="error">
@@ -89,7 +89,7 @@
                 <button
                   class="btn btn-primary mr-2"
                   type="submit"
-                  [disabled]="registerDoctor.invalid"
+                  [disabled]="registerEmployee.invalid"
                 >
                   Save
                 </button>

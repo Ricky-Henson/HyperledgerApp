@@ -51,29 +51,29 @@ async function initRedis() {
 }
 
 /**
- * @description Create doctors in both organizations based on the initDoctors JSON
+ * @description Create employees in both organizations based on the initEmployees JSON
  */
-async function enrollAndRegisterDoctors() {
+async function enrollAndRegisterEmployees() {
   try {
-    const jsonString = fs.readFileSync("./initDoctors.json");
-    const doctors = JSON.parse(jsonString);
-    for (let i = 0; i < doctors.length; i++) {
+    const jsonString = fs.readFileSync("./initEmployees.json");
+    const employees = JSON.parse(jsonString);
+    for (let i = 0; i < employees.length; i++) {
       const attr = {
-        firstName: doctors[i].firstName,
-        lastName: doctors[i].lastName,
-        role: "doctor",
-        speciality: doctors[i].speciality,
+        firstName: employees[i].firstName,
+        lastName: employees[i].lastName,
+        role: "employee",
+        speciality: employees[i].speciality,
       };
-      // Create a redis client and add the doctor to redis
-      doctors[i].officeId = parseInt(doctors[i].officeId);
-      const redisClient = createRedisClient(doctors[i].officeId);
+      // Create a redis client and add the employee to redis
+      employees[i].officeId = parseInt(employees[i].officeId);
+      const redisClient = createRedisClient(employees[i].officeId);
       (await redisClient).SET(
-        "OFFICE" + doctors[i].officeId + "-" + "DOC" + i,
+        "OFFICE" + employees[i].officeId + "-" + "DOC" + i,
         "password"
       );
       await enrollRegisterUser(
-        doctors[i].officeId,
-        "OFFICE" + doctors[i].officeId + "-" + "DOC" + i,
+        employees[i].officeId,
+        "OFFICE" + employees[i].officeId + "-" + "DOC" + i,
         JSON.stringify(attr)
       );
       (await redisClient).QUIT();
@@ -92,7 +92,7 @@ async function main() {
   await enrollAdminOffice2();
   await initLedger();
   await initRedis();
-  await enrollAndRegisterDoctors();
+  await enrollAndRegisterEmployees();
 }
 
 main();

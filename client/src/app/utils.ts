@@ -1,7 +1,7 @@
 export enum RoleEnum {
   ADMIN = 'admin',
   PATIENT = 'patient',
-  DOCTOR = 'doctor',
+  EMPLOYEE = 'employee',
 }
 
 export enum BrowserStorageFields {

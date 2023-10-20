@@ -3,12 +3,12 @@
  * @email jathin.sreenivas@stud.fra-uas.de
  * @create date 2021-01-27 12:44:51
  * @modify date 2021-03-14 21:24:41
- * @desc Doctor specific methods - API documentation in http://localhost:3002/ swagger editor.
+ * @desc Employee specific methods - API documentation in http://localhost:3002/ swagger editor.
  */
 
 // Bring common classes into scope, and Fabric SDK network class
 const {
-  ROLE_DOCTOR,
+  ROLE_EMPLOYEE,
   capitalize,
   getMessage,
   validateRole,
@@ -18,12 +18,12 @@ const network = require("../../patient-asset-transfer/application-javascript/app
 /**
  * @param  {Request} req Body must be a json, role in the header and patientId in the url
  * @param  {Response} res A 200 response if patient is updated successfully else a 500 response with s simple message json
- * @description Updates an existing asset(patient medical details) in the ledger. This method can be executed only by the doctor.
+ * @description Updates an existing asset(patient medical details) in the ledger. This method can be executed only by the employee.
  */
 exports.updatePatientMedicalDetails = async (req, res) => {
   // User role from the request header is validated
   const userRole = req.headers.role;
-  await validateRole([ROLE_DOCTOR], userRole, res);
+  await validateRole([ROLE_EMPLOYEE], userRole, res);
   let args = req.body;
   args.patientId = req.params.patientId;
   args.changedBy = req.headers.username;
@@ -43,14 +43,14 @@ exports.updatePatientMedicalDetails = async (req, res) => {
 };
 
 /**
- * @param  {Request} req role in the header and officeId, doctorId in the url
- * @param  {Response} res A 200 response if doctor is present else a 500 response with a error json
- * @description This method retrives an existing doctor
+ * @param  {Request} req role in the header and officeId, employeeId in the url
+ * @param  {Response} res A 200 response if employee is present else a 500 response with a error json
+ * @description This method retrives an existing employee
  */
-exports.getDoctorById = async (req, res) => {
+exports.getEmployeeById = async (req, res) => {
   // User role from the request header is validated
   const userRole = req.headers.role;
-  await validateRole([ROLE_DOCTOR], userRole, res);
+  await validateRole([ROLE_EMPLOYEE], userRole, res);
   const officeId = parseInt(req.params.officeId);
   // Set up and connect to Fabric Gateway
   const userId =
@@ -59,16 +59,19 @@ exports.getDoctorById = async (req, res) => {
       : officeId === 2
       ? "office2admin"
       : "office3admin";
-  const doctorId = req.params.doctorId;
+  const employeeId = req.params.employeeId;
   const networkObj = await network.connectToNetwork(userId);
   // Use the gateway and identity service to get all users enrolled by the CA
-  const response = await network.getAllDoctorsByOfficeId(networkObj, officeId);
-  // Filter the result using the doctorId
+  const response = await network.getAllEmployeesByOfficeId(
+    networkObj,
+    officeId
+  );
+  // Filter the result using the employeeId
   response.error
     ? res.status(500).send(response.error)
     : res.status(200).send(
         response.filter(function (response) {
-          return response.id === doctorId;
+          return response.id === employeeId;
         })[0]
       );
 };

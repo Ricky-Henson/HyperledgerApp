@@ -26,13 +26,13 @@ const walletPath = path.join(__dirname, "wallet");
 
 /**
  * @author Jathin Sreenivas
- * @param  {string} doctorID
+ * @param  {string} employeeID
  * @return {networkObj} networkObj if all paramters are correct, the networkObj consists of contract, network, gateway
  * @return {string} response error if there is a error in the method
- * @description Connects to the network using the username - doctorID, networkObj contains the paramters using which
+ * @description Connects to the network using the username - employeeID, networkObj contains the paramters using which
  * @description a connection to the fabric network is possible.
  */
-exports.connectToNetwork = async function (doctorID) {
+exports.connectToNetwork = async function (employeeID) {
   const gateway = new Gateway();
   const ccp = buildCCPOffice1();
 
@@ -44,20 +44,20 @@ exports.connectToNetwork = async function (doctorID) {
 
     const wallet = await buildWallet(Wallets, walletPath);
 
-    const userExists = await wallet.get(doctorID);
+    const userExists = await wallet.get(employeeID);
     if (!userExists) {
       console.log(
-        "An identity for the doctorID: " +
-          doctorID +
+        "An identity for the employeeID: " +
+          employeeID +
           " does not exist in the wallet"
       );
-      console.log("Create the doctorID before retrying");
+      console.log("Create the employeeID before retrying");
       const response = {};
       response.error =
         "An identity for the user " +
-        doctorID +
+        employeeID +
         " does not exist in the wallet. Register " +
-        doctorID +
+        employeeID +
         " first";
       return response;
     }
@@ -71,7 +71,7 @@ exports.connectToNetwork = async function (doctorID) {
     // using asLocalhost as this gateway is using a fabric network deployed locally
     await gateway.connect(ccp, {
       wallet,
-      identity: doctorID,
+      identity: employeeID,
       discovery: { enabled: true, asLocalhost: true },
     });
 
@@ -138,7 +138,7 @@ exports.invoke = async function (networkObj, isQuery, func, args = "") {
  * @author Jathin Sreenivas
  * @param  {string} attributes JSON string in which userId, officeId and role must be present.
  * @description For patient attributes also contain the patient object
- * @description Creates a patient/doctor and adds to the wallet to the given officeId
+ * @description Creates a patient/employee and adds to the wallet to the given officeId
  */
 exports.registerUser = async function (attributes) {
   const attrs = JSON.parse(attributes);
@@ -215,10 +215,10 @@ exports.registerUser = async function (attributes) {
 /**
  * @param  {NetworkObj} networkObj The object which is generated when connectToNetwork is executed
  * @param  {Number} officeId
- * @return {JSON} Returns an JSON array consisting of all doctor object.
- * @description Retrieves all the users(doctors) based on user type(doctor) and officeId
+ * @return {JSON} Returns an JSON array consisting of all employee object.
+ * @description Retrieves all the users(employees) based on user type(employee) and officeId
  */
-exports.getAllDoctorsByOfficeId = async function (networkObj, officeId) {
+exports.getAllEmployeesByOfficeId = async function (networkObj, officeId) {
   // Get the User from the identity context
   const users = networkObj.gateway.identityContext.user;
   let caClient;
@@ -249,7 +249,7 @@ exports.getAllDoctorsByOfficeId = async function (networkObj, officeId) {
         tmp.id = identities[i].id;
         tmp.role = identities[i].type;
         attributes = identities[i].attrs;
-        // Doctor object will consist of firstName and lastName
+        // Employee object will consist of firstName and lastName
         for (let j = 0; j < attributes.length; j++) {
           if (
             attributes[j].name.endsWith("Name") ||
@@ -263,12 +263,12 @@ exports.getAllDoctorsByOfficeId = async function (networkObj, officeId) {
       }
     }
   } catch (error) {
-    console.error(`Unable to get all doctors : ${error}`);
+    console.error(`Unable to get all employees : ${error}`);
     const response = {};
     response.error = error;
     return response;
   }
   return result.filter(function (result) {
-    return result.role === "doctor";
+    return result.role === "employee";
   });
 };

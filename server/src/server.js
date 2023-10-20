@@ -34,10 +34,10 @@ app.listen(3001, () => console.log("Backend server running on 3001"));
 
 // Bring key classes into scope
 const patientRoutes = require("./patient-routes");
-const doctorRoutes = require("./doctor-routes");
+const employeeRoutes = require("./employee-routes");
 const adminRoutes = require("./admin-routes");
 const {
-  ROLE_DOCTOR,
+  ROLE_EMPLOYEE,
   ROLE_ADMIN,
   ROLE_PATIENT,
   CHANGE_TMP_PASSWORD,
@@ -96,7 +96,7 @@ app.post("/login", async (req, res) => {
   officeId = parseInt(officeId);
   let user;
   // using get instead of redis GET for async
-  if (role === ROLE_DOCTOR || role === ROLE_ADMIN) {
+  if (role === ROLE_EMPLOYEE || role === ROLE_ADMIN) {
     // Create a redis client based on the office ID
     const redisClient = await createRedisClient(officeId);
     // Async get
@@ -201,20 +201,20 @@ app.delete("/logout", (req, res) => {
 });
 
 // //////////////////////////////// Admin Routes //////////////////////////////////////
-app.post("/doctors/register", authenticateJWT, adminRoutes.createDoctor);
+app.post("/employees/register", authenticateJWT, adminRoutes.createEmployee);
 app.get("/patients/_all", authenticateJWT, adminRoutes.getAllPatients);
 app.post("/patients/register", authenticateJWT, adminRoutes.createPatient);
 
-// //////////////////////////////// Doctor Routes //////////////////////////////////////
+// //////////////////////////////// Employee Routes //////////////////////////////////////
 app.patch(
   "/patients/:patientId/details/medical",
   authenticateJWT,
-  doctorRoutes.updatePatientMedicalDetails
+  employeeRoutes.updatePatientMedicalDetails
 );
 app.get(
-  "/doctors/:officeId([0-9]+)/:doctorId(OFFICE[0-9]+-DOC[0-9]+)",
+  "/employees/:officeId([0-9]+)/:employeeId(OFFICE[0-9]+-EMPLOYEE[0-9]+)",
   authenticateJWT,
-  doctorRoutes.getDoctorById
+  employeeRoutes.getEmployeeById
 );
 
 // //////////////////////////////// Patient Routes //////////////////////////////////////
@@ -230,17 +230,17 @@ app.get(
   patientRoutes.getPatientHistoryById
 );
 app.get(
-  "/doctors/:officeId([0-9]+)/_all",
+  "/employees/:officeId([0-9]+)/_all",
   authenticateJWT,
-  patientRoutes.getDoctorsByOfficeId
+  patientRoutes.getEmployeesByOfficeId
 );
 app.patch(
-  "/patients/:patientId/grant/:doctorId",
+  "/patients/:patientId/grant/:employeeId",
   authenticateJWT,
-  patientRoutes.grantAccessToDoctor
+  patientRoutes.grantAccessToEmployee
 );
 app.patch(
-  "/patients/:patientId/revoke/:doctorId",
+  "/patients/:patientId/revoke/:employeeId",
   authenticateJWT,
-  patientRoutes.revokeAccessFromDoctor
+  patientRoutes.revokeAccessFromEmployee
 );
