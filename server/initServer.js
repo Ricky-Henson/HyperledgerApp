@@ -68,12 +68,12 @@ async function enrollAndRegisterEmployees() {
       employees[i].officeId = parseInt(employees[i].officeId);
       const redisClient = createRedisClient(employees[i].officeId);
       (await redisClient).SET(
-        "OFFICE" + employees[i].officeId + "-" + "DOC" + i,
+        "OFFICE" + employees[i].officeId + "-" + "EMPLOYEE" + i,
         "password"
       );
       await enrollRegisterUser(
         employees[i].officeId,
-        "OFFICE" + employees[i].officeId + "-" + "DOC" + i,
+        "OFFICE" + employees[i].officeId + "-" + "EMPLOYEE" + i,
         JSON.stringify(attr)
       );
       (await redisClient).QUIT();

@@ -23,7 +23,7 @@ export interface PatientRecord {
   diagnosis: string;
   treatment: string;
   followUp: string;
-  docType: string;
+  employeeType: string;
   changedBy: string;
   Timestamp: Timestamp;
 }
@@ -47,7 +47,7 @@ export class PatientViewRecord {
   diagnosis = '';
   treatment = '';
   followUp = '';
-  docType = '';
+  employeeType = '';
   changedBy = '';
   Timestamp = '';
 
@@ -65,7 +65,7 @@ export class PatientViewRecord {
     this.diagnosis = patientRecord.diagnosis;
     this.treatment = patientRecord.treatment;
     this.followUp = patientRecord.followUp;
-    this.docType = patientRecord.docType;
+    this.employeeType = patientRecord.employeeType;
     this.changedBy = patientRecord.changedBy;
     this.Timestamp = patientRecord.Timestamp
       ? new Date(patientRecord.Timestamp.seconds.low * 1000).toDateString()
@@ -77,7 +77,7 @@ export class PatientAdminViewRecord {
   patientId = '';
   firstName = '';
   lastName = '';
-  docType = '';
+  employeeType = '';
   emergPhoneNumber = '';
   phoneNumber = '';
 
@@ -85,7 +85,7 @@ export class PatientAdminViewRecord {
     this.patientId = patientRecord.patientId;
     this.firstName = patientRecord.firstName;
     this.lastName = patientRecord.lastName;
-    this.docType = patientRecord.docType;
+    this.employeeType = patientRecord.employeeType;
     this.emergPhoneNumber = patientRecord.emergPhoneNumber;
     this.phoneNumber = patientRecord.phoneNumber;
   }

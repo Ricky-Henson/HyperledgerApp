@@ -19,7 +19,10 @@ export class EmployeeService {
     return this.http.get(this.employeeURL + `/${officeId}/_all`);
   }
 
-  public getEmployeeByOfficeId(officeId: string, docId: any): Observable<any> {
-    return this.http.get(this.employeeURL + `/${officeId}/${docId}`);
+  public getEmployeeByOfficeId(
+    officeId: string,
+    employeeId: any
+  ): Observable<any> {
+    return this.http.get(this.employeeURL + `/${officeId}/${employeeId}`);
   }
 }

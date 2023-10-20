@@ -60,9 +60,9 @@ export class EmployeeRegisterComponent implements OnInit, OnDestroy {
     this.sub = this.employeeService
       .createEmployee(this.form.value)
       .subscribe((x) => {
-        const docRegResponse = x;
-        if (docRegResponse.error) {
-          this.error = docRegResponse.error;
+        const employeeRegResponse = x;
+        if (employeeRegResponse.error) {
+          this.error = employeeRegResponse.error;
         }
         this.router.navigate(['/', 'admin', this.getAdminUsername()]);
       });
