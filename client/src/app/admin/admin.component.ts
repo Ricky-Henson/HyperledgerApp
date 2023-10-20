@@ -3,9 +3,6 @@ import { ActivatedRoute, Params } from '@angular/router';
 
 import { Observable, Subscription } from 'rxjs';
 
-import { PatientService } from '../patient/patient.service';
-import { DisplayVal, PatientAdminViewRecord, PatientViewRecord } from '../patient/patient';
-
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -13,17 +10,10 @@ import { DisplayVal, PatientAdminViewRecord, PatientViewRecord } from '../patien
 })
 export class AdminComponent implements OnInit, OnDestroy {
   public adminId: any;
-  public patientRecords$?: Observable<Array<PatientAdminViewRecord>>;
   private sub?: Subscription;
-  public headerNames = [
-    new DisplayVal(PatientViewRecord.prototype.patientId, 'Patient Id'),
-    new DisplayVal(PatientViewRecord.prototype.firstName, 'First Name'),
-    new DisplayVal(PatientViewRecord.prototype.lastName, 'Last Name')
-  ];
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly patientService: PatientService
   ) { }
 
   ngOnInit(): void {
@@ -39,6 +29,5 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   public refresh(): void {
-    this.patientRecords$ = this.patientService.fetchAllPatients();
   }
 }

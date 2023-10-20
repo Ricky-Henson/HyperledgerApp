@@ -23,11 +23,7 @@ export class AuthService {
   public loginEmployeeUser(employeeUser: OfficeUser): any {
     return this.http.post<any>(this.loginUrl, employeeUser);
   }
-
-  public loginPatientUser(patientUser: User): any {
-    return this.http.post<any>(this.loginUrl, patientUser);
-  }
-
+  
   public getNewAccessToken(): any {
     return this.http
       .post(`${this.serverUrl}/token`, { token: this.getRefreshToken() })

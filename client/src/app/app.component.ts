@@ -20,10 +20,6 @@ export class AppComponent implements OnDestroy {
     this.sub?.unsubscribe();
   }
 
-  public isPatient(): boolean {
-    return this.authService.getRole() === RoleEnum.PATIENT;
-  }
-
   public isEmployee(): boolean {
     return this.authService.getRole() === RoleEnum.EMPLOYEE;
   }

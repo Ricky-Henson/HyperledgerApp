@@ -33,13 +33,11 @@ app.use(cors());
 app.listen(3001, () => console.log("Backend server running on 3001"));
 
 // Bring key classes into scope
-const patientRoutes = require("./patient-routes");
 const employeeRoutes = require("./employee-routes");
 const adminRoutes = require("./admin-routes");
 const {
   ROLE_EMPLOYEE,
   ROLE_ADMIN,
-  ROLE_PATIENT,
   CHANGE_TMP_PASSWORD,
 } = require("../utils");
 const { createRedisClient, capitalize, getMessage } = require("../utils");
@@ -106,43 +104,7 @@ app.post("/login", async (req, res) => {
     redisClient.quit();
   }
 
-  if (role === ROLE_PATIENT) {
-    const networkObj = await network.connectToNetwork(username);
-    const newPassword = req.body.newPassword;
-
-    if (newPassword === null || newPassword === "") {
-      const value = crypto.createHash("sha256").update(password).digest("hex");
-      const response = await network.invoke(
-        networkObj,
-        true,
-        capitalize(role) + "Contract:getPatientPassword",
-        username
-      );
-      if (response.error) {
-        res.status(400).send(response.error);
-      } else {
-        const parsedResponse = await JSON.parse(response);
-        if (parsedResponse.password.toString("utf8") === value) {
-          !parsedResponse.pwdTemp
-            ? (user = true)
-            : res.status(200).send(getMessage(false, CHANGE_TMP_PASSWORD));
-        }
-      }
-    } else {
-      let args = {
-        patientId: username,
-        newPassword: newPassword,
-      };
-      args = [JSON.stringify(args)];
-      const response = await network.invoke(
-        networkObj,
-        false,
-        capitalize(role) + "Contract:updatePatientPassword",
-        args
-      );
-      response.error ? res.status(500).send(response.error) : (user = true);
-    }
-  }
+  
 
   if (user) {
     // Generate an access token
@@ -202,45 +164,10 @@ app.delete("/logout", (req, res) => {
 
 // //////////////////////////////// Admin Routes //////////////////////////////////////
 app.post("/employees/register", authenticateJWT, adminRoutes.createEmployee);
-app.get("/patients/_all", authenticateJWT, adminRoutes.getAllPatients);
-app.post("/patients/register", authenticateJWT, adminRoutes.createPatient);
 
 // //////////////////////////////// Employee Routes //////////////////////////////////////
-app.patch(
-  "/patients/:patientId/details/medical",
-  authenticateJWT,
-  employeeRoutes.updatePatientMedicalDetails
-);
 app.get(
   "/employees/:officeId([0-9]+)/:employeeId(OFFICE[0-9]+-EMPLOYEE[0-9]+)",
   authenticateJWT,
   employeeRoutes.getEmployeeById
-);
-
-// //////////////////////////////// Patient Routes //////////////////////////////////////
-app.get("/patients/:patientId", authenticateJWT, patientRoutes.getPatientById);
-app.patch(
-  "/patients/:patientId/details/personal",
-  authenticateJWT,
-  patientRoutes.updatePatientPersonalDetails
-);
-app.get(
-  "/patients/:patientId/history",
-  authenticateJWT,
-  patientRoutes.getPatientHistoryById
-);
-app.get(
-  "/employees/:officeId([0-9]+)/_all",
-  authenticateJWT,
-  patientRoutes.getEmployeesByOfficeId
-);
-app.patch(
-  "/patients/:patientId/grant/:employeeId",
-  authenticateJWT,
-  patientRoutes.grantAccessToEmployee
-);
-app.patch(
-  "/patients/:patientId/revoke/:employeeId",
-  authenticateJWT,
-  patientRoutes.revokeAccessFromEmployee
 );

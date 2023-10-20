@@ -40,10 +40,6 @@ export class LoginComponent implements OnInit {
     this.error.message = '';
   }
 
-  public roleChanged(): void {
-    this.showOfficeList = this.role !== RoleEnum.PATIENT;
-  }
-
   public loginUser(): void {
     switch (this.role) {
       case RoleEnum.ADMIN:
@@ -60,16 +56,6 @@ export class LoginComponent implements OnInit {
         this.authService
           .loginEmployeeUser(
             new OfficeUser(this.role, this.officeId, this.username, this.pwd)
-          )
-          .subscribe(
-            (res: any) => this.afterSuccessfulLogin(res),
-            (err: any) => (this.error.message = err.message)
-          );
-        break;
-      case RoleEnum.PATIENT:
-        this.authService
-          .loginPatientUser(
-            new User(this.role, this.username, this.pwd, this.newPwd)
           )
           .subscribe(
             (res: any) => this.afterSuccessfulLogin(res),

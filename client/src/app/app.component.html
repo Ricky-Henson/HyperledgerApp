@@ -14,15 +14,6 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li *ngIf="isPatient()" class="nav-item">
-        <a
-          class="nav-link fa fa-user"
-          [routerLink]="['/', 'patient', getUsername()]"
-          routerLinkActive="active"
-          [ngbTooltip]="getUsername()"
-          >&nbsp;Patient</a
-        >
-      </li>
       <li *ngIf="isEmployee()" class="nav-item">
         <a
           class="nav-link fa fa-user-md"

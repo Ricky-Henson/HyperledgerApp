@@ -15,16 +15,6 @@ async function initLedger() {
     const jsonString = fs.readFileSync(
       "../patient-asset-transfer/chaincode/lib/initLedger.json"
     );
-    const patients = JSON.parse(jsonString);
-    let i = 0;
-    for (i = 0; i < patients.length; i++) {
-      const attr = {
-        firstName: patients[i].firstName,
-        lastName: patients[i].lastName,
-        role: "patient",
-      };
-      await enrollRegisterUser("1", "PID" + i, JSON.stringify(attr));
-    }
   } catch (err) {
     console.log(err);
   }

@@ -1,6 +1,5 @@
 export enum RoleEnum {
   ADMIN = 'admin',
-  PATIENT = 'patient',
   EMPLOYEE = 'employee',
 }
 

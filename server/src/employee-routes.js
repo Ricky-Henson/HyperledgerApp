@@ -16,33 +16,6 @@ const {
 const network = require("../../patient-asset-transfer/application-javascript/app.js");
 
 /**
- * @param  {Request} req Body must be a json, role in the header and patientId in the url
- * @param  {Response} res A 200 response if patient is updated successfully else a 500 response with s simple message json
- * @description Updates an existing asset(patient medical details) in the ledger. This method can be executed only by the employee.
- */
-exports.updatePatientMedicalDetails = async (req, res) => {
-  // User role from the request header is validated
-  const userRole = req.headers.role;
-  await validateRole([ROLE_EMPLOYEE], userRole, res);
-  let args = req.body;
-  args.patientId = req.params.patientId;
-  args.changedBy = req.headers.username;
-  args = [JSON.stringify(args)];
-  // Set up and connect to Fabric Gateway
-  const networkObj = await network.connectToNetwork(req.headers.username);
-  // Invoke the smart contract function
-  const response = await network.invoke(
-    networkObj,
-    false,
-    capitalize(userRole) + "Contract:updatePatientMedicalDetails",
-    args
-  );
-  response.error
-    ? res.status(500).send(response.error)
-    : res.status(200).send(getMessage(false, "Successfully Updated Patient."));
-};
-
-/**
  * @param  {Request} req role in the header and officeId, employeeId in the url
  * @param  {Response} res A 200 response if employee is present else a 500 response with a error json
  * @description This method retrives an existing employee
