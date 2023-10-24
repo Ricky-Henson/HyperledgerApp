@@ -11,8 +11,8 @@ import { DisplayVal } from '../../employee/employee';
   templateUrl: './employee-list-for-employee.component.html',
   styleUrls: ['./employee-list-for-employee.component.scss'],
 })
-export class DoctorListForPatientComponent implements OnInit, OnDestroy {
-  public employeeID: any;
+export class EmployeeListForEmployee implements OnInit, OnDestroy {
+  public employeeId: any;
   public employeeRecords: Array<EmployeeViewRecord> = [];
   public permissions = [];
   public grantObs$?: Observable<any>;
@@ -32,7 +32,7 @@ export class DoctorListForPatientComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.allSubs.add(
       this.route.params.subscribe((params: Params) => {
-        this.employeeID = params.employeeID;
+        this.employeeId = params.employeeId;
         this.refresh();
       })
     );
@@ -45,14 +45,14 @@ export class DoctorListForPatientComponent implements OnInit, OnDestroy {
   public refresh(): void {
     this.employeeRecords = [];
     this.allSubs.add(
-      this.employeeService.getEmployeesByOfficeId(this.employeeID).subscribe((x) => {
+      this.employeeService.getEmployeesByOfficeId(this.employeeId).subscribe((x) => {
         this.permissions = x.permissionGranted;
-        this.fetchDoctorData();
+        this.fetchEmployeeData();
       })
     );
   }
 
-  public fetchDoctorData(): void {
+  public fetchEmployeeData(): void {
     this.allSubs.add(
       this.employeeService.getEmployeesByOfficeId(1).subscribe((x) => {
         const data = x as Array<EmployeeRecord>;
@@ -73,8 +73,8 @@ export class DoctorListForPatientComponent implements OnInit, OnDestroy {
     );
   }
 
-  public isEmployeePresent(employeeID: string): boolean {
+  public isEmployeePresent(employeeId: string): boolean {
     // @ts-ignore
-    return this.permissions.includes(employeeID);
+    return this.permissions.includes(employeeId);
   }
 }
