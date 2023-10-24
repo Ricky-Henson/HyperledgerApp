@@ -1,4 +1,10 @@
 <app-toolbar text="Employee {{ employeeId }}">
+  <app-toolbar-link
+    text="View other employees"
+    icon="users"
+    [routerLink]="['employees']"
+  >
+  </app-toolbar-link>
   <app-toolbar-button
     text="Refresh"
     icon="refresh"

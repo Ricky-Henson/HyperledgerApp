@@ -48,3 +48,28 @@ exports.getEmployeeById = async (req, res) => {
         })[0]
       );
 };
+
+// exports.getAllEmployees = async (req, res) => { 
+//   const userRole = req.headers.role;
+//   await validateRole([ROLE_EMPLOYEE], userRole, res);
+//   const networkObj = await network.connectToNetwork(req.headers.username);
+//   const response = await network.getAllEmployees(networkObj);
+//   res.status(200).send(response);
+// }
+
+exports.getAllEmployees = async (req, res) => {
+  // User role from the request header is validated
+  const userRole = req.headers.role;
+  await validateRole([ROLE_EMPLOYEE], userRole, res);
+  // Set up and connect to Fabric Gateway using the username in header
+  const networkObj = await network.connectToNetwork(req.headers.username);
+  // Invoke the smart contract function
+  const response = await network.invoke(
+    networkObj,
+    true,
+    capitalize(userRole) + "Contract:queryAllPatients",
+    userRole === ROLE_EMPLOYEE ? req.headers.username : ""
+  );
+  const parsedResponse = await JSON.parse(response);
+  res.status(200).send(parsedResponse);
+};

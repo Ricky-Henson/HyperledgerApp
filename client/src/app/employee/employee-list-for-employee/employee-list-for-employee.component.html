@@ -12,24 +12,20 @@
           <th *ngFor="let column of headerNames" scope="col">
             {{column.displayName}}
           </th>
-          <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let singleRecord of employeeRecords">
+          <tr *ngFor="let singleRecord of employeeRecordsObs$ | async">
             <td>{{singleRecord.employeeId}}</td>
             <td>{{singleRecord.firstName}}</td>
             <td>{{singleRecord.lastName}}</td>
-            <!-- <td>
-              <button type="button" class="btn btn-success mr-1" (click)="grant(singleRecord.employeeId)"
-                [disabled]="isDoctorPresent(singleRecord.doctorId)">GRANT</button>
-              <button type="button" class="btn btn-danger ml-1" (click)="revoke(singleRecord.employeeID)"
-                [disabled]="!isDoctorPresent(singleRecord.doctorId)">REVOKE</button>
-            </td> -->
+            <td>
+              <a role ="button" [routerLink] = "['/employees/_all', singleRecord.employeeId]">View</a>
+            </td>
           </tr>
         </tbody>
       </table>
-      <span>Total count: {{employeeRecords.length}}</span>
+      <span>Total count: {{(employeeRecordsObs$ | async)?.length}}</span>
     </div>
   </div>
   

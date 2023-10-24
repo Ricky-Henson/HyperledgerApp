@@ -171,3 +171,4 @@ app.get(
   authenticateJWT,
   employeeRoutes.getEmployeeById
 );
+app.get("/employees/_all", authenticateJWT, employeeRoutes.getAllEmployees);

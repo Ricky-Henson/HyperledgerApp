@@ -19,6 +19,10 @@ export class EmployeeService {
     return this.http.get(this.employeeURL + `/${officeId}/_all`);
   }
 
+  public getAllEmployees(): Observable<any> {
+    return this.http.get(this.employeeURL + '/_all');
+  }
+
   public getEmployeeByOfficeId(
     officeId: string,
     employeeId: any
