@@ -1,4 +1,4 @@
-<app-toolbar text="Doctors">
+<app-toolbar text="Employees">
     <app-toolbar-button text="Refresh" icon="refresh" (click)="refresh()"></app-toolbar-button>
   </app-toolbar>
   <br><br><br>
@@ -16,7 +16,7 @@
         </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let singleRecord of doctorRecords">
+          <tr *ngFor="let singleRecord of employeeRecords">
             <td>{{singleRecord.employeeId}}</td>
             <td>{{singleRecord.firstName}}</td>
             <td>{{singleRecord.lastName}}</td>
@@ -29,7 +29,7 @@
           </tr>
         </tbody>
       </table>
-      <span>Total count: {{doctorRecords.length}}</span>
+      <span>Total count: {{employeeRecords.length}}</span>
     </div>
   </div>
   

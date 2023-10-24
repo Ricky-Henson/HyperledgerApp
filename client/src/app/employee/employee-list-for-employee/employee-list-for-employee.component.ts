@@ -11,7 +11,7 @@ import { DisplayVal } from '../../employee/employee';
   templateUrl: './employee-list-for-employee.component.html',
   styleUrls: ['./employee-list-for-employee.component.scss'],
 })
-export class EmployeeListForEmployee implements OnInit, OnDestroy {
+export class EmployeeListForEmployeeComponent implements OnInit, OnDestroy {
   public employeeId: any;
   public employeeRecords: Array<EmployeeViewRecord> = [];
   public permissions = [];

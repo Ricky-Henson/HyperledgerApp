@@ -6,6 +6,7 @@ import { EmployeeComponent } from './employee/employee.component';
 import { AdminComponent } from './admin/admin.component';
 import { AuthGuard } from './core/auth/auth.guard';
 import { EmployeeRegisterComponent } from './employee/employee-register/employee-register.component';
+import { EmployeeListForEmployeeComponent } from './employee/employee-list-for-employee/employee-list-for-employee.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,11 @@ const routes: Routes = [
     path: 'employee/:employeeId',
     component: EmployeeComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'employee/:employeeId/employees/list',
+    component: EmployeeListForEmployeeComponent,
+    canActivate: [ AuthGuard ]
   },
   {
     path: 'admin/:adminId',
