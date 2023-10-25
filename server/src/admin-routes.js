@@ -16,7 +16,7 @@ const {
   validateRole,
   createRedisClient,
 } = require("../utils.js");
-const network = require("../../patient-asset-transfer/application-javascript/app.js");
+const network = require("../../employee-asset-transfer/application-javascript/app.js");
 
 /**
  * @param  {Request} req Body must be a employee json and role in the header

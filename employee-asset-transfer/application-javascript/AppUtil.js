@@ -108,7 +108,7 @@ exports.buildCCPOffice3 = () => {
  * @param  {string} walletPath
  * @return {wallet} wallet
  * @description If there is no wallet presents, a new wallet is created else , returns the wallet that is present.
- * @description The wallet path is in ./patient-applcation/server/src/network/wallet
+ * @description The wallet path is in ./employee-applcation/server/src/network/wallet
  */
 exports.buildWallet = async (Wallets, walletPath) => {
   // Create a new  wallet : Note that wallet is for managing identities.

@@ -1,7 +1,7 @@
 {
-    "name": "patient-application",
+    "name": "employee-application",
     "version": "1.0.0",
-    "description": "Patient application implemented in JavaScript",
+    "description": "Employee application implemented in JavaScript",
     "engines": {
         "node": ">=12",
         "npm": ">=5"

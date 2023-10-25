@@ -12,18 +12,18 @@ const path = require("path");
 const {
   buildCAClient,
   enrollAdmin,
-} = require("../patient-asset-transfer/application-javascript/CAUtil.js");
+} = require("../employee-asset-transfer/application-javascript/CAUtil.js");
 const {
   buildCCPOffice1,
   buildWallet,
-} = require("../patient-asset-transfer/application-javascript/AppUtil.js");
+} = require("../employee-asset-transfer/application-javascript/AppUtil.js");
 const adminOffice1 = "office1admin";
 const adminOffice1Passwd = "office1lithium";
 
 const mspOffice1 = "office1MSP";
 const walletPath = path.join(
   __dirname,
-  "../patient-asset-transfer/application-javascript/wallet"
+  "../employee-asset-transfer/application-javascript/wallet"
 );
 
 // Temporary DB

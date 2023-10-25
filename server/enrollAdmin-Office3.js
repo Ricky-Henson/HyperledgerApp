@@ -12,18 +12,18 @@ const path = require("path");
 const {
   buildCAClient,
   enrollAdmin,
-} = require("../patient-asset-transfer/application-javascript/CAUtil.js");
+} = require("../employee-asset-transfer/application-javascript/CAUtil.js");
 const {
   buildWallet,
   buildCCPOffice3,
-} = require("../patient-asset-transfer/application-javascript/AppUtil.js");
+} = require("../employee-asset-transfer/application-javascript/AppUtil.js");
 const adminOffice3 = "office3admin";
 const adminOffice3Passwd = "office3lithium";
 
 const mspOffice3 = "office3MSP";
 const walletPath = path.join(
   __dirname,
-  "../patient-asset-transfer/application-javascript/wallet"
+  "../employee-asset-transfer/application-javascript/wallet"
 );
 
 /**

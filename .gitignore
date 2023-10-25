@@ -4,4 +4,4 @@ bin/
 /bin/
 node_modules/
 first-network/organizations/fabric-ca/
-patient-asset-transfer/application-javascript/wallet
+employee-asset-transfer/application-javascript/wallet

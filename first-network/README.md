@@ -23,10 +23,10 @@ Before you can deploy the office network, you need to follow the instructions to
 
    ![4](ReadMe-Img/4.png)
 
-5. To deploy the patient chaincode on officechannel,
+5. To deploy the employee chaincode on officechannel,
 
    - First up the network with couchdb using command - `./network.sh up createChannel -c officechannel -s couchdb`
-   - Deploy chaincode patient `./network.sh deployCC -c officechannel -ccn patient -ccv 1 -cci initLedger`
+   - Deploy chaincode employee `./network.sh deployCC -c officechannel -ccn employee -ccv 1 -cci initLedger`
    - Then Execute following commands -
      export PATH=${PWD}/../bin:$PATH
      export FABRIC_CFG_PATH=$PWD/../config/
@@ -36,9 +36,9 @@ Before you can deploy the office network, you need to follow the instructions to
      export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/office1.lithium.com/users/Admin@office1.lithium.com/msp
      export CORE_PEER_ADDRESS=localhost:7051
    - If initLedger argument is added in deployCC command, then ignore the following command. If not, execute this statement
-     peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.lithium.com --tls --cafile ${PWD}/organizations/ordererOrganizations/lithium.com/orderers/orderer.lithium.com/msp/tlscacerts/tlsca.lithium.com-cert.pem -C officechannel -n patient --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/office1.lithium.com/peers/peer0.office1.lithium.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/office2.lithium.com/peers/peer0.office2.lithium.com/tls/ca.crt --peerAddresses localhost:11051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/office3.lithium.com/peers/peer0.office3.lithium.com/tls/ca.crt -c '{"function":"initLedger","Args":[]}'
+     peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.lithium.com --tls --cafile ${PWD}/organizations/ordererOrganizations/lithium.com/orderers/orderer.lithium.com/msp/tlscacerts/tlsca.lithium.com-cert.pem -C officechannel -n employee --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/office1.lithium.com/peers/peer0.office1.lithium.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/office2.lithium.com/peers/peer0.office2.lithium.com/tls/ca.crt --peerAddresses localhost:11051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/office3.lithium.com/peers/peer0.office3.lithium.com/tls/ca.crt -c '{"function":"initLedger","Args":[]}'
 
-6. Sample query - peer chaincode query -C officechannel -n patient -c '{"Args":["readPatient","PATIENT1"]}'
+6. Sample query - peer chaincode query -C officechannel -n employee -c '{"Args":["reademployee","employee1"]}'
 7. To bring the network down
    - `./addOffice3 down`
 

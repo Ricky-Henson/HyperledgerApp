@@ -362,7 +362,7 @@ function networkDown() {
   fi
 
   # Remove files from wallet
-  rm -rf ../patient-asset-transfer/application-javascript/wallet/
+  rm -rf ../employee-asset-transfer/application-javascript/wallet/
   infoln "The wallet has cleared."
 }
 
@@ -379,7 +379,7 @@ CLI_DELAY=3
 # channel name defaults to "mychannel"
 CHANNEL_NAME="officechannel"
 # chaincode name defaults to "basic"
-CC_NAME="patient"
+CC_NAME="employee"
 # chaincode path defaults to "NA"
 CC_SRC_PATH="NA"
 # endorsement policy defaults to "NA". This would allow chaincodes to use the majority default policy.

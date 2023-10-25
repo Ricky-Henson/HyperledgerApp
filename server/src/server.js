@@ -41,7 +41,7 @@ const {
   CHANGE_TMP_PASSWORD,
 } = require("../utils");
 const { createRedisClient, capitalize, getMessage } = require("../utils");
-const network = require("../../patient-asset-transfer/application-javascript/app.js");
+const network = require("../../employee-asset-transfer/application-javascript/app.js");
 
 // TODO: We can start the server with https so encryption will be done for the data transferred ove the network
 // TODO: followed this link https://timonweb.com/javascript/running-expressjs-server-over-https/ to create certificate and added in the code

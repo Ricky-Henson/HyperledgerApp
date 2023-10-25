@@ -3,7 +3,7 @@
  * @email jathin.sreenivas@stud.fra-uas.de
  * @create date 2020-12-26 13:26:42
  * @modify date 2021-03-13 15:04:01
- * @desc This file creates a user named 'appUser' at Office 1. (Just for testing. Use the API to create a patient)
+ * @desc This file creates a user named 'appUser' at Office 1. (Just for testing. Use the API to create a employee)
  */
 
 const { Wallets } = require("fabric-network");
@@ -12,17 +12,17 @@ const path = require("path");
 const {
   buildCAClient,
   registerAndEnrollUser,
-} = require("../patient-asset-transfer/application-javascript/CAUtil.js");
+} = require("../employee-asset-transfer/application-javascript/CAUtil.js");
 const walletPath = path.join(
   __dirname,
-  "/../patient-asset-transfer/application-javascript/wallet"
+  "/../employee-asset-transfer/application-javascript/wallet"
 );
 const {
   buildCCPOffice1,
   buildCCPOffice2,
   buildWallet,
   buildCCPOffice3,
-} = require("../patient-asset-transfer/application-javascript/AppUtil.js");
+} = require("../employee-asset-transfer/application-javascript/AppUtil.js");
 let mspOrg;
 let adminUserId;
 let caClient;

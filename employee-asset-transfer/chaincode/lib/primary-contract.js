@@ -3,7 +3,7 @@
  * @email varsha.kamath@stud.fra-uas.de
  * @create date 2021-01-23 21:50:38
  * @modify date 2021-01-30 19:52:41
- * @desc [Primary Smartcontract to initiate ledger with patient details]
+ * @desc [Primary Smartcontract to initiate ledger with Employee details]
  */
 /*
  * SPDX-License-Identifier: Apache-2.0
@@ -11,32 +11,32 @@
 'use strict';
 
 const { Contract } = require('fabric-contract-api');
-let Patient = require('./Patient.js');
-let initPatients = require('./initLedger.json');
+let Employee = require('./Employee.js');
+let initEmployees = require('./initLedger.json');
 
 class PrimaryContract extends Contract {
 
     async initLedger(ctx) {
         console.info('============= START : Initialize Ledger ===========');
-        for (let i = 0; i < initPatients.length; i++) {
-            initPatients[i].docType = 'patient';
-            await ctx.stub.putState('PID' + i, Buffer.from(JSON.stringify(initPatients[i])));
-            console.info('Added <--> ', initPatients[i]);
+        for (let i = 0; i < initEmployees.length; i++) {
+            initEmployees[i].docType = 'Employee';
+            await ctx.stub.putState('PID' + i, Buffer.from(JSON.stringify(initEmployees[i])));
+            console.info('Added <--> ', initEmployees[i]);
         }
         console.info('============= END : Initialize Ledger ===========');
     }
 
-    //Read patient details based on patientId
-    async readPatient(ctx, patientId) {
-        const exists = await this.patientExists(ctx, patientId);
+    //Read Employee details based on EmployeeId
+    async readEmployee(ctx, EmployeeId) {
+        const exists = await this.EmployeeExists(ctx, EmployeeId);
         if (!exists) {
-            throw new Error(`The patient ${patientId} does not exist`);
+            throw new Error(`The Employee ${EmployeeId} does not exist`);
         }
 
-        const buffer = await ctx.stub.getState(patientId);
+        const buffer = await ctx.stub.getState(EmployeeId);
         let asset = JSON.parse(buffer.toString());
         asset = ({
-            patientId: patientId,
+            EmployeeId: EmployeeId,
             firstName: asset.firstName,
             lastName: asset.lastName,
             age: asset.age,
@@ -56,19 +56,19 @@ class PrimaryContract extends Contract {
         return asset;
     }
 
-    async patientExists(ctx, patientId) {
-        const buffer = await ctx.stub.getState(patientId);
+    async EmployeeExists(ctx, EmployeeId) {
+        const buffer = await ctx.stub.getState(EmployeeId);
         return (!!buffer && buffer.length > 0);
     }
 
     async getQueryResultForQueryString(ctx, queryString) {
         let resultsIterator = await ctx.stub.getQueryResult(queryString);
         console.info('getQueryResultForQueryString <--> ', resultsIterator);
-        let results = await this.getAllPatientResults(resultsIterator, false);
+        let results = await this.getAllEmployeeResults(resultsIterator, false);
         return JSON.stringify(results);
     }
 
-    async getAllPatientResults(iterator, isHistory) {
+    async getAllEmployeeResults(iterator, isHistory) {
         let allResults = [];
         while (true) {
             let res = await iterator.next();

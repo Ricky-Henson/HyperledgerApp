@@ -13,7 +13,7 @@ const {
   getMessage,
   validateRole,
 } = require("../utils.js");
-const network = require("../../patient-asset-transfer/application-javascript/app.js");
+const network = require("../../employee-asset-transfer/application-javascript/app.js");
 
 /**
  * @param  {Request} req role in the header and officeId, employeeId in the url
@@ -67,7 +67,7 @@ exports.getAllEmployees = async (req, res) => {
   const response = await network.invoke(
     networkObj,
     true,
-    capitalize(userRole) + "Contract:queryAllPatients",
+    capitalize(userRole) + "Contract:queryAllEmployees",
     userRole === ROLE_EMPLOYEE ? req.headers.username : ""
   );
   const parsedResponse = await JSON.parse(response);

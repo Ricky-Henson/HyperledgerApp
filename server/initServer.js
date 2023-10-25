@@ -8,12 +8,12 @@ const { createRedisClient } = require("./utils");
 const redis = require("redis");
 
 /**
- * @description Enrolls and registers the patients in the initLedger as users.
+ * @description Enrolls and registers the employees in the initLedger as users.
  */
 async function initLedger() {
   try {
     const jsonString = fs.readFileSync(
-      "../patient-asset-transfer/chaincode/lib/initLedger.json"
+      "../employee-asset-transfer/chaincode/lib/initLedger.json"
     );
   } catch (err) {
     console.log(err);
@@ -74,7 +74,7 @@ async function enrollAndRegisterEmployees() {
 }
 
 /**
- * @description Function to initialise the backend server, enrolls and regsiter the admins and initLedger patients.
+ * @description Function to initialise the backend server, enrolls and regsiter the admins and initLedger employees.
  * @description Need not run this manually, included as a prestart in package.json
  */
 async function main() {

@@ -1,7 +1,7 @@
 {
-  "name": "patient-application",
+  "name": "employee-application",
   "version": "1.0.0",
-  "description": "Patient application implemented in JavaScript",
+  "description": "employee application implemented in JavaScript",
   "scripts": {
     "start": "./node_modules/nodemon/bin/nodemon.js src/server.js",
     "initialize": "node initServer.js",

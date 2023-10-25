@@ -65,12 +65,6 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  public loginPatient(patientPassword: TemplateRef<any>): void {
-    this.modal.open(patientPassword).result.then(() => {
-      this.loginUser();
-    });
-  }
-
   private afterSuccessfulLogin(res: any): void {
     if (res.success && res.success === this.PWD_CHANGE) {
       this.createNewPwd = true;

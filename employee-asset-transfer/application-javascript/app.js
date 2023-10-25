@@ -18,7 +18,7 @@ const {
 } = require("./AppUtil.js");
 
 const channelName = "officechannel";
-const chaincodeName = "patient";
+const chaincodeName = "employee";
 const mspOrg1 = "office1MSP";
 const mspOrg2 = "office2MSP";
 const mspOrg3 = "office3MSP";
@@ -39,7 +39,7 @@ exports.connectToNetwork = async function (employeeID) {
   try {
     const walletPath = path.join(
       process.cwd(),
-      "../patient-asset-transfer/application-javascript/wallet/"
+      "../employee-asset-transfer/application-javascript/wallet/"
     );
 
     const wallet = await buildWallet(Wallets, walletPath);
@@ -137,8 +137,8 @@ exports.invoke = async function (networkObj, isQuery, func, args = "") {
 /**
  * @author Jathin Sreenivas
  * @param  {string} attributes JSON string in which userId, officeId and role must be present.
- * @description For patient attributes also contain the patient object
- * @description Creates a patient/employee and adds to the wallet to the given officeId
+ * @description For employee attributes also contain the employee object
+ * @description Creates a employee and adds to the wallet to the given officeId
  */
 exports.registerUser = async function (attributes) {
   const attrs = JSON.parse(attributes);

@@ -3,7 +3,7 @@
 source scriptUtils.sh
 
 CHANNEL_NAME=${1:-"officechannel"}
-CC_NAME=${2:-"patient"}
+CC_NAME=${2:-"employee"}
 CC_SRC_PATH=${3:-"NA"}
 CC_SRC_LANGUAGE=${4:-"javascript"}
 CC_VERSION=${5:-"1.0"}
@@ -41,11 +41,11 @@ if [ "$CC_SRC_PATH" = "NA" ]; then
   infoln "Determining the path to the chaincode"
   # first see which chaincode we have. This will be based on the
   # short name of the known chaincode sample
-  if [ "$CC_NAME" = "patient" ]; then
-    println $'\e[0;32m'patient-asset-transfer$'\e[0m' chaincode
-    CC_SRC_PATH="../patient-asset-transfer"
+  if [ "$CC_NAME" = "employee" ]; then
+    println $'\e[0;32m'employee-asset-transfer$'\e[0m' chaincode
+    CC_SRC_PATH="../employee-asset-transfer"
   else
-    fatalln "The chaincode name ${CC_NAME} is not supported by this script. Supported chaincode names are: patient, etc.,"
+    fatalln "The chaincode name ${CC_NAME} is not supported by this script. Supported chaincode names are: employee, etc.,"
   fi
 
   CC_SRC_PATH="$CC_SRC_PATH/chaincode/"
