@@ -47,12 +47,12 @@ class EmployeeContract extends AdminContract {
     const permissionedAssets = [];
     for (let i = 0; i < asset.length; i++) {
       const obj = asset[i];
-      if (
-        "permissionGranted" in obj.Record &&
-        obj.Record.permissionGranted.includes(employeeId)
-      ) {
-        permissionedAssets.push(asset[i]);
-      }
+      // if (
+        // "permissionGranted" in obj.Record &&
+        // obj.Record.permissionGranted.includes(employeeId)
+      // ) {
+      permissionedAssets.push(asset[i]);
+      // }
     }
 
     return this.fetchLimitedFields(permissionedAssets);
@@ -68,7 +68,6 @@ class EmployeeContract extends AdminContract {
         speciality: obj.Record.speciality,
       };
       if (includeTimeStamp) {
-        asset[i].changedBy = obj.Record.changedBy;
         asset[i].Timestamp = obj.Timestamp;
       }
     }

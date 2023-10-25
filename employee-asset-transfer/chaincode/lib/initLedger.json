@@ -37,6 +37,7 @@
   },
   {
     "firstName": "Lisa",
+    "lastName": "Lisa",
     "speciality": "Office member",
     "permissionGranted": ["office1admin", "office2admin"],
     "changedBy": "initLedger",
