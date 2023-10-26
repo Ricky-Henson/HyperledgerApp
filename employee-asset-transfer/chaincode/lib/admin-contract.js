@@ -30,8 +30,7 @@ class AdminContract extends PrimaryContract {
             throw new Error(`Empty or null values should not be passed for password parameter`);
         }
 
-        let newEmployee = await new Employee(args.EmployeeId, args.firstName, args.lastName, args.password, args.age,
-            args.phoneNumber, args.emergPhoneNumber, args.address, args.bloodGroup, args.changedBy, args.allergies);
+        let newEmployee = await new Employee(args.EmployeeId, args.firstName, args.lastName, args.password);
         const exists = await this.EmployeeExists(ctx, newEmployee.EmployeeId);
         if (exists) {
             throw new Error(`The Employee ${newEmployee.EmployeeId} already exists`);

@@ -46,7 +46,7 @@ class EmployeeContract extends AdminContract {
     let asset = await this.getAllEmployeeResults(resultsIterator, false);
     const permissionedAssets = [];
     for (let i = 0; i < asset.length; i++) {
-      const obj = asset[i];
+      // const obj = asset[i];
       // if (
         // "permissionGranted" in obj.Record &&
         // obj.Record.permissionGranted.includes(employeeId)
