@@ -40,7 +40,7 @@ class PrimaryContract extends Contract {
             firstName: asset.firstName,
             lastName: asset.lastName,
             speciality: asset.speciality,
-            permissionGranted: asset.permissionGranted,
+            // permissionGranted: asset.permissionGranted,
             password: asset.password,
             pwdTemp: asset.pwdTemp
         });

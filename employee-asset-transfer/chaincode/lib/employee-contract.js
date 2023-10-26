@@ -44,18 +44,18 @@ class EmployeeContract extends AdminContract {
   async queryAllEmployees(ctx, employeeId) {
     let resultsIterator = await ctx.stub.getStateByRange("", "");
     let asset = await this.getAllEmployeeResults(resultsIterator, false);
-    const permissionedAssets = [];
-    for (let i = 0; i < asset.length; i++) {
-      // const obj = asset[i];
-      // if (
-        // "permissionGranted" in obj.Record &&
-        // obj.Record.permissionGranted.includes(employeeId)
-      // ) {
-      permissionedAssets.push(asset[i]);
-      // }
-    }
+    // const permissionedAssets = [];
+    // for (let i = 0; i < asset.length; i++) {
+    //   // const obj = asset[i];
+    //   // if (
+    //     // "permissionGranted" in obj.Record &&
+    //     // obj.Record.permissionGranted.includes(employeeId)
+    //   // ) {
+    //   permissionedAssets.push(asset[i]);
+    //   // }
+    // }
 
-    return this.fetchLimitedFields(permissionedAssets);
+    return this.fetchLimitedFields(asset);
   }
 
   fetchLimitedFields = (asset, includeTimeStamp = false) => {

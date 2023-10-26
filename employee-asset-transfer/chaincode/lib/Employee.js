@@ -6,7 +6,7 @@ class Employee {
         this.firstName = firstName;
         this.lastName = lastName;
         this.speciality = speciality;
-        this.permissionGranted = [];
+        // this.permissionGranted = [];
         return this;
     }
 }
