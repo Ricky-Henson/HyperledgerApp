@@ -22,22 +22,21 @@ class AdminContract extends PrimaryContract {
         return allResults[allResults.length - 1].EmployeeId;
     }
 
-    //Create Employee in the ledger
     async createEmployee(ctx, args) {
         args = JSON.parse(args);
-
-        if (args.password === null || args.password === '') {
-            throw new Error(`Empty or null values should not be passed for password parameter`);
+        console.log("Received args: ", args);
+        if (!args.EmployeeId || !args.firstName || !args.lastName || !args.password || !args.speciality || !args.officeId) {
+          throw new Error(`Missing required fields`);
         }
-
-        let newEmployee = await new Employee(args.EmployeeId, args.firstName, args.lastName, args.password);
+      
+        let newEmployee = await new Employee(args.EmployeeId, args.firstName, args.lastName, args.password, args.speciality, args.officeId);
         const exists = await this.EmployeeExists(ctx, newEmployee.EmployeeId);
         if (exists) {
-            throw new Error(`The Employee ${newEmployee.EmployeeId} already exists`);
+          throw new Error(`The Employee ${newEmployee.EmployeeId} already exists`);
         }
         const buffer = Buffer.from(JSON.stringify(newEmployee));
         await ctx.stub.putState(newEmployee.EmployeeId, buffer);
-    }
+      }
 
     //Read Employee details based on EmployeeId
     async readEmployee(ctx, EmployeeId) {
@@ -47,6 +46,8 @@ class AdminContract extends PrimaryContract {
             EmployeeId: EmployeeId,
             firstName: asset.firstName,
             lastName: asset.lastName,
+            speciality: asset.speciality,
+            officeId: asset.officeId,
         });
         return asset;
     }
