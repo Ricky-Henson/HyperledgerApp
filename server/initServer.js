@@ -40,38 +40,6 @@ async function initRedis() {
   return;
 }
 
-/**
- * @description Create employees in both organizations based on the initEmployees JSON
- */
-async function enrollAndRegisterEmployees() {
-  try {
-    const jsonString = fs.readFileSync("./initEmployees.json");
-    const employees = JSON.parse(jsonString);
-    for (let i = 0; i < employees.length; i++) {
-      const attr = {
-        firstName: employees[i].firstName,
-        lastName: employees[i].lastName,
-        role: "employee",
-        speciality: employees[i].speciality,
-      };
-      // Create a redis client and add the employee to redis
-      employees[i].officeId = parseInt(employees[i].officeId);
-      const redisClient = createRedisClient(employees[i].officeId);
-      (await redisClient).SET(
-        "OFFICE" + employees[i].officeId + "-" + "EMPLOYEE" + i,
-        "password"
-      );
-      await enrollRegisterUser(
-        employees[i].officeId,
-        "OFFICE" + employees[i].officeId + "-" + "EMPLOYEE" + i,
-        JSON.stringify(attr)
-      );
-      (await redisClient).QUIT();
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 /**
  * @description Function to initialise the backend server, enrolls and regsiter the admins and initLedger employees.
@@ -82,7 +50,6 @@ async function main() {
   await enrollAdminOffice2();
   await initLedger();
   await initRedis();
-  await enrollAndRegisterEmployees();
 }
 
 main();

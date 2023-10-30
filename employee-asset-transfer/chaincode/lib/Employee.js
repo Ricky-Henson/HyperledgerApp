@@ -5,8 +5,8 @@ class Employee {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
-        this.speciality = speciality;  // Include speciality here
-        this.officeId = officeId;  // Include officeId here
+        this.speciality = speciality;  
+        this.officeId = officeId;  
         return this;
     }
 }

@@ -48,7 +48,7 @@ exports.createEmployee = async (req, res) => {
       speciality,
       officeId  // Include the officeId
     };
-
+    console.log("Employee data:", employeeData);
     const args = [JSON.stringify(employeeData)];
     console.log("Smart Contract args:", args);
 
