@@ -10,70 +10,12 @@
 // Bring common classes into scope, and Fabric SDK network class
 const {
   ROLE_ADMIN,
-  ROLE_EMPLOYEE,
   capitalize,
   getMessage,
   validateRole,
   createRedisClient,
 } = require("../utils.js");
 const network = require("../../employee-asset-transfer/application-javascript/app.js");
-
-exports.createEmployee = async (req, res) => {
-  try {
-    // Validate user role
-    const userRole = req.headers.role;
-    await validateRole([ROLE_ADMIN], userRole, res);
-
-    // Connect to the Fabric network
-    const networkObj = await network.connectToNetwork(req.headers.username);
-
-    // Destructure and validate fields from the request body
-    let { officeId, username, password, firstName, lastName, speciality } = req.body;
-    officeId = parseInt(officeId);
-
-    if (!username || !password || !officeId) {
-      return res.status(400).send('Missing required fields');
-    }
-
-    // Create a new unique Employee ID
-    const lastId = await network.invoke(networkObj, true, capitalize(userRole) + 'Contract:getLatestEmployeeId');
-    // const employeeId = 'EID' + (parseInt(lastId.slice(3)) + 1);
-    const employeeId = username;
-    // Create employee data object
-    const employeeData = {
-      EmployeeId: employeeId,
-      firstName,
-      lastName,
-      password,
-      speciality,
-      officeId  // Include the officeId
-    };
-    console.log("Employee data:", employeeData);
-    const args = [JSON.stringify(employeeData)];
-    console.log("Smart Contract args:", args);
-
-    // Invoke the createEmployee smart contract function
-    const createEmployeeRes = await network.invoke(networkObj, false, capitalize(userRole) + 'Contract:createEmployee', args);
-    if (createEmployeeRes.error) {
-      return res.status(400).send(createEmployeeRes.error);
-    }
-
-    // Register the new employee user
-    const userData = JSON.stringify({officeId, userId: employeeId});
-    const registerUserRes = await network.registerUser(userData);
-    if (registerUserRes.error) {
-      await network.invoke(networkObj, false, capitalize(userRole) + 'Contract:deleteEmployee', [employeeId]);
-      return res.status(400).send(registerUserRes.error);
-    }
-
-    return res.status(201).send(getMessage(false, 'Successfully registered Employee.', employeeId, password));
-
-  } catch (error) {
-    console.error("Error:", error);
-    return res.status(500).send('Internal Server Error');
-  }
-};
-
 
 // exports.createPatient = async (req, res) => {
 //   // User role from the request header is validated
@@ -124,33 +66,94 @@ exports.createEmployee = async (req, res) => {
 // };
 
 
-// /**
-//  * @param  {Request} req Body must be a employee json and role in the header
-//  * @param  {Response} res 201 response if asset is created else 400 with a simple json message
-//  * @description Creates a employee as an user adds the employee to the wallet
-//  */
-// exports.createEmployee = async (req, res) => {
-//   // User role from the request header is validated
-//   const userRole = req.headers.role;
-//   let { officeId, username, password } = req.body;
-//   officeId = parseInt(officeId);
-//   // console.log(officeId);
+/**
+ * @param  {Request} req Body must be a employee json and role in the header
+ * @param  {Response} res 201 response if asset is created else 400 with a simple json message
+ * @description Creates a employee as an user adds the employee to the wallet
+ */
+exports.createEmployee = async (req, res) => {
+  // User role from the request header is validated
+  const userRole = req.headers.role;
+  let { officeId, username, password } = req.body;
+  officeId = parseInt(officeId);
 
-//   await validateRole([ROLE_ADMIN], userRole, res);
+  await validateRole([ROLE_ADMIN], userRole, res);
 
-//   req.body.userId = username;
-//   req.body.role = ROLE_EMPLOYEE;
-//   req.body = JSON.stringify(req.body);
-//   const args = [req.body];
-//   // Create a redis client and add the employee to redis
-//   const redisClient = createRedisClient(officeId);
-//   (await redisClient).SET(username, password);
-//   // Enrol and register the user with the CA and adds the user to the wallet.
-//   const response = await network.registerUser(args);
-//   if (response.error) {
-//     (await redisClient).DEL(username);
-//     res.status(400).send(response.error);
-//   }
-//   res.status(201).send(getMessage(false, response, username, password));
-// };
+  req.body.userId = username;
+  req.body.role = ROLE_EMPLOYEE;
+  req.body = JSON.stringify(req.body);
+  const args = [req.body];
+  // Create a redis client and add the employee to redis
+  const redisClient = createRedisClient(officeId);
+  (await redisClient).SET(username, password);
+  // Enrol and register the user with the CA and adds the user to the wallet.
+  const response = await network.registerUser(args);
+  if (response.error) {
+    (await redisClient).DEL(username);
+    res.status(400).send(response.error);
+  }
+  res.status(201).send(getMessage(false, response, username, password));
+};
+
+exports.createEmployee = async (req, res) => {
+  try {
+    // Validate user role
+    const userRole = req.headers.role;
+    await validateRole([ROLE_ADMIN], userRole, res);
+
+    // Connect to the Fabric network
+    const networkObj = await network.connectToNetwork(req.headers.username);
+    officeId = parseInt(officeId);
+    // Destructure and validate fields from the request body
+    let { officeId, username, password, firstName, lastName, speciality } = req.body;
+    if (!username || !password || !officeId) {
+      return res.status(400).send('Missing required fields');
+    }
+
+    // Create employee data object
+    const employeeData = {
+      EmployeeId: username,
+      firstName: firstName,
+      lastName: lastName,
+      password: password,
+      speciality: speciality,
+      officeId: officeId  // Include the officeId
+    };
+    const args = [JSON.stringify(employeeData)];
+    console.log("Smart Contract args:", args);   
+
+    // Invoke the createEmployee smart contract function
+    const createEmployeeRes = await network.invoke(networkObj, false, capitalize(userRole) + 'Contract:createEmployee', args);
+    if (createEmployeeRes.error) {
+      return res.status(400).send(createEmployeeRes.error);
+    }
+    // Register the new employee user
+    const userData = JSON.stringify({officeId, userId: employeeData.EmployeeId});
+    const registerUserRes = await network.registerUser(userData);
+    if (registerUserRes.error) {
+      await network.invoke(networkObj, false, capitalize(userRole) + 'Contract:deleteEmployee', [employeeData.EmployeeId]);
+      return res.status(400).send(registerUserRes.error);
+    }
+
+    return res.status(201).send(getMessage(false, 'Successfully registered Employee.', employeeData.EmployeeId, password));
+
+  // req.body.userId = username;
+  // req.body.role = ROLE_EMPLOYEE;
+  // req.body = JSON.stringify(req.body);
+  // const args = [req.body];
+  // // Create a redis client and add the employee to redis
+  // const redisClient = createRedisClient(officeId);
+  // (await redisClient).SET(username, password);
+  // // Enrol and register the user with the CA and adds the user to the wallet.
+  // const response = await network.registerUser(args);
+  // if (response.error) {
+  //   (await redisClient).DEL(username);
+  //   res.status(400).send(response.error);
+  // }
+  // res.status(201).send(getMessage(false, response, username, password)); 
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).send('Internal Server Error');
+  }
+};
 
