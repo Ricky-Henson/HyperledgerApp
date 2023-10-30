@@ -47,7 +47,12 @@ class PrimaryContract extends Contract {
         return asset;
     }
 
-    async EmployeeExists(ctx, EmployeeId) {
+    async EmployeeExists(ctx, EmployeeId) 
+    {
+        console.log("EmployeeId in EmployeeExists:", EmployeeId);
+        if(typeof EmployeeId === 'undefined') {
+            throw new Error('EmployeeId is undefined');
+        }
         const buffer = await ctx.stub.getState(EmployeeId);
         return (!!buffer && buffer.length > 0);
     }

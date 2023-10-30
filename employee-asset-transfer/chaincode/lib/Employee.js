@@ -1,7 +1,7 @@
 class Employee {
     
-    constructor(employeeId, firstName, lastName, password, speciality, officeId) {
-        this.employeeId = employeeId;
+    constructor(EmployeeId, firstName, lastName, password, speciality, officeId) {
+        this.EmployeeId = EmployeeId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;

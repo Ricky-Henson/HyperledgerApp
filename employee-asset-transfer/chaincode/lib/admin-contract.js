@@ -28,12 +28,17 @@ class AdminContract extends PrimaryContract {
         if (!args.EmployeeId || !args.firstName || !args.lastName || !args.password || !args.speciality || !args.officeId) {
           throw new Error(`Missing required fields`);
         }
-      
         let newEmployee = await new Employee(args.EmployeeId, args.firstName, args.lastName, args.password, args.speciality, args.officeId);
+        console.log("EmployeeId in createEmployee:", newEmployee.EmployeeId);
+        if(typeof newEmployee.EmployeeId === 'undefined') {
+            throw new Error('EmployeeId is undefined');
+        }
+        
         const exists = await this.EmployeeExists(ctx, newEmployee.EmployeeId);
         if (exists) {
           throw new Error(`The Employee ${newEmployee.EmployeeId} already exists`);
         }
+        console.log("New Employee Object:", newEmployee);
         const buffer = Buffer.from(JSON.stringify(newEmployee));
         await ctx.stub.putState(newEmployee.EmployeeId, buffer);
       }
