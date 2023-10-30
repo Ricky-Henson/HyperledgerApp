@@ -17,7 +17,7 @@
       <li *ngIf="isEmployee()" class="nav-item">
         <a
           class="nav-link fa fa-user-md"
-          [routerLink]="['/', 'employee', getUsername()]"
+          [routerLink]="['/', 'employees', getUsername()]"
           routerLinkActive="active"
           [ngbTooltip]="getUsername()"
           >&nbsp;Employee</a
