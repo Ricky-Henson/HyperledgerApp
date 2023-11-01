@@ -164,7 +164,7 @@ app.delete("/logout", (req, res) => {
 
 // //////////////////////////////// Admin Routes //////////////////////////////////////
 app.post("/employees/register", authenticateJWT, adminRoutes.createEmployee);
-
+app.get("/employees/_all", authenticateJWT, adminRoutes.getAllEmployees);
 // //////////////////////////////// Employee Routes //////////////////////////////////////
 app.get(
   "/employees/:officeId([0-9]+)/:employeeId(OFFICE[0-9]+-EMPLOYEE[0-9]+)",

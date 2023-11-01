@@ -95,6 +95,26 @@ const network = require("../../employee-asset-transfer/application-javascript/ap
 //   }
 //   res.status(201).send(getMessage(false, response, username, password));
 // };
+exports.getAllEmployees = async (req, res) => {
+    // Validate user role
+    const userRole = req.headers.role;
+    await validateRole([ROLE_ADMIN], userRole, res);
+
+    // Connect to the Fabric network
+    const networkObj = await network.connectToNetwork(req.headers.username);
+
+    // Invoke the getAllEmployees smart contract function
+    const response = await network.invoke(
+      networkObj, 
+      true, 
+      capitalize(userRole) + "Contract:queryAllEmployees", 
+      userRole === ROLE_EMPLOYEE ? req.headers.username : ""
+      );
+    const parsedResponse = await JSON.parse(response);
+    return res.status(200).send(parsedResponse);
+};
+
+
 exports.createEmployee = async (req, res) => {
   try {
     // Validate user role
@@ -147,7 +167,3 @@ exports.createEmployee = async (req, res) => {
     return res.status(500).send('Internal Server Error');
   }
 };
-
-
-
-

@@ -20,6 +20,13 @@ export class EmployeeViewRecord {
   }
 }
 
+export class EmployeeAdminViewRecord {
+  employeeId = '';
+  firstName = ' ';
+  lastName = ' ';
+  speciality = '';
+}
+
 export interface Timestamp {
   nanos: number;
   seconds: ISeconds;

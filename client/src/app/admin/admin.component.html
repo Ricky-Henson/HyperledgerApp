@@ -4,10 +4,14 @@
     icon="plus"
     routerLink="/employee/register"
   ></app-toolbar-link>
+  <app-toolbar-link
+  text="View other employees"
+  icon="users"
+  [routerLink]="['employees']"
+  ></app-toolbar-link>
   <app-toolbar-button
     text="Refresh"
     icon="refresh"
     (click)="refresh()"
   ></app-toolbar-button>
-</app-toolbar>
 <br /><br /><br />

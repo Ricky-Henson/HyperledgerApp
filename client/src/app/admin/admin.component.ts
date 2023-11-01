@@ -1,7 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
+import { EmployeeService } from '../employee/employee.service';
 import { Observable, Subscription } from 'rxjs';
+import { DisplayVal, EmployeeViewRecord, EmployeeAdminViewRecord} from '../employee/employee';
+
+
 
 @Component({
   selector: 'app-admin',
@@ -10,10 +14,18 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class AdminComponent implements OnInit, OnDestroy {
   public adminId: any;
+  public employeeRecords$?: Observable<Array<EmployeeAdminViewRecord>>
   private sub?: Subscription;
+
+  public headerNames = [
+    new DisplayVal(EmployeeViewRecord.prototype.employeeId, 'Employee ID'),
+    new DisplayVal(EmployeeViewRecord.prototype.firstName, 'First Name'),
+    new DisplayVal(EmployeeViewRecord.prototype.lastName, 'Last Name'),
+  ]
 
   constructor(
     private readonly route: ActivatedRoute,
+    private readonly employeeService: EmployeeService
   ) { }
 
   ngOnInit(): void {
@@ -29,5 +41,6 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   public refresh(): void {
+    this.employeeRecords$ = this.employeeService.getAllEmployees();
   }
 }
