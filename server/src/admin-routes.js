@@ -95,7 +95,6 @@ const network = require("../../employee-asset-transfer/application-javascript/ap
 //   }
 //   res.status(201).send(getMessage(false, response, username, password));
 // };
-
 exports.createEmployee = async (req, res) => {
   try {
     // Validate user role
@@ -107,7 +106,7 @@ exports.createEmployee = async (req, res) => {
 
     // Destructure and validate fields from the request body
     let { officeId, username, password, firstName, lastName, speciality } = req.body;
-    officeId = parseInt(officeId); // Moved here
+    officeId = parseInt(officeId);
     if (!username || !password || !officeId) {
       return res.status(400).send('Missing required fields');
     }
@@ -119,10 +118,9 @@ exports.createEmployee = async (req, res) => {
       lastName,
       password,
       speciality,
-      officeId  // Include the officeId
+      officeId
     };
     const args = [JSON.stringify(employeeData)];
-    console.log("Smart Contract args:", args);   
 
     // Invoke the createEmployee smart contract function
     const createEmployeeRes = await network.invoke(networkObj, false, capitalize(userRole) + 'Contract:createEmployee', args);
@@ -130,34 +128,26 @@ exports.createEmployee = async (req, res) => {
       return res.status(400).send(createEmployeeRes.error);
     }
 
+    // Create a Redis client and add the employee to Redis
+    const redisClient = await createRedisClient(officeId);
+    await redisClient.SET(username, password);
+
     // Register the new employee user
     const userData = JSON.stringify({officeId, userId: employeeData.EmployeeId});
     const registerUserRes = await network.registerUser(userData);
     if (registerUserRes.error) {
+      await redisClient.DEL(username);
       await network.invoke(networkObj, false, capitalize(userRole) + 'Contract:deleteEmployee', [employeeData.EmployeeId]);
       return res.status(400).send(registerUserRes.error);
     }
 
-    // Additional code for Redis and CA registration
-    req.body.userId = username;
-    req.body.role = ROLE_EMPLOYEE;
-    req.body = JSON.stringify(req.body);
-    const redisClient = createRedisClient(officeId);
-    console.log("Redis Client: ", redisClient);
-    (await redisClient).SET(username, password);
-    console.log("username: ", username, ", password: " ,password);
-    const response = await network.registerUser(args);
-    if (response.error) {
-      (await redisClient).DEL(username);
-      return res.status(400).send(response.error);  // Return here if error
-    }
-
     return res.status(201).send(getMessage(false, 'Successfully registered Employee.', employeeData.EmployeeId, password));
-    
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).send('Internal Server Error');
   }
 };
+
+
 
 
