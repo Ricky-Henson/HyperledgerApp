@@ -242,7 +242,7 @@ exports.getAllEmployeesByOfficeId = async function (networkObj, officeId) {
 
     // for all identities the attrs can be found
     const identities = userList.result.identities;
-
+    
     for (let i = 0; i < identities.length; i++) {
       tmp = {};
       if (identities[i].type === "client") {

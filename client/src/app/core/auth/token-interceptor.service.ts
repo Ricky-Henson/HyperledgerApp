@@ -89,7 +89,8 @@ export class TokenInterceptorService implements HttpInterceptor {
         setHeaders: {
           Authorization: `Bearer ${token}`,
           Role: `${this.authService.getRole()}`,
-          username: `${this.authService.getUsername()}`
+          username: `${this.authService.getUsername()}`,
+          officeId: `${this.authService.getOfficeId()}`
         }
       });
     }

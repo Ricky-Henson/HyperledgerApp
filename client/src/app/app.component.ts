@@ -32,6 +32,10 @@ export class AppComponent implements OnDestroy {
     return this.authService.getUsername();
   }
 
+  public getOfficeId(): string {
+    return this.authService.getOfficeId();
+  }
+
   public logoutUser(): void {
     this.sub = this.authService.logout().subscribe(
       (res: any) => this.authService.logoutUser(),

@@ -7,7 +7,9 @@ import { AdminComponent } from './admin/admin.component';
 import { AuthGuard } from './core/auth/auth.guard';
 import { EmployeeRegisterComponent } from './employee/employee-register/employee-register.component';
 import { EmployeeListForEmployeeComponent } from './employee/employee-list-for-employee/employee-list-for-employee.component';
-import { EmployeeListForAdminComponent } from './admin/employee-list-for-admin/employee-list-for-admin.component';const routes: Routes = [
+import { EmployeeListForAdminComponent } from './admin/employee-list-for-admin/employee-list-for-admin.component';
+const routes: Routes = [
+
   {
     path: '',
     redirectTo: 'login',
@@ -30,7 +32,7 @@ import { EmployeeListForAdminComponent } from './admin/employee-list-for-admin/e
   {
     path:'admin/:adminId/employees',
     component: EmployeeListForAdminComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: 'employee/:employeeId/employees',
