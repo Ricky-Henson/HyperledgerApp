@@ -157,12 +157,12 @@ app.delete("/logout", (req, res) => {
 });
 
 // //////////////////////////////// Admin Routes //////////////////////////////////////
-app.post("/employees/register", authenticateJWT, adminRoutes.createEmployee);
+app.post("/employee/register", authenticateJWT, adminRoutes.createEmployee);
 // app.get("/employees/_all", authenticateJWT, adminRoutes.getAllEmployees);
 // //////////////////////////////// Employee Routes //////////////////////////////////////
 app.get(
-  "/employees/:officeId([0-9]+)/:employeeId(OFFICE[0-9]+-EMPLOYEE[0-9]+)",
+  "/employee/:officeId([0-9]+)/:employeeId([a-zA-Z0-9]+)",
   authenticateJWT,
   employeeRoutes.getEmployeeById
 );
-app.get("/employees/_all", authenticateJWT, employeeRoutes.getAllEmployees);
+app.get("/employee/_all", authenticateJWT, employeeRoutes.getAllEmployees);

@@ -22,6 +22,7 @@ const network = require("../../employee-asset-transfer/application-javascript/ap
  * @description This method retrives an existing employee
  */
 exports.getEmployeeById = async (req, res) => {
+  console.log("This is running");
   // User role from the request header is validated
   const userRole = req.headers.role;
   await validateRole([ROLE_EMPLOYEE], userRole, res);
@@ -49,14 +50,6 @@ exports.getEmployeeById = async (req, res) => {
         })[0]
       );
 };
-
-// exports.getAllEmployees = async (req, res) => {
-//   const userRole = req.headers.role;
-//   await validateRole([ROLE_EMPLOYEE], userRole, res);
-//   const networkObj = await network.connectToNetwork(req.headers.username);
-//   const response = await network.getAllEmployees(networkObj);
-//   res.status(200).send(response);
-// }
 
 exports.getAllEmployees = async (req, res) => {
   // User role from the request header is validated for both employee and admin roles
