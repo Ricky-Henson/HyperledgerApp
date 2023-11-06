@@ -1,6 +1,6 @@
 [
   {
-    "employeeID": "EID1",
+    "employeeId": "EID0",
     "firstName": "Monica",
     "lastName": "Latte",
     "speciality": "Office member",
@@ -10,7 +10,7 @@
     "pwdTemp": true
   },
   {
-    "employeeId": "EID2",
+    "employeeId": "EID1",
     "firstName": "Max",
     "lastName": "Mustermann",
     "speciality": "Office member",
@@ -20,7 +20,7 @@
     "pwdTemp": true
   },
   {
-    "employeeID": "EID3",
+    "employeeId": "EID2",
     "firstName": "Johannes",
     "lastName": "Schmidt",
     "speciality": "Office member",
@@ -30,7 +30,7 @@
     "pwdTemp": true
   },
   {
-    "employeeID": "EID4",
+    "employeeId": "EID3",
     "firstName": "Torben",
     "lastName": "Klaproth",
     "speciality": "Office member",
@@ -40,7 +40,7 @@
     "pwdTemp": false
   },
   {
-    "employeeID": "EID5",
+    "employeeId": "EID4",
     "firstName": "Lisa",
     "lastName": "Lisa",
     "speciality": "Office member",
@@ -50,7 +50,7 @@
     "pwdTemp": false
   },
   {
-    "employeeID": "EID6",
+    "employeeId": "EID5",
     "firstName": "Harry",
     "lastName": "Schumann",
     "speciality": "Office member",

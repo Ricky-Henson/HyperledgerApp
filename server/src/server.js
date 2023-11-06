@@ -35,11 +35,7 @@ app.listen(3001, () => console.log("Backend server running on 3001"));
 // Bring key classes into scope
 const employeeRoutes = require("./employee-routes");
 const adminRoutes = require("./admin-routes");
-const {
-  ROLE_EMPLOYEE,
-  ROLE_ADMIN,
-  CHANGE_TMP_PASSWORD,
-} = require("../utils");
+const { ROLE_EMPLOYEE, ROLE_ADMIN, CHANGE_TMP_PASSWORD } = require("../utils");
 const { createRedisClient, capitalize, getMessage } = require("../utils");
 const network = require("../../employee-asset-transfer/application-javascript/app.js");
 
@@ -104,8 +100,6 @@ app.post("/login", async (req, res) => {
     redisClient.quit();
   }
 
-  
-
   if (user) {
     // Generate an access token
     const accessToken = generateAccessToken(username, role);
@@ -164,7 +158,7 @@ app.delete("/logout", (req, res) => {
 
 // //////////////////////////////// Admin Routes //////////////////////////////////////
 app.post("/employees/register", authenticateJWT, adminRoutes.createEmployee);
-app.get("/employees/_all", authenticateJWT, adminRoutes.getAllEmployees);
+// app.get("/employees/_all", authenticateJWT, adminRoutes.getAllEmployees);
 // //////////////////////////////// Employee Routes //////////////////////////////////////
 app.get(
   "/employees/:officeId([0-9]+)/:employeeId(OFFICE[0-9]+-EMPLOYEE[0-9]+)",

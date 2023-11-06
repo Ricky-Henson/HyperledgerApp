@@ -15,16 +15,15 @@ const AdminContract = require("./admin-contract.js");
 const PrimaryContract = require("./primary-contract.js");
 const { Context } = require("fabric-contract-api");
 
-
 class EmployeeContract extends AdminContract {
-  //Read Employee details based on EmployeeId
-  async readEmployee(ctx, EmployeeId) {
+  //Read Employee details based on employeeId
+  async readEmployee(ctx, employeeId) {
     return await super.readEmployee(ctx, employeeId);
   }
 
   async deleteEmployee(ctx, employeeId) {
     const exist = await this.employeeExists(ctx, employeeId);
-    if(!exist) {
+    if (!exist) {
       throw new Error(`The employee ${employeeId} does not exist`);
     }
     await ctx.stub.deleteState(employeeId);
@@ -51,7 +50,7 @@ class EmployeeContract extends AdminContract {
     for (let i = 0; i < asset.length; i++) {
       const obj = asset[i];
       asset[i] = {
-        EmployeeId: obj.Key,
+        employeeId: obj.Key,
         firstName: obj.Record.firstName,
         lastName: obj.Record.lastName,
         speciality: obj.Record.speciality,

@@ -15,10 +15,35 @@ async function initLedger() {
     const jsonString = fs.readFileSync(
       "../employee-asset-transfer/chaincode/lib/initLedger.json"
     );
+    const employees = JSON.parse(jsonString);
+    let i = 0;
+    // console.log(employees);
+    for (i = 0; i < employees.length; i++) {
+      const attr = {
+        firstName: employees[i].firstName,
+        lastName: employees[i].lastName,
+        role: "employee",
+      };
+      const employeeOfficeId = employees[i].officeId;
+      console.log(employeeOfficeId);
+      const regex = /\d+/g;
+      const matches = employeeOfficeId.match(regex);
+      const integer = parseInt(matches[0]);
+      await enrollRegisterUser(integer, "EID" + i, JSON.stringify(attr));
+    }
   } catch (err) {
     console.log(err);
   }
 }
+// async function initLedger() {
+//   try {
+//     const jsonString = fs.readFileSync(
+//       "../employee-asset-transfer/chaincode/lib/initLedger.json"
+//     );
+//   } catch (err) {
+//     console.log(err);
+//   }
+// }
 /**
  * @description Init the redis db with the admins credentials
  */
@@ -39,7 +64,6 @@ async function initRedis() {
   redisClient.QUIT();
   return;
 }
-
 
 /**
  * @description Function to initialise the backend server, enrolls and regsiter the admins and initLedger employees.
