@@ -161,7 +161,7 @@ app.post("/employee/register", authenticateJWT, adminRoutes.createEmployee);
 // app.get("/employees/_all", authenticateJWT, adminRoutes.getAllEmployees);
 // //////////////////////////////// Employee Routes //////////////////////////////////////
 app.get(
-  "/employee/:officeId([0-9]+)/:employeeId([a-zA-Z0-9]+)",
+  "/employee/:employeeId([a-zA-Z0-9]+)",
   authenticateJWT,
   employeeRoutes.getEmployeeById
 );

@@ -15,18 +15,11 @@ export class EmployeeService {
     return this.http.post(this.employeeURL + '/register', data);
   }
 
-  public getEmployeesByOfficeId(officeId: number): Observable<any> {
-    return this.http.get(this.employeeURL + `/${officeId}/_all`);
-  }
-
   public getAllEmployees(): Observable<any> {
     return this.http.get(this.employeeURL + '/_all');
   }
 
-  public getEmployeeByOfficeId(
-    officeId: string,
-    employeeId: any
-  ): Observable<any> {
-    return this.http.get(this.employeeURL + `/${officeId}/${employeeId}`);
+  public getEmployeeByKey(key: string): Observable<any> {
+    return this.http.get(this.employeeURL + `/${key}`);
   }
 }

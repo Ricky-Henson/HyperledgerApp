@@ -37,8 +37,7 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   }
 
   public refresh(): void {
-    this.employeeRecordObs = this.employeeService.getEmployeeByOfficeId(
-      this.authService.getOfficeId(),
+    this.employeeRecordObs = this.employeeService.getEmployeeByKey(
       this.employeeId
     );
   }

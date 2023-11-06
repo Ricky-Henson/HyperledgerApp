@@ -21,35 +21,54 @@ const network = require("../../employee-asset-transfer/application-javascript/ap
  * @param  {Response} res A 200 response if employee is present else a 500 response with a error json
  * @description This method retrives an existing employee
  */
+
 exports.getEmployeeById = async (req, res) => {
-  console.log("This is running");
   // User role from the request header is validated
   const userRole = req.headers.role;
   await validateRole([ROLE_EMPLOYEE], userRole, res);
-  const officeId = parseInt(req.params.officeId);
-  // Set up and connect to Fabric Gateway
-  const userId =
-    officeId === 1
-      ? "office1admin"
-      : officeId === 2
-      ? "office2admin"
-      : "office3admin";
   const employeeId = req.params.employeeId;
-  const networkObj = await network.connectToNetwork(userId);
-  // Use the gateway and identity service to get all users enrolled by the CA
-  const response = await network.getAllEmployeesByOfficeId(
+  // Set up and connect to Fabric Gateway
+  const networkObj = await network.connectToNetwork(req.headers.username);
+  // Invoke the smart contract function
+  const response = await network.invoke(
     networkObj,
-    officeId
+    true,
+    capitalize(userRole) + "Contract:readEmployee",
+    employeeId
   );
-  // Filter the result using the employeeId
   response.error
-    ? res.status(500).send(response.error)
-    : res.status(200).send(
-        response.filter(function (response) {
-          return response.id === employeeId;
-        })[0]
-      );
+    ? res.status(400).send(response.error)
+    : res.status(200).send(JSON.parse(response));
 };
+
+// exports.getEmployeeById = async (req, res) => {
+//   // User role from the request header is validated
+//   const userRole = req.headers.role;
+//   await validateRole([ROLE_EMPLOYEE], userRole, res);
+//   const officeId = parseInt(req.params.officeId);
+//   // Set up and connect to Fabric Gateway
+//   const userId =
+//     officeId === 1
+//       ? "office1admin"
+//       : officeId === 2
+//       ? "office2admin"
+//       : "office3admin";
+//   const employeeId = req.params.employeeId;
+//   const networkObj = await network.connectToNetwork(userId);
+//   // Use the gateway and identity service to get all users enrolled by the CA
+//   const response = await network.getAllEmployeesByOfficeId(
+//     networkObj,
+//     officeId
+//   );
+//   // Filter the result using the employeeId
+//   response.error
+//     ? res.status(500).send(response.error)
+//     : res.status(200).send(
+//         response.filter(function (response) {
+//           return response.id === employeeId;
+//         })[0]
+//       );
+// };
 
 exports.getAllEmployees = async (req, res) => {
   // User role from the request header is validated for both employee and admin roles
