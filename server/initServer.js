@@ -4,6 +4,7 @@ const { enrollAdminOffice1 } = require("./enrollAdmin-Office1");
 const { enrollAdminOffice2 } = require("./enrollAdmin-Office2");
 const { enrollRegisterUser } = require("./registerUser");
 const { createRedisClient } = require("./utils");
+const network = require("../employee-asset-transfer/application-javascript/app.js");
 
 const redis = require("redis");
 
@@ -30,20 +31,30 @@ async function initLedger() {
       const matches = employeeOfficeId.match(regex);
       const integer = parseInt(matches[0]);
       await enrollRegisterUser(integer, "EID" + i, JSON.stringify(attr));
+
+      // Connect to the Fabric network
+      const networkObj = await network.connectToNetwork("EID" + i);
+
+      // Create employee data object
+      const employeeData = {
+        employeeId: "EID" + i,
+        firstName: attr.firstName,
+        lastName: attr.lastName,
+        password: employees[i].password,
+        speciality: employees[i].speciality,
+        officeId: integer,
+      };
+      const args = [JSON.stringify(employeeData)];
+
+      // Create a Redis client and add the employee to Redis
+      const redisClient = await createRedisClient(integer);
+      await redisClient.SET("EID" + i, employees[i].password);
     }
   } catch (err) {
     console.log(err);
   }
 }
-// async function initLedger() {
-//   try {
-//     const jsonString = fs.readFileSync(
-//       "../employee-asset-transfer/chaincode/lib/initLedger.json"
-//     );
-//   } catch (err) {
-//     console.log(err);
-//   }
-// }
+
 /**
  * @description Init the redis db with the admins credentials
  */
