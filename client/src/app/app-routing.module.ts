@@ -8,6 +8,8 @@ import { AuthGuard } from './core/auth/auth.guard';
 import { EmployeeRegisterComponent } from './employee/employee-register/employee-register.component';
 import { EmployeeListForEmployeeComponent } from './employee/employee-list-for-employee/employee-list-for-employee.component';
 import { EmployeeListForAdminComponent } from './admin/employee-list-for-admin/employee-list-for-admin.component';
+import { EmployeeFileUploadComponent } from './employee/employee-file-transfer/employee-file-upload/employee-file-upload.component';
+import { EmployeeFileDownloadComponent } from './employee/employee-file-transfer/employee-file-download/employee-file-download.component';
 const routes: Routes = [
 
   {
@@ -27,6 +29,16 @@ const routes: Routes = [
   {
     path: 'employee/:employeeId',
     component: EmployeeComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'employee/:employeeId/upload',
+    component: EmployeeFileUploadComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'employee/:employeeId/download',
+    component: EmployeeFileDownloadComponent,
     canActivate: [AuthGuard],
   },
   {

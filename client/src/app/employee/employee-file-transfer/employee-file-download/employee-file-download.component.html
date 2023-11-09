@@ -1,0 +1,9 @@
+<!-- FILEPATH: /home/tony/HyperledgerApp/client/src/app/employee/employee-file-transfer/employee-file-download/employee-file-download.component.html -->
+
+<h1>Downloadable Files</h1>
+
+<ul>
+  <li *ngFor="let file of files">
+    <a href="{{ file.url }}" download="{{ file.name }}">{{ file.name }}</a>
+  </li>
+</ul>

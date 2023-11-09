@@ -1,0 +1,13 @@
+<div>
+  <h2>Employee File Upload</h2>
+  <form (ngSubmit)="onUpload()">
+    <div>
+      <label for="file">Select file:</label>
+      <!-- Bind the onFileSelected event to the change event of the input -->
+      <input type="file" id="file" name="file" (change)="onFileSelected($event)">
+    </div>
+    <!-- Change the button type to 'submit' to trigger form submission -->
+    <button type="submit">Upload</button>
+  </form>
+</div>
+

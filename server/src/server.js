@@ -13,6 +13,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
+const multer = require("multer");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
@@ -48,6 +49,23 @@ const network = require("../../employee-asset-transfer/application-javascript/ap
   .listen(3001, function() {
     console.log('Backend server running on 3001! Go to https://localhost:3001/');
   });*/
+
+// Multer setup for file storage
+const path = require("path");
+
+const storage = multer.diskStorage({
+  destination: function (_, __, cb) {
+    cb(null, path.join(__dirname, "upload")); // ensure this directory exists
+    console.log("Dir path:", path.join(__dirname, "upload"));
+  },
+  filename: function (_, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)); // prefix the filename with a timestamp
+  }
+});
+
+// Multer upload
+const upload = multer({ storage: storage });
+
 
 const authenticateJWT = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -156,6 +174,7 @@ app.delete("/logout", (req, res) => {
   res.sendStatus(204);
 });
 
+
 // //////////////////////////////// Admin Routes //////////////////////////////////////
 app.post("/employee/register", authenticateJWT, adminRoutes.createEmployee);
 // app.get("/employees/_all", authenticateJWT, adminRoutes.getAllEmployees);
@@ -165,4 +184,37 @@ app.get(
   authenticateJWT,
   employeeRoutes.getEmployeeById
 );
-app.get("/employee/_all", authenticateJWT, employeeRoutes.getAllEmployees);
+app.get(
+  "/employee/_all", authenticateJWT, employeeRoutes.getAllEmployees);
+  app.post(
+    "/employee/:employeeId([a-zA-Z0-9]+)/upload",
+    authenticateJWT,
+    (req, res, next) => {
+      console.log("Upload route hit"); // Log when route is hit
+      next(); // Pass control to the next middleware
+    },
+    upload.single("file"),
+    (req, res) => {
+      console.log("Multer middleware processed the file");
+  
+      // If the file wasn't uploaded, multer won't process the request further.
+      if (!req.file) {
+        console.log("No file in the request");
+        return res.status(400).send('No file uploaded!');
+      }
+  
+      const filePath = path.join(__dirname, "upload", req.file.filename);
+      console.log("File path:", filePath);
+  
+      // Check if file already exists
+      if (fs.existsSync(filePath)) {
+        console.log("File already exists at path:", filePath);
+        return res.status(409).send({ message: 'File already exists!' }); // 409 Conflict
+      }
+  
+      // If you've reached this point, the file is uploaded and doesn't exist yet
+      console.log("File is new and uploaded to path:", filePath);
+      res.status(200).send({ message: 'File uploaded successfully!', file: req.file });
+    }
+  );
+  
