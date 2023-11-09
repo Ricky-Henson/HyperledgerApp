@@ -23,16 +23,11 @@ export class EmployeeService {
     return this.http.get(this.employeeURL + `/${key}`);
   }
 
-  public UploadFile(employeeId: string, file: File): Observable<any> {
+  public UploadFile(key: string, file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
-    const headers = {
-      'Content-Type': 'multipart/form-data',
-    };
-    return this.http.post(
-      this.employeeURL + `/upload/${employeeId}`,
-      formData,
-      { headers }
-    );
+  
+    // The Content-Type header should not be set manually; Angular will handle it.
+    return this.http.post(this.employeeURL + `/${key}` + `/upload`, formData);
   }
 }

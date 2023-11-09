@@ -29,6 +29,8 @@ import { EmployeeRegisterComponent } from './employee/employee-register/employee
 import { EmployeeListForEmployeeComponent } from './employee/employee-list-for-employee/employee-list-for-employee.component';
 import { EmployeeListForAdminComponent } from './admin/employee-list-for-admin/employee-list-for-admin.component';
 import { LoadingPipe } from './loading.pipe';
+import { EmployeeFileDownloadComponent } from './employee/employee-file-transfer/employee-file-download/employee-file-download.component';
+import { EmployeeFileUploadComponent } from './employee/employee-file-transfer/employee-file-upload/employee-file-upload.component';
 
 const components = [
   AppComponent,
@@ -38,6 +40,8 @@ const components = [
   EmployeeRegisterComponent,
   EmployeeListForEmployeeComponent,
   EmployeeListForAdminComponent,
+  EmployeeFileDownloadComponent,
+  EmployeeFileUploadComponent,
   ToolbarComponent,
   ToolbarButtonComponent,
   ToolbarLinkComponent,

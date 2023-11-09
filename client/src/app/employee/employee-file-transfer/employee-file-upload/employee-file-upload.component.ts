@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { EmployeeService } from '../../employee.service'; // Adjust the path as necessary
+import { AuthService } from '../../../core/auth/auth.service' // Import your authentication service
 
 @Component({
   selector: 'app-employee-file-upload',
@@ -11,8 +12,8 @@ export class EmployeeFileUploadComponent {
   senderOfficeID: string;
   receiverOfficeID: string;
 
-  constructor(private employeeService: EmployeeService) {
-    this.senderOfficeID = '';
+  constructor(private employeeService: EmployeeService, private authService: AuthService) {
+    this.senderOfficeID = authService.getUsername(); // Set the senderOfficeID to the user ID from your authentication service
     this.receiverOfficeID = '';
   }
 
@@ -32,16 +33,6 @@ export class EmployeeFileUploadComponent {
     console.log('Upload method triggered');
     if (!this.fileSelected) {
       console.log('No file selected');
-      return;
-    }
-
-    if (!this.senderOfficeID) {
-      console.log('No sender office ID selected');
-      return;
-    }
-
-    if (!this.receiverOfficeID) {
-      console.log('No receiver office ID selected');
       return;
     }
 
