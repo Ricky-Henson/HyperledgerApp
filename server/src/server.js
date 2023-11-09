@@ -16,6 +16,9 @@ const morgan = require("morgan");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" }); // configure multer to store files in 'uploads' directory
+
 const jwtSecretToken = "password";
 const refreshSecretToken = "refreshpassword";
 let refreshTokens = [];
@@ -155,6 +158,21 @@ app.delete("/logout", (req, res) => {
   refreshTokens = refreshTokens.filter((token) => token !== req.headers.token);
   res.sendStatus(204);
 });
+
+app.post("/upload", authenticateJWT, upload.single("file"), (req, res) => {
+  // req.file is the 'file' file
+  // req.body will hold the text fields, if there were any
+  console.log(req.file);
+
+  res.status(200).send({
+    message: "File uploaded successfully",
+    filePath: "/uploads/" + req.file.filename,
+    originalName: req.file.originalname,
+  });
+  // res.status(200).send({ message: "File uploaded successfully" });
+});
+
+app.use("/uploads", express.static("uploads"));
 
 // //////////////////////////////// Admin Routes //////////////////////////////////////
 app.post("/employee/register", authenticateJWT, adminRoutes.createEmployee);

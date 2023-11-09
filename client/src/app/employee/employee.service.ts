@@ -22,4 +22,11 @@ export class EmployeeService {
   public getEmployeeByKey(key: string): Observable<any> {
     return this.http.get(this.employeeURL + `/${key}`);
   }
+
+  public uploadFile(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post('http://localhost:3001/upload', formData);
+  }
 }

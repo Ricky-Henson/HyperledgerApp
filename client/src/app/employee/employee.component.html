@@ -47,3 +47,22 @@
     </div>
   </div>
 </div>
+
+<!-- File upload section -->
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Upload File</h5>
+    <input type="file" id="fileUpload" name="fileUpload" #fileUpload />
+    <button (click)="uploadFile()">Upload</button>
+  </div>
+</div>
+
+<!-- File download section -->
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Download File</h5>
+    <a [href]="uploadedFilePath" download="{{ originalFileName }}"
+      >Download File</a
+    >
+  </div>
+</div>
