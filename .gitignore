@@ -5,3 +5,4 @@ bin/
 node_modules/
 first-network/organizations/fabric-ca/
 employee-asset-transfer/application-javascript/wallet
+server/upload/

@@ -1,24 +1,51 @@
+// employee-file-download.component.ts
 
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
+import { EmployeeService } from '../../employee.service';
+import { AuthService } from '../../../core/auth/auth.service' // Import your authentication service
+import { saveAs } from 'file-saver'; // Import the function from the module
 
 @Component({
   selector: 'app-employee-file-download',
   templateUrl: './employee-file-download.component.html',
   styleUrls: ['./employee-file-download.component.scss']
 })
-export class EmployeeFileDownloadComponent implements OnInit {
+export class EmployeeFileDownloadComponent {
+  employeeId: string;
   files: any[] = [];
 
-  constructor(private http: HttpClient) { }
-
-  ngOnInit(): void {
-    this.getFiles();
+  constructor(
+    private employeeService: EmployeeService,
+    private route: ActivatedRoute,
+    private authService: AuthService
+  ) {
+    this.employeeId = authService.getUsername(); // Set the employeeId to the user ID from your authentication service
   }
 
-  getFiles(): void {
-    this.http.get<any[]>('/api/files').subscribe(files => {
-      this.files = files;
-    });
+  ngOnInit() {
+    this.loadFiles();
+  }
+
+  loadFiles() {
+    this.employeeService.getFileList(this.employeeId).subscribe(
+      (data) => {
+        this.files = data; // data should already be an array of filenames
+      },
+      (error) => {
+        console.error('Error fetching files', error);
+      }
+    );
+  }
+
+  downloadFile(filename: string) {
+    this.employeeService.downloadFile(this.employeeId, filename).subscribe(
+      (data) => {
+        saveAs(data, filename); // Use the saveAs function to save the file
+      },
+      (error) => {
+        console.error('Error downloading file', error);
+      }
+    );
   }
 }

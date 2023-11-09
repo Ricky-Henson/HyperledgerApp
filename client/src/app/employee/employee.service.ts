@@ -30,4 +30,14 @@ export class EmployeeService {
     // The Content-Type header should not be set manually; Angular will handle it.
     return this.http.post(this.employeeURL + `/${key}` + `/upload`, formData);
   }
+
+  public getFileList(key: string): Observable<any> {
+    return this.http.get(this.employeeURL + `/${key}` + `/download`);
+  }
+
+  public downloadFile(key: string, fileName: string): Observable<any> {
+    return this.http.get(this.employeeURL + `/${key}` + `/download/${fileName}`, {
+      responseType: 'blob',
+    });
+  }
 }
