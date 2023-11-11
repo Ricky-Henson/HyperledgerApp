@@ -41,34 +41,35 @@ exports.getEmployeeById = async (req, res) => {
     : res.status(200).send(JSON.parse(response));
 };
 
-// exports.getEmployeeById = async (req, res) => {
-//   // User role from the request header is validated
-//   const userRole = req.headers.role;
-//   await validateRole([ROLE_EMPLOYEE], userRole, res);
-//   const officeId = parseInt(req.params.officeId);
-//   // Set up and connect to Fabric Gateway
-//   const userId =
-//     officeId === 1
-//       ? "office1admin"
-//       : officeId === 2
-//       ? "office2admin"
-//       : "office3admin";
-//   const employeeId = req.params.employeeId;
-//   const networkObj = await network.connectToNetwork(userId);
-//   // Use the gateway and identity service to get all users enrolled by the CA
-//   const response = await network.getAllEmployeesByOfficeId(
-//     networkObj,
-//     officeId
-//   );
-//   // Filter the result using the employeeId
-//   response.error
-//     ? res.status(500).send(response.error)
-//     : res.status(200).send(
-//         response.filter(function (response) {
-//           return response.id === employeeId;
-//         })[0]
-//       );
-// };
+const crypto = require('crypto');
+const fs = require('fs').promises;
+
+exports.uploadFile = async (req, res, next) => {
+  try {
+    // Validate user role
+    const userRole = req.headers.role;
+    await validateRole([ROLE_EMPLOYEE], userRole, res);
+
+    // Validate and process the file
+    if (!req.file || !req.file.path) {
+      return res.status(400).send({ message: 'No file provided' });
+    }
+
+
+    const fileData = await fs.readFile(req.file.path);
+
+    const fileHash = crypto.createHash('sha256').update(fileData).digest('hex');
+    console.log("fileHash:", fileHash);
+    // Connect to Fabric Gateway
+    const networkObj = await network.connectToNetwork(req.headers.username);
+    const response = await network.invoke(networkObj, true, capitalize(userRole) + "Contract:uploadFile",fileHash);
+
+    res.status(200).send(response);
+  } catch (error) {
+    console.error('Error in uploadFile:', error);
+    res.status(500).send({ message: 'Error processing file upload' });
+  }
+};
 
 exports.getAllEmployees = async (req, res) => {
   // User role from the request header is validated for both employee and admin roles

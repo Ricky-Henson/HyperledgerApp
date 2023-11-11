@@ -21,6 +21,20 @@ class EmployeeContract extends AdminContract {
     return await super.readEmployee(ctx, employeeId);
   }
 
+  async uploadFile(ctx, fileHash) {
+    try {
+      // You can use the hash itself as a key, or another unique identifier
+      console.log("fileHash:", fileHash);
+      await ctx.stub.putState(fileHash, Buffer.from(fileHash));
+      return { status: 'success', fileHash: fileHash };
+    } catch (error) {
+      console.error('Error in uploadFile:', error);
+      throw new Error('Error storing file hash in the ledger');
+    }
+  }
+  
+
+
   async deleteEmployee(ctx, employeeId) {
     const exist = await this.employeeExists(ctx, employeeId);
     if (!exist) {

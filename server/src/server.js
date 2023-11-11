@@ -185,15 +185,17 @@ app.get(
 );
 app.get(
   "/employee/_all", authenticateJWT, employeeRoutes.getAllEmployees);
+
+
 app.post(
   "/employee/:employeeId([a-zA-Z0-9]+)/upload",
   authenticateJWT, 
   upload.single("file"),
+  employeeRoutes.uploadFile,
   (req, res) => {
-    console.log(req.file); // Log when route is hit
-    // next(); // Pass control to the next middleware
+    console.log(req.file); // Log the uploaded file for debugging
     res.status(200).send({ message: 'File uploaded successfully!' });
-  },
+  }
 );
 
 app.use("/employee/:employeeId([a-zA-Z0-9]+)/upload", express.static(path.join(__dirname, "../upload")));
