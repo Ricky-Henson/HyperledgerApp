@@ -44,7 +44,7 @@ exports.getEmployeeById = async (req, res) => {
 const crypto = require('crypto');
 const fs = require('fs').promises;
 
-exports.uploadFile = async (req, res, next) => {
+exports.uploadFile = async (req, res) => {
   try {
     // Validate user role
     const userRole = req.headers.role;
@@ -55,15 +55,14 @@ exports.uploadFile = async (req, res, next) => {
       return res.status(400).send({ message: 'No file provided' });
     }
 
-
     const fileData = await fs.readFile(req.file.path);
 
     const fileHash = crypto.createHash('sha256').update(fileData).digest('hex');
     console.log("fileHash:", fileHash);
+    const agrs = [JSON.stringify(fileHash)];
     // Connect to Fabric Gateway
     const networkObj = await network.connectToNetwork(req.headers.username);
-    const response = await network.invoke(networkObj, true, capitalize(userRole) + "Contract:uploadFile",fileHash);
-
+    const response = await network.invoke(networkObj, false, capitalize(userRole) + "Contract:uploadFile", agrs);
     res.status(200).send(response);
   } catch (error) {
     console.error('Error in uploadFile:', error);

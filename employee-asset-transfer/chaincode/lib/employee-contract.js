@@ -21,16 +21,39 @@ class EmployeeContract extends AdminContract {
     return await super.readEmployee(ctx, employeeId);
   }
 
-  async uploadFile(ctx, fileHash) {
-    try {
-      // You can use the hash itself as a key, or another unique identifier
-      console.log("fileHash:", fileHash);
-      await ctx.stub.putState(fileHash, Buffer.from(fileHash));
-      return { status: 'success', fileHash: fileHash };
-    } catch (error) {
-      console.error('Error in uploadFile:', error);
-      throw new Error('Error storing file hash in the ledger');
-    }
+  async uploadFile(ctx, fileHash)  {
+      // Log the received file hash for debugging purposes
+      console.log("Received fileHash:", fileHash);
+  
+      // Check if the fileHash is valid (non-empty string)
+      if (!fileHash || typeof fileHash !== 'string') {
+        throw new Error('Invalid file hash provided');
+      }
+  
+      // Use the file hash itself as a key for the ledger entry
+      // This requires that each file hash is unique
+      const key = fileHash;
+  
+      // Check if a record with this file hash already exists to prevent overwrites
+      const exists = await this.fileHashExists(ctx, key);
+      if (exists) {
+        throw new Error(`A file with hash ${key} already exists`);
+      }
+      const buffer = Buffer.from(fileHash);
+      console.log("Buffer:", buffer);
+      // Store the file hash in the ledger
+      await ctx.stub.putState(key, buffer);
+  }
+  
+  /**
+   * Helper function to check if a file hash already exists in the ledger.
+   * @param {Context} ctx The transaction context.
+   * @param {String} key The file hash key to check.
+   * @returns {Boolean} True if the file hash exists, false otherwise.
+   */
+  async fileHashExists(ctx, key) {
+    const data = await ctx.stub.getState(key);
+    return data && data.length > 0;
   }
   
 
