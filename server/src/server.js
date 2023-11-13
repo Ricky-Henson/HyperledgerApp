@@ -57,8 +57,13 @@ const storage = multer.diskStorage({
     cb(null, path.join(__dirname, "../upload")); // ensure this directory exists
     console.log("Dir path:", path.join(__dirname, "../upload"));
   },
-  filename: function (_, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); // prefix the filename with a timestamp
+  filename: function (req, file, cb) {
+    const receiverID = req.body.receiverID;
+    const senderID = req.body.senderID;
+    const newFileName = `${receiverID}_${senderID}_${file.originalname}`;
+
+    cb(null, newFileName);
+    // cb(null, Date.now() + path.extname(file.originalname)); // prefix the filename with a timestamp
   }
 });
 
@@ -186,7 +191,14 @@ app.get(
 app.get(
   "/employee/_all", authenticateJWT, employeeRoutes.getAllEmployees);
 
-
+app.use("employee/:employeeId([a-zA-Z0-9]+)/upload", (req, res, next) => {
+  if (req.method === 'POST') {
+    const { receiverID, senderID } = req.body;
+    req.receiverID = receiverID;
+    req.senderID = senderID;
+  }
+  next();
+});
 app.post(
   "/employee/:employeeId([a-zA-Z0-9]+)/upload",
   authenticateJWT, 

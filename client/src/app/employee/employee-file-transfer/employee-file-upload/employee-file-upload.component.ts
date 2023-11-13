@@ -9,12 +9,12 @@ import { AuthService } from '../../../core/auth/auth.service' // Import your aut
 })
 export class EmployeeFileUploadComponent {
   fileSelected: File | null = null;
-  senderOfficeID: string;
-  receiverOfficeID: string;
+  senderID: string;
+  receiverID: string;
 
   constructor(private employeeService: EmployeeService, private authService: AuthService) {
-    this.senderOfficeID = authService.getUsername(); // Set the senderOfficeID to the user ID from your authentication service
-    this.receiverOfficeID = '';
+    this.senderID = authService.getUsername(); // Set the senderID to the user ID from your authentication service
+    this.receiverID = '';
   }
 
   onFileSelected(event: Event): void {
@@ -22,11 +22,11 @@ export class EmployeeFileUploadComponent {
   }
 
   onSenderOfficeSelected(event: Event): void {
-    this.senderOfficeID = (event.target as HTMLInputElement).value;
+    this.senderID = (event.target as HTMLInputElement).value;
   }
 
   onReceiverOfficeSelected(event: Event): void {
-    this.receiverOfficeID = (event.target as HTMLInputElement).value;
+    this.receiverID = (event.target as HTMLInputElement).value;
   }
 
   onUpload(): void {
@@ -37,11 +37,11 @@ export class EmployeeFileUploadComponent {
     }
 
     console.log(`File selected: ${this.fileSelected?.name}`);
-    console.log(`Sender office ID: ${this.senderOfficeID}`);
-    console.log(`Receiver office ID: ${this.receiverOfficeID}`);
+    console.log(`Sender ID: ${this.senderID}`);
+    console.log(`Receiver ID: ${this.receiverID}`);
 
     // Perform the file upload
-    this.employeeService.UploadFile(this.senderOfficeID, this.fileSelected).subscribe({
+    this.employeeService.UploadFile(this.senderID, this.fileSelected).subscribe({
         next: (response: any) => {
             console.log('File uploaded successfully', response);
             // Handle the response, maybe navigate away or reset the form

@@ -1,5 +1,5 @@
 <div class="container">
-  <h2 class="title">Employee File Upload</h2>
+  <h2 class="title">Receiver Fill-In Form</h2>
   <form class="upload-form" (ngSubmit)="onUpload()">
     <div class="form-group">
       <label for="file" class="form-label">Select file:</label>
@@ -9,6 +9,27 @@
         id="file"
         name="file"
         (change)="onFileSelected($event)"
+        class="form-input"
+      />
+    </div>
+    <div class="form-group">
+      <label for="senderID" class="form-label">Sender ID:</label>
+      <input
+        type="text"
+        id="senderID"
+        name="senderID"
+        [value]="senderID"
+        class="form-input"
+        readonly
+      />
+    </div>
+    <div class="form-group">
+      <label for="receiverID" class="form-label">Receiver ID:</label>
+      <input
+        type="text"
+        id="receiverID"
+        name="receiverID"
+        [(ngModel)]="receiverID"
         class="form-input"
       />
     </div>
