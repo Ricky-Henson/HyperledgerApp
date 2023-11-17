@@ -199,6 +199,7 @@ app.get(
 //   }
 //   next();
 // });
+
 app.post(
   "/employee/:employeeId([a-zA-Z0-9]+)/upload",
   authenticateJWT, 
@@ -217,23 +218,25 @@ app.get('/employee/:employeeId([a-zA-Z0-9]+)/download', authenticateJWT, (req, r
   const employeeId = req.params.employeeId;
   console.log('Requested employeeId for file listing:', employeeId);
 
-  // Construct the path to where the file is stored  
+  // Construct the path to where the files are stored
   const directoryPath = path.join(__dirname, '../upload');
 
   // Read the directory
   fs.readdir(directoryPath, (err, files) => {
-    if (err) {
-      // Handle the error
-      console.error('Unable to scan directory:', err);
-      return res.status(500).send('Error reading directory contents');
-    }
-    // Send the files list as a response
-    const fileList = files.map(file => ({ name: file }));
-  
-    res.status(200).send(fileList);
+      if (err) {
+          console.error('Unable to scan directory:', err);
+          return res.status(500).send('Error reading directory contents');
+      }
+
+      // Filter files that start with the employeeId
+      const filteredFiles = files.filter(file => file.startsWith(employeeId + "_")).map(file => ({ name: file }));
+
+      // console.log('Filtered files:', filteredFiles); // For debugging
+
+      res.status(200).send(filteredFiles);
   });
-}
-);
+});
+
 
 app.get('/employee/:employeeId([a-zA-Z0-9]+)/download/:fileName', authenticateJWT, (req, res) => {
   const employeeId = req.params.employeeId;
