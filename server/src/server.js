@@ -191,24 +191,25 @@ app.get(
 app.get(
   "/employee/_all", authenticateJWT, employeeRoutes.getAllEmployees);
 
-app.use("employee/:employeeId([a-zA-Z0-9]+)/upload", (req, res, next) => {
-  if (req.method === 'POST') {
-    const { receiverID, senderID } = req.body;
-    req.receiverID = receiverID;
-    req.senderID = senderID;
-  }
-  next();
-});
+// app.use("/employee/:employeeId([a-zA-Z0-9]+)/upload", (req, res, next) => {
+//   if (req.method === 'POST') {
+//     const { receiverID, senderID } = req.body;
+//     req.receiverID = receiverID;
+//     req.senderID = senderID;
+//   }
+//   next();
+// });
 app.post(
   "/employee/:employeeId([a-zA-Z0-9]+)/upload",
   authenticateJWT, 
   upload.single("file"),
   employeeRoutes.uploadFile,
   (req, res) => {
-    console.log(req.file); // Log the uploaded file for debugging
-    res.status(200).send({ message: 'File uploaded successfully!' });
+      console.log(req.file);
+      res.status(200).send({ message: 'File uploaded successfully!' });
   }
 );
+
 
 app.use("/employee/:employeeId([a-zA-Z0-9]+)/upload", express.static(path.join(__dirname, "../upload")));
 

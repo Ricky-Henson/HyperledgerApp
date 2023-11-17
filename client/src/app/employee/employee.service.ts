@@ -23,13 +23,15 @@ export class EmployeeService {
     return this.http.get(this.employeeURL + `/${key}`);
   }
 
-  public UploadFile(key: string, file: File): Observable<any> {
+  public UploadFile(senderID: string, receiverID: string, file: File): Observable<any> {
     const formData = new FormData();
-    formData.append('file', file);
-  
-    // The Content-Type header should not be set manually; Angular will handle it.
-    return this.http.post(this.employeeURL + `/${key}` + `/upload`, formData);
-  }
+    formData.append('senderID', senderID); // Append senderID first
+    formData.append('receiverID', receiverID); // Append receiverID next
+    formData.append('file', file); // Finally, append the file
+
+    return this.http.post(`${this.employeeURL}/${senderID}/upload`, formData);
+}
+
 
   public getFileList(key: string): Observable<any> {
     return this.http.get(this.employeeURL + `/${key}` + `/download`);

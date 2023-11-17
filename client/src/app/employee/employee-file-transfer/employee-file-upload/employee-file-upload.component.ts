@@ -31,8 +31,9 @@ export class EmployeeFileUploadComponent {
 
   onUpload(): void {
     console.log('Upload method triggered');
-    if (!this.fileSelected) {
-      console.log('No file selected');
+    if (!this.fileSelected || !this.senderID || !this.receiverID) {
+      console.log('Please ensure all fields are filled');
+      // Display an error message to the user
       return;
     }
 
@@ -41,8 +42,13 @@ export class EmployeeFileUploadComponent {
     console.log(`Receiver ID: ${this.receiverID}`);
 
     // Perform the file upload
-    this.employeeService.UploadFile(this.senderID, this.fileSelected).subscribe({
-        next: (response: any) => {
+    const formData = new FormData();
+    formData.append('file', this.fileSelected);
+    formData.append('senderID', this.senderID);
+    formData.append('receiverID', this.receiverID);
+
+    this.employeeService.UploadFile(this.senderID, this.receiverID, this.fileSelected).subscribe({
+      next: (response: any) => {
             console.log('File uploaded successfully', response);
             // Handle the response, maybe navigate away or reset the form
         },
