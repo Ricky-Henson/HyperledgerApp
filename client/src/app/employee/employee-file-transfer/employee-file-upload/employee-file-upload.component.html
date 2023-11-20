@@ -3,7 +3,6 @@
   <form class="upload-form" (ngSubmit)="onUpload()">
     <div class="form-group">
       <label for="file" class="form-label">Select file:</label>
-      <!-- Bind the onFileSelected event to the change event of the input -->
       <input
         type="file"
         id="file"
@@ -12,7 +11,8 @@
         class="form-input"
       />
     </div>
-    <!-- Change the button type to 'submit' to trigger form submission -->
     <button type="submit" class="submit-btn">Upload</button>
+    <!-- Add a loading spinner that shows while the file is being uploaded -->
+    <div *ngIf="isLoading" class="loading-spinner"></div>
   </form>
 </div>

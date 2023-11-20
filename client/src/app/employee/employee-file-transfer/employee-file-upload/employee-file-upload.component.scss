@@ -17,12 +17,19 @@
 }
 
 .form-group {
+  display: flex; /* Align the button and the spinner horizontally */
+  align-items: center; /* Vertically center the button and the spinner */
   margin-bottom: 20px;
 }
 
 .form-label {
   display: block;
   margin-bottom: 10px;
+  white-space: nowrap;
+}
+
+label {
+  white-space: nowrap;
 }
 
 .form-input {
@@ -42,5 +49,25 @@
 
   &:hover {
     background-color: #0056b3;
+  }
+}
+
+.loading-spinner {
+  border: 8px solid #f3f3f3; /* Make the spinner smaller */
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 30px; /* Adjust the size as needed */
+  height: 30px; /* Adjust the size as needed */
+  animation: spin 2s linear infinite;
+  margin-left: 10px; /* Add some space between the button and the spinner */
+  display: inline-block; /* Make the spinner display inline */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

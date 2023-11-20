@@ -1,18 +1,22 @@
 import { Component } from '@angular/core';
 import { EmployeeService } from '../../employee.service'; // Adjust the path as necessary
-import { AuthService } from '../../../core/auth/auth.service' // Import your authentication service
+import { AuthService } from '../../../core/auth/auth.service'; // Import your authentication service
 
 @Component({
   selector: 'app-employee-file-upload',
   templateUrl: './employee-file-upload.component.html',
-  styleUrls: ['./employee-file-upload.component.scss']
+  styleUrls: ['./employee-file-upload.component.scss'],
 })
 export class EmployeeFileUploadComponent {
   fileSelected: File | null = null;
   senderOfficeID: string;
   receiverOfficeID: string;
+  isLoading = false;
 
-  constructor(private employeeService: EmployeeService, private authService: AuthService) {
+  constructor(
+    private employeeService: EmployeeService,
+    private authService: AuthService
+  ) {
     this.senderOfficeID = authService.getUsername(); // Set the senderOfficeID to the user ID from your authentication service
     this.receiverOfficeID = '';
   }
@@ -40,16 +44,23 @@ export class EmployeeFileUploadComponent {
     console.log(`Sender office ID: ${this.senderOfficeID}`);
     console.log(`Receiver office ID: ${this.receiverOfficeID}`);
 
+    this.isLoading = true; // Start loading
+
     // Perform the file upload
-    this.employeeService.UploadFile(this.senderOfficeID, this.fileSelected).subscribe({
+    this.employeeService
+      .UploadFile(this.senderOfficeID, this.fileSelected)
+      .subscribe({
         next: (response: any) => {
-            console.log('File uploaded successfully', response);
-            // Handle the response, maybe navigate away or reset the form
+          console.log('File uploaded successfully', response);
+          // Handle the response, maybe navigate away or reset the form
+          this.isLoading = false; // End loading
+          location.reload();
         },
         error: (error: any) => {
-            console.error('Error uploading file', error);
-            // Handle the error, maybe show an error message to the user
-        }
-    });
+          console.error('Error uploading file', error);
+          this.isLoading = false; // End loading
+          // Handle the error, maybe show an error message to the user
+        },
+      });
   }
 }
