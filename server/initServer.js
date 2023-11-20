@@ -4,7 +4,7 @@ const { enrollAdminOffice1 } = require("./enrollAdmin-Office1");
 const { enrollAdminOffice2 } = require("./enrollAdmin-Office2");
 const { enrollRegisterUser } = require("./registerUser");
 const { createRedisClient } = require("./utils");
-const network = require("../employee-asset-transfer/application-javascript/app.js");
+// const network = require("../employee-asset-transfer/application-javascript/app.js");
 
 const redis = require("redis");
 
@@ -33,18 +33,7 @@ async function initLedger() {
       await enrollRegisterUser(integer, "EID" + i, JSON.stringify(attr));
 
       // Connect to the Fabric network
-      const networkObj = await network.connectToNetwork("EID" + i);
-
-      // Create employee data object
-      const employeeData = {
-        employeeId: "EID" + i,
-        firstName: attr.firstName,
-        lastName: attr.lastName,
-        password: employees[i].password,
-        speciality: employees[i].speciality,
-        officeId: integer,
-      };
-      const args = [JSON.stringify(employeeData)];
+      // const networkObj = await network.connectToNetwork("EID" + i);
 
       // Create a Redis client and add the employee to Redis
       const redisClient = await createRedisClient(integer);
@@ -73,6 +62,7 @@ async function initRedis() {
   redisClient.SET("office2admin", redisPassword);
   console.log("Done");
   redisClient.QUIT();
+  process.exit();
   return;
 }
 
