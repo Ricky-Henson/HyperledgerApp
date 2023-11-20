@@ -6,8 +6,12 @@
       <button class="download-btn" (click)="downloadFile(file.name)">
         Download
       </button>
+      <!-- Add a loading spinner that shows while the file is being downloaded -->
     </li>
   </ul>
+  <div *ngIf="isDownloading" class="loading-container">
+    <div class="loading-spinner"></div>
+  </div>
   <ng-template #noFilesTemplate>
     <p class="no-files">No files available for download.</p>
   </ng-template>

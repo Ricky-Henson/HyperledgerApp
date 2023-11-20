@@ -15,4 +15,7 @@
     <!-- Add a loading spinner that shows while the file is being uploaded -->
     <div *ngIf="isLoading" class="loading-spinner"></div>
   </form>
+  <div *ngIf="uploadMessage" class="upload-message">
+    {{ uploadMessage }}
+  </div>
 </div>
