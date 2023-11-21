@@ -22,8 +22,8 @@ const refreshSecretToken = "refreshpassword";
 let refreshTokens = [];
 
 // const https = require('https');
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 // Express Application init
 const app = express();
@@ -59,12 +59,11 @@ const storage = multer.diskStorage({
   },
   filename: function (_, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname)); // prefix the filename with a timestamp
-  }
+  },
 });
 
 // Multer upload
 const upload = multer({ storage: storage });
-
 
 const authenticateJWT = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -107,7 +106,8 @@ app.post("/login", async (req, res) => {
   officeId = parseInt(officeId);
   let user;
   // using get instead of redis GET for async
-  if (role === ROLE_EMPLOYEE || role === ROLE_ADMIN) {
+  if (role === ROLE_ADMIN) {
+    console.log("ADMIN ROLE");
     // Create a redis client based on the office ID
     const redisClient = await createRedisClient(officeId);
     // Async get
@@ -115,6 +115,44 @@ app.post("/login", async (req, res) => {
     // comparing passwords
     user = value === password;
     redisClient.quit();
+  }
+
+  if (role === ROLE_EMPLOYEE) {
+    const networkObj = await network.connectToNetwork(username);
+    const newPassword = req.body.newPassword;
+
+    if (newPassword === null || newPassword === "") {
+      const value = crypto.createHash("sha256").update(password).digest("hex");
+      const response = await network.invoke(
+        networkObj,
+        true,
+        capitalize(role) + "Contract:getEmployeePassword",
+        username
+      );
+      if (response.error) {
+        res.status(400).send(response.error);
+      } else {
+        const parsedResponse = await JSON.parse(response);
+        if (parsedResponse.password.toString("utf8") === value) {
+          !parsedResponse.pwdTemp
+            ? (user = true)
+            : res.status(200).send(getMessage(false, CHANGE_TMP_PASSWORD));
+        }
+      }
+    } else {
+      let args = {
+        employeeId: username,
+        newPassword: newPassword,
+      };
+      args = [JSON.stringify(args)];
+      const response = await network.invoke(
+        networkObj,
+        false,
+        capitalize(role) + "Contract:updateEmployeePassword",
+        args
+      );
+      response.error ? res.status(500).send(response.error) : (user = true);
+    }
   }
 
   if (user) {
@@ -173,7 +211,6 @@ app.delete("/logout", (req, res) => {
   res.sendStatus(204);
 });
 
-
 // //////////////////////////////// Admin Routes //////////////////////////////////////
 app.post("/employee/register", authenticateJWT, adminRoutes.createEmployee);
 // app.get("/employees/_all", authenticateJWT, adminRoutes.getAllEmployees);
@@ -183,71 +220,81 @@ app.get(
   authenticateJWT,
   employeeRoutes.getEmployeeById
 );
-app.get(
-  "/employee/_all", authenticateJWT, employeeRoutes.getAllEmployees);
-
+app.get("/employee/_all", authenticateJWT, employeeRoutes.getAllEmployees);
 
 app.post(
   "/employee/:employeeId([a-zA-Z0-9]+)/upload",
-  authenticateJWT, 
+  authenticateJWT,
   upload.single("file"),
   employeeRoutes.uploadFile,
   (req, res) => {
     console.log(req.file); // Log the uploaded file for debugging
-    res.status(200).send({ message: 'File uploaded successfully!' });
+    res.status(200).send({ message: "File uploaded successfully!" });
   }
 );
 
-app.use("/employee/:employeeId([a-zA-Z0-9]+)/upload", express.static(path.join(__dirname, "../upload")));
-
-app.get('/employee/:employeeId([a-zA-Z0-9]+)/download', authenticateJWT, (req, res) => {
-  const employeeId = req.params.employeeId;
-  console.log('Requested employeeId for file listing:', employeeId);
-
-  // Construct the path to where the file is stored  
-  const directoryPath = path.join(__dirname, '../upload');
-
-  // Read the directory
-  fs.readdir(directoryPath, (err, files) => {
-    if (err) {
-      // Handle the error
-      console.error('Unable to scan directory:', err);
-      return res.status(500).send('Error reading directory contents');
-    }
-    // Send the files list as a response
-    const fileList = files.map(file => ({ name: file }));
-  
-    res.status(200).send(fileList);
-  });
-}
+app.use(
+  "/employee/:employeeId([a-zA-Z0-9]+)/upload",
+  express.static(path.join(__dirname, "../upload"))
 );
 
-app.get('/employee/:employeeId([a-zA-Z0-9]+)/download/:fileName', authenticateJWT, (req, res) => {
-  const employeeId = req.params.employeeId;
-  const fileName = req.params.fileName;
-  console.log(`Requested file download for employeeId: ${employeeId}, fileName: ${fileName}`);
+app.get(
+  "/employee/:employeeId([a-zA-Z0-9]+)/download",
+  authenticateJWT,
+  (req, res) => {
+    const employeeId = req.params.employeeId;
+    console.log("Requested employeeId for file listing:", employeeId);
 
-  // Construct the path to where the file is stored
-  const directoryPath = path.join(__dirname, '../upload');
+    // Construct the path to where the file is stored
+    const directoryPath = path.join(__dirname, "../upload");
 
-  // Create the full path to the file
-  const filePath = path.join(directoryPath, fileName);
+    // Read the directory
+    fs.readdir(directoryPath, (err, files) => {
+      if (err) {
+        // Handle the error
+        console.error("Unable to scan directory:", err);
+        return res.status(500).send("Error reading directory contents");
+      }
+      // Send the files list as a response
+      const fileList = files.map((file) => ({ name: file }));
 
-  // Check if the file exists and send it to the client
-  fs.access(filePath, fs.constants.F_OK, (err) => {
-    if (err) {
-      // The file does not exist
-      return res.status(404).send('File not found');
-    } else {
-      // The file exists, send it
-      res.download(filePath, fileName, (downloadError) => {
-        if (downloadError) {
-          // Handle any errors during the download
-          console.error('Error downloading the file:', downloadError);
-          return res.status(500).send('Error downloading the file');
-        }
-        // If no error, file download is a success
-      });
-    }
-  });
-});
+      res.status(200).send(fileList);
+    });
+  }
+);
+
+app.get(
+  "/employee/:employeeId([a-zA-Z0-9]+)/download/:fileName",
+  authenticateJWT,
+  (req, res) => {
+    const employeeId = req.params.employeeId;
+    const fileName = req.params.fileName;
+    console.log(
+      `Requested file download for employeeId: ${employeeId}, fileName: ${fileName}`
+    );
+
+    // Construct the path to where the file is stored
+    const directoryPath = path.join(__dirname, "../upload");
+
+    // Create the full path to the file
+    const filePath = path.join(directoryPath, fileName);
+
+    // Check if the file exists and send it to the client
+    fs.access(filePath, fs.constants.F_OK, (err) => {
+      if (err) {
+        // The file does not exist
+        return res.status(404).send("File not found");
+      } else {
+        // The file exists, send it
+        res.download(filePath, fileName, (downloadError) => {
+          if (downloadError) {
+            // Handle any errors during the download
+            console.error("Error downloading the file:", downloadError);
+            return res.status(500).send("Error downloading the file");
+          }
+          // If no error, file download is a success
+        });
+      }
+    });
+  }
+);

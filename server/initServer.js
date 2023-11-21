@@ -36,8 +36,8 @@ async function initLedger() {
       // const networkObj = await network.connectToNetwork("EID" + i);
 
       // Create a Redis client and add the employee to Redis
-      const redisClient = await createRedisClient(integer);
-      await redisClient.SET("EID" + i, employees[i].password);
+      // const redisClient = await createRedisClient(integer);
+      // await redisClient.SET("EID" + i, employees[i].password);
     }
   } catch (err) {
     console.log(err);
@@ -62,7 +62,7 @@ async function initRedis() {
   redisClient.SET("office2admin", redisPassword);
   console.log("Done");
   redisClient.QUIT();
-  process.exit();
+  // process.exit();
   return;
 }
 
