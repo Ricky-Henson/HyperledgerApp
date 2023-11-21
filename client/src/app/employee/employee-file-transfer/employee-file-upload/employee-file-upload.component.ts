@@ -1,18 +1,23 @@
 import { Component } from '@angular/core';
 import { EmployeeService } from '../../employee.service'; // Adjust the path as necessary
-import { AuthService } from '../../../core/auth/auth.service' // Import your authentication service
+import { AuthService } from '../../../core/auth/auth.service'; // Import your authentication service
 
 @Component({
   selector: 'app-employee-file-upload',
   templateUrl: './employee-file-upload.component.html',
-  styleUrls: ['./employee-file-upload.component.scss']
+  styleUrls: ['./employee-file-upload.component.scss'],
 })
 export class EmployeeFileUploadComponent {
   fileSelected: File | null = null;
   senderID: string;
   receiverID: string;
+  isLoading = false;
+  uploadMessage: string | null = null;
 
-  constructor(private employeeService: EmployeeService, private authService: AuthService) {
+  constructor(
+    private employeeService: EmployeeService,
+    private authService: AuthService
+  ) {
     this.senderID = authService.getUsername(); // Set the senderID to the user ID from your authentication service
     this.receiverID = '';
   }
@@ -36,6 +41,7 @@ export class EmployeeFileUploadComponent {
       // Display an error message to the user
       return;
     }
+    this.isLoading = true;
 
     console.log(`File selected: ${this.fileSelected?.name}`);
     console.log(`Sender ID: ${this.senderID}`);
@@ -47,15 +53,25 @@ export class EmployeeFileUploadComponent {
     formData.append('senderID', this.senderID);
     formData.append('receiverID', this.receiverID);
 
-    this.employeeService.UploadFile(this.senderID, this.receiverID, this.fileSelected).subscribe({
-      next: (response: any) => {
-            console.log('File uploaded successfully', response);
-            // Handle the response, maybe navigate away or reset the form
+    this.employeeService
+      .UploadFile(this.senderID, this.receiverID, this.fileSelected)
+      .subscribe({
+        next: (response: any) => {
+          console.log('File uploaded successfully', response);
+          this.uploadMessage = 'File uploaded successfully';
+          this.isLoading = false; // Set isLoading to false when the upload finishes
+          setTimeout(() => location.reload(), 2000); // Wait 2 seconds before refreshing
+
+          // Handle the response, maybe navigate away or reset the form
         },
         error: (error: any) => {
-            console.error('Error uploading file', error);
-            // Handle the error, maybe show an error message to the user
-        }
-    });
+          console.error('Error uploading file', error);
+          this.uploadMessage = 'Error uploading file';
+          this.isLoading = false; // Set isLoading to false when the upload finishes
+          setTimeout(() => location.reload(), 2000); // Wait 2 seconds before refreshing
+
+          // Handle the error, maybe show an error message to the user
+        },
+      });
   }
 }

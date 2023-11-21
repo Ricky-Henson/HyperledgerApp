@@ -1,5 +1,5 @@
 .container {
-  margin-top: 20px; // Add this line
+  margin-top: 20px;
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
@@ -7,6 +7,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
 }
+
 .title {
   text-align: center;
   color: #333;
@@ -17,6 +18,8 @@
 }
 
 .form-group {
+  display: flex;
+  align-items: center;
   margin-bottom: 20px;
 }
 
@@ -42,5 +45,25 @@
 
   &:hover {
     background-color: #0056b3;
+  }
+}
+
+.loading-spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 2s linear infinite;
+  margin-left: 10px;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

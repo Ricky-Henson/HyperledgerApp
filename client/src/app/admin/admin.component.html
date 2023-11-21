@@ -17,16 +17,23 @@
 </app-toolbar>
 
 <div class="file-management-container">
-  <h2 class="title">Manage Files</h2>
-  <ul class="file-list" *ngIf="fileRecords$ | async as files; else noFilesTemplate">
-    <li class="file-item" *ngFor="let file of files">
-      <span class="file-name">{{ file.name }}</span>
-      <button class="delete-btn" (click)="deleteFile(file.name)">
-        Delete
-      </button>
-    </li>
-  </ul>
-  <ng-template #noFilesTemplate>
-    <p class="no-files">No files available.</p>
-  </ng-template>
+  <div class="manage-files-title">
+    <h2>Manage Files</h2>
+  </div>
+  <div class="file-list-container">
+    <ul
+      class="file-list"
+      *ngIf="fileRecords$ | async as files; else noFilesTemplate"
+    >
+      <li class="file-item" *ngFor="let file of files">
+        <span class="file-name">{{ file.name }}</span>
+        <button class="delete-btn" (click)="deleteFile(file.name)">
+          Delete
+        </button>
+      </li>
+    </ul>
+    <ng-template #noFilesTemplate>
+      <p class="no-files">No files available.</p>
+    </ng-template>
+  </div>
 </div>
