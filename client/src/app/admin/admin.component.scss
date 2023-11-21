@@ -1,0 +1,43 @@
+.file-management-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .title {
+        font-size: 2em;
+        color: #333;
+    }
+    .file-list {
+        list-style-type: none;
+        padding: 0;
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 50%;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: none;
+            border-radius: 5px;
+            .file-name {
+                font-size: 1.2em;
+                color: #333;
+            }
+            .delete-btn {
+                padding: 5px 10px;
+                border: none;
+                border-radius: 5px;
+                background-color: #ff4b5c;
+                color: white;
+                cursor: pointer;
+                &:hover {
+                    background-color: #ff1f3d;
+                }
+            }
+        }
+    }
+    .no-files {
+        font-size: 1.2em;
+        color: #999;
+    }
+}
+  

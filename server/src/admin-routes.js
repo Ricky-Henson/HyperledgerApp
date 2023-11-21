@@ -17,7 +17,9 @@ const {
   createRedisClient,
 } = require("../utils.js");
 const network = require("../../employee-asset-transfer/application-javascript/app.js");
-
+const path = require("path");
+const fs = require("fs").promises;
+const crypto = require("crypto");
 /**
  * @param  {Request} req Body must be a employee json and role in the header
  * @param  {Response} res 201 response if asset is created else 400 with a simple json message
@@ -118,3 +120,39 @@ exports.createEmployee = async (req, res) => {
     return res.status(500).send("Internal Server Error");
   }
 };
+
+exports.deleteFile = async (req, res) => {
+  try {
+    // Validate user role
+    const userRole = req.headers.role;
+    await validateRole([ROLE_ADMIN], userRole, res);
+
+    // Get the file name from the request
+    const fileName = req.params.fileName;
+
+    // Compute the path to the file
+    const filePath = path.join(__dirname, '../upload', fileName);
+
+    // Read the file data
+    const fileData = await fs.readFile(filePath);
+    console.log("fileData in admin-route:", fileData);
+    // Compute the hash of the file
+    const fileHash = crypto.createHash('sha256').update(fileData).digest('hex');
+    console.log("fileHash in admin-route:", fileHash);
+    const agrs = [JSON.stringify(fileHash)];
+    // Connect to Fabric Gateway
+    const networkObj = await network.connectToNetwork(req.headers.username);
+
+    // Invoke the smart contract function to delete the file
+    const response = await network.invoke(networkObj, false, 'AdminContract:deleteFile', agrs);
+
+    // Optionally, delete the file from the local storage
+    await fs.unlink(filePath);
+
+    res.status(200).send(response);
+  } catch (error) {
+    console.error('Error in deleteFile:', error);
+    res.status(500).send({ message: 'Error processing file deletion' });
+  }
+};
+

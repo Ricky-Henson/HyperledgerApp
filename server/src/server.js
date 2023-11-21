@@ -181,6 +181,25 @@ app.delete("/logout", (req, res) => {
 
 // //////////////////////////////// Admin Routes //////////////////////////////////////
 app.post("/employee/register", authenticateJWT, adminRoutes.createEmployee);
+app.get("/admin/files", 
+  authenticateJWT, 
+  (req, res) => {
+    if(req.user.role !== ROLE_ADMIN) {  
+      return res.status(403).send({ error: "Unauthorized request: Only admin can access this route" });
+    }
+    const directoryPath = path.join(__dirname, '../upload');
+
+    fs.readdir(directoryPath, (err, files) => {
+      if (err) {
+        console.error('Unable to scan directory:', err);
+        return res.status(500).send('Error reading directory contents');
+      }
+  
+      res.status(200).send(files.map(file => ({ name: file })));
+    });
+  }
+);
+app.delete("/admin/files/:fileName", authenticateJWT, adminRoutes.deleteFile);
 // app.get("/employees/_all", authenticateJWT, adminRoutes.getAllEmployees);
 // //////////////////////////////// Employee Routes //////////////////////////////////////
 app.get(

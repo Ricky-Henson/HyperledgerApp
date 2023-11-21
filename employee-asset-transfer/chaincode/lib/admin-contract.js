@@ -14,6 +14,22 @@ let Employee = require("./Employee.js");
 const PrimaryContract = require("./primary-contract.js");
 
 class AdminContract extends PrimaryContract {
+
+  //Delete the file from the ledger
+  async deleteFile(ctx, fileHash) {
+    const exists = await this.fileHashExists(ctx, fileHash);
+    if (!exists) {
+      throw new Error(`The file ${fileHash} does not exist`);
+    }
+    await ctx.stub.deleteState(fileHash);
+  }
+  
+  async fileHashExists(ctx, key) {
+    const data = await ctx.stub.getState(key);
+    return data && data.length > 0;
+  }
+  
+
   //Returns the last employeeId in the set
   async getLatestEmployeeId(ctx) {
     let allResults = await this.queryAllEmployees(ctx);

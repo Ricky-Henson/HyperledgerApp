@@ -5,13 +5,28 @@
     routerLink="/employee/register"
   ></app-toolbar-link>
   <app-toolbar-link
-  text="View other employees"
-  icon="users"
-  [routerLink]="['employees']"
+    text="View Other Employees"
+    icon="users"
+    [routerLink]="['/employees']"
   ></app-toolbar-link>
   <app-toolbar-button
     text="Refresh"
     icon="refresh"
     (click)="refresh()"
   ></app-toolbar-button>
-<br /><br /><br />
+</app-toolbar>
+
+<div class="file-management-container">
+  <h2 class="title">Manage Files</h2>
+  <ul class="file-list" *ngIf="fileRecords$ | async as files; else noFilesTemplate">
+    <li class="file-item" *ngFor="let file of files">
+      <span class="file-name">{{ file.name }}</span>
+      <button class="delete-btn" (click)="deleteFile(file.name)">
+        Delete
+      </button>
+    </li>
+  </ul>
+  <ng-template #noFilesTemplate>
+    <p class="no-files">No files available.</p>
+  </ng-template>
+</div>

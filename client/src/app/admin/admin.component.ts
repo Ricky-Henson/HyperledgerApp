@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
 import { EmployeeService } from '../employee/employee.service';
+import { AdminService } from './admin.service';
 import { Observable, Subscription } from 'rxjs';
 import { DisplayVal, EmployeeViewRecord, EmployeeAdminViewRecord} from '../employee/employee';
 
@@ -15,6 +16,7 @@ import { DisplayVal, EmployeeViewRecord, EmployeeAdminViewRecord} from '../emplo
 export class AdminComponent implements OnInit, OnDestroy {
   public adminId: any;
   public employeeRecords$?: Observable<Array<EmployeeAdminViewRecord>>
+  public fileRecords$?: Observable<Array<string>>;
   private sub?: Subscription;
 
   public headerNames = [
@@ -25,7 +27,8 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly employeeService: EmployeeService
+    private readonly employeeService: EmployeeService,
+    private readonly adminService: AdminService
   ) { }
 
   ngOnInit(): void {
@@ -33,6 +36,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       .subscribe((params: Params) => {
         this.adminId = params.adminId;
         this.refresh();
+        this.loadFiles();
       });
   }
 
@@ -42,5 +46,15 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   public refresh(): void {
     this.employeeRecords$ = this.employeeService.getAllEmployees();
+  }
+
+  public loadFiles(): void {
+    this.fileRecords$ = this.adminService.getFileListForAdmin();
+  }
+
+  deleteFile(fileName: string): void {
+    this.adminService.deleteFile(fileName).subscribe(() => {
+      this.loadFiles();
+    });
   }
 }

@@ -56,9 +56,9 @@ exports.uploadFile = async (req, res) => {
     }
 
     const fileData = await fs.readFile(req.file.path);
-
+    console.log("fileData in employee-route:", fileData);
     const fileHash = crypto.createHash('sha256').update(fileData).digest('hex');
-    console.log("fileHash:", fileHash);
+    console.log("fileHash in employee-route:", fileHash);
     const agrs = [JSON.stringify(fileHash)];
     // Connect to Fabric Gateway
     const networkObj = await network.connectToNetwork(req.headers.username);
