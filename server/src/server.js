@@ -107,37 +107,34 @@ function generateAccessToken(username, role) {
  * @description Login and create a session with and add two variables to the session
  */
 app.post("/login", async (req, res) => {
-  // Read username and password from request body
   let { username, password, officeId, role } = req.body;
   officeId = parseInt(officeId);
-  let user;
-  // using get instead of redis GET for async
-  if (role === ROLE_EMPLOYEE || role === ROLE_ADMIN) {
-    // Create a redis client based on the office ID
-    const redisClient = await createRedisClient(officeId);
-    // Async get
-    const value = await redisClient.get(username);
-    // comparing passwords
-    user = value === password;
-    redisClient.quit();
-  }
 
-  if (user) {
-    // Generate an access token
-    const accessToken = generateAccessToken(username, role);
-    const refreshToken = jwt.sign(
-      { username: username, role: role },
-      refreshSecretToken
-    );
-    refreshTokens.push(refreshToken);
-    // Once the password is matched a session is created with the username and password
-    res.status(200);
-    res.json({
-      accessToken,
-      refreshToken,
-    });
+  // Create a Redis client based on the office ID
+  const redisClient = await createRedisClient(officeId);
+
+  // Retrieve user details from Redis
+  const userString = await redisClient.get(username);
+  redisClient.quit();
+
+  if (userString) {
+    const userDetails = JSON.parse(userString);
+
+    // Check if the password and role match
+    if (userDetails.password === password && userDetails.role === role) {
+      // Generate an access token
+      const accessToken = generateAccessToken(username, role);
+      const refreshToken = jwt.sign(
+        { username: username, role: role },
+        refreshSecretToken
+      );
+      refreshTokens.push(refreshToken);
+      res.status(200).json({ accessToken, refreshToken });
+    } else {
+      res.status(401).send({ error: "Invalid credentials or role" });
+    }
   } else {
-    res.status(400).send({ error: "Username or password incorrect!" });
+    res.status(404).send({ error: "User not found" });
   }
 });
 

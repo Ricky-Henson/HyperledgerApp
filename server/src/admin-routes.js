@@ -86,7 +86,15 @@ exports.createEmployee = async (req, res) => {
 
     // Create a Redis client and add the employee to Redis
     const redisClient = await createRedisClient(officeId);
-    await redisClient.SET(username, password);
+
+    // Create user details object to store in Redis
+    const userDetails = {
+      username: employeeData.employeeId,
+      password: employeeData.password,
+      role: ROLE_EMPLOYEE // Assuming this is the role constant for employees
+    };
+        
+    await redisClient.SET(employeeData.employeeId, JSON.stringify(userDetails));
 
     // Register the new employee user
     const userData = JSON.stringify({

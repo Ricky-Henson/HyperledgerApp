@@ -3,6 +3,7 @@ const fs = require("fs");
 const { enrollAdminOffice1 } = require("./enrollAdmin-Office1");
 const { enrollAdminOffice2 } = require("./enrollAdmin-Office2");
 const { enrollRegisterUser } = require("./registerUser");
+const { ROLE_ADMIN, ROLE_EMPLOYEE } = require("./utils");
 const { createRedisClient } = require("./utils");
 const network = require("../employee-asset-transfer/application-javascript/app.js");
 
@@ -48,7 +49,15 @@ async function initLedger() {
 
       // Create a Redis client and add the employee to Redis
       const redisClient = await createRedisClient(integer);
-      await redisClient.SET("EID" + i, employees[i].password);
+
+      const userDetails = {
+        username: "EID" + i,
+        password: employees[i].password,
+        role: ROLE_EMPLOYEE // Assuming this is the role constant for employees
+      };
+      
+      // Store the user details as a JSON string
+      await redisClient.SET("EID" + i, JSON.stringify(userDetails));
     }
   } catch (err) {
     console.log(err);
@@ -63,14 +72,28 @@ async function initRedis() {
   let redisPassword = "office1lithium";
   let redisClient = redis.createClient(redisUrl);
   redisClient.AUTH(redisPassword);
-  redisClient.SET("office1admin", redisPassword);
+
+  const adminDetails1 = {
+    username: "office1admin",
+    password: redisPassword,
+    role: ROLE_ADMIN // Assuming this is the role constant for admins
+  };
+
+  redisClient.SET("office1admin", JSON.stringify(adminDetails1));
   redisClient.QUIT();
 
   redisUrl = "redis://127.0.0.1:6380";
   redisPassword = "office2lithium";
   redisClient = redis.createClient(redisUrl);
   redisClient.AUTH(redisPassword);
-  redisClient.SET("office2admin", redisPassword);
+
+  const adminDetails2 = {
+    username: "office2admin",
+    password: redisPassword,
+    role: ROLE_ADMIN
+  };
+
+  redisClient.SET("office2admin", JSON.stringify(adminDetails2));
   console.log("Done");
   redisClient.QUIT();
   return;
