@@ -22,8 +22,8 @@ const refreshSecretToken = "refreshpassword";
 let refreshTokens = [];
 
 // const https = require('https');
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 // Express Application init
 const app = express();
@@ -64,12 +64,11 @@ const storage = multer.diskStorage({
 
     cb(null, newFileName);
     // cb(null, Date.now() + path.extname(file.originalname)); // prefix the filename with a timestamp
-  }
+  },
 });
 
 // Multer upload
 const upload = multer({ storage: storage });
-
 
 const authenticateJWT = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -175,27 +174,27 @@ app.delete("/logout", (req, res) => {
   res.sendStatus(204);
 });
 
-
 // //////////////////////////////// Admin Routes //////////////////////////////////////
 app.post("/employee/register", authenticateJWT, adminRoutes.createEmployee);
-app.get("/admin/files", 
-  authenticateJWT, 
-  (req, res) => {
-    if(req.user.role !== ROLE_ADMIN) {  
-      return res.status(403).send({ error: "Unauthorized request: Only admin can access this route" });
-    }
-    const directoryPath = path.join(__dirname, '../upload');
-
-    fs.readdir(directoryPath, (err, files) => {
-      if (err) {
-        console.error('Unable to scan directory:', err);
-        return res.status(500).send('Error reading directory contents');
-      }
-  
-      res.status(200).send(files.map(file => ({ name: file })));
-    });
+app.get("/admin/files", authenticateJWT, (req, res) => {
+  if (req.user.role !== ROLE_ADMIN) {
+    return res
+      .status(403)
+      .send({
+        error: "Unauthorized request: Only admin can access this route",
+      });
   }
-);
+  const directoryPath = path.join(__dirname, "../upload");
+
+  fs.readdir(directoryPath, (err, files) => {
+    if (err) {
+      console.error("Unable to scan directory:", err);
+      return res.status(500).send("Error reading directory contents");
+    }
+
+    res.status(200).send(files.map((file) => ({ name: file })));
+  });
+});
 app.delete("/admin/files/:fileName", authenticateJWT, adminRoutes.deleteFile);
 // app.get("/employees/_all", authenticateJWT, adminRoutes.getAllEmployees);
 // //////////////////////////////// Employee Routes //////////////////////////////////////
@@ -204,82 +203,85 @@ app.get(
   authenticateJWT,
   employeeRoutes.getEmployeeById
 );
-app.get(
-  "/employee/_all", authenticateJWT, employeeRoutes.getAllEmployees);
-
-// app.use("/employee/:employeeId([a-zA-Z0-9]+)/upload", (req, res, next) => {
-//   if (req.method === 'POST') {
-//     const { receiverID, senderID } = req.body;
-//     req.receiverID = receiverID;
-//     req.senderID = senderID;
-//   }
-//   next();
-// });
+app.get("/employee/_all", authenticateJWT, employeeRoutes.getAllEmployees);
 
 app.post(
   "/employee/:employeeId([a-zA-Z0-9]+)/upload",
-  authenticateJWT, 
+  authenticateJWT,
   upload.single("file"),
   employeeRoutes.uploadFile,
   (req, res) => {
-      console.log(req.file);
-      res.status(200).send({ message: 'File uploaded successfully!' });
+    console.log(req.file);
+    res.status(200).send({ message: "File uploaded successfully!" });
   }
 );
 
+app.use(
+  "/employee/:employeeId([a-zA-Z0-9]+)/upload",
+  express.static(path.join(__dirname, "../upload"))
+);
 
-app.use("/employee/:employeeId([a-zA-Z0-9]+)/upload", express.static(path.join(__dirname, "../upload")));
+app.get(
+  "/employee/:employeeId([a-zA-Z0-9]+)/download",
+  authenticateJWT,
+  (req, res) => {
+    const employeeId = req.params.employeeId;
+    console.log("Requested employeeId for file listing:", employeeId);
 
-app.get('/employee/:employeeId([a-zA-Z0-9]+)/download', authenticateJWT, (req, res) => {
-  const employeeId = req.params.employeeId;
-  console.log('Requested employeeId for file listing:', employeeId);
+    // Construct the path to where the files are stored
+    const directoryPath = path.join(__dirname, "../upload");
 
-  // Construct the path to where the files are stored
-  const directoryPath = path.join(__dirname, '../upload');
-
-  // Read the directory
-  fs.readdir(directoryPath, (err, files) => {
+    // Read the directory
+    fs.readdir(directoryPath, (err, files) => {
       if (err) {
-          console.error('Unable to scan directory:', err);
-          return res.status(500).send('Error reading directory contents');
+        console.error("Unable to scan directory:", err);
+        return res.status(500).send("Error reading directory contents");
       }
 
       // Filter files that start with the employeeId
-      const filteredFiles = files.filter(file => file.startsWith(employeeId + "_")).map(file => ({ name: file }));
+      const filteredFiles = files
+        .filter((file) => file.startsWith(employeeId + "_"))
+        .map((file) => ({ name: file }));
 
       // console.log('Filtered files:', filteredFiles); // For debugging
 
       res.status(200).send(filteredFiles);
-  });
-});
+    });
+  }
+);
 
+app.get(
+  "/employee/:employeeId([a-zA-Z0-9]+)/download/:fileName",
+  authenticateJWT,
+  (req, res) => {
+    const employeeId = req.params.employeeId;
+    const fileName = req.params.fileName;
+    console.log(
+      `Requested file download for employeeId: ${employeeId}, fileName: ${fileName}`
+    );
 
-app.get('/employee/:employeeId([a-zA-Z0-9]+)/download/:fileName', authenticateJWT, (req, res) => {
-  const employeeId = req.params.employeeId;
-  const fileName = req.params.fileName;
-  console.log(`Requested file download for employeeId: ${employeeId}, fileName: ${fileName}`);
+    // Construct the path to where the file is stored
+    const directoryPath = path.join(__dirname, "../upload");
 
-  // Construct the path to where the file is stored
-  const directoryPath = path.join(__dirname, '../upload');
+    // Create the full path to the file
+    const filePath = path.join(directoryPath, fileName);
 
-  // Create the full path to the file
-  const filePath = path.join(directoryPath, fileName);
-
-  // Check if the file exists and send it to the client
-  fs.access(filePath, fs.constants.F_OK, (err) => {
-    if (err) {
-      // The file does not exist
-      return res.status(404).send('File not found');
-    } else {
-      // The file exists, send it
-      res.download(filePath, fileName, (downloadError) => {
-        if (downloadError) {
-          // Handle any errors during the download
-          console.error('Error downloading the file:', downloadError);
-          return res.status(500).send('Error downloading the file');
-        }
-        // If no error, file download is a success
-      });
-    }
-  });
-});
+    // Check if the file exists and send it to the client
+    fs.access(filePath, fs.constants.F_OK, (err) => {
+      if (err) {
+        // The file does not exist
+        return res.status(404).send("File not found");
+      } else {
+        // The file exists, send it
+        res.download(filePath, fileName, (downloadError) => {
+          if (downloadError) {
+            // Handle any errors during the download
+            console.error("Error downloading the file:", downloadError);
+            return res.status(500).send("Error downloading the file");
+          }
+          // If no error, file download is a success
+        });
+      }
+    });
+  }
+);

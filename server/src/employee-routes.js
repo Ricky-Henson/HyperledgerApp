@@ -41,8 +41,8 @@ exports.getEmployeeById = async (req, res) => {
     : res.status(200).send(JSON.parse(response));
 };
 
-const crypto = require('crypto');
-const fs = require('fs').promises;
+const crypto = require("crypto");
+const fs = require("fs").promises;
 
 exports.uploadFile = async (req, res) => {
   try {
@@ -52,21 +52,40 @@ exports.uploadFile = async (req, res) => {
 
     // Validate and process the file
     if (!req.file || !req.file.path) {
-      return res.status(400).send({ message: 'No file provided' });
+      return res.status(400).send({ message: "No file provided" });
     }
 
+    const fileName = req.file.originalname;
+    console.log("fileName in employee-route:" + fileName);
     const fileData = await fs.readFile(req.file.path);
-    console.log("fileData in employee-route:", fileData);
-    const fileHash = crypto.createHash('sha256').update(fileData).digest('hex');
+    const combinedData = fileName + fileData.toString();
+    const fileHash = crypto
+      .createHash("sha256")
+      .update(combinedData)
+      .digest("hex");
     console.log("fileHash in employee-route:", fileHash);
     const agrs = [JSON.stringify(fileHash)];
     // Connect to Fabric Gateway
     const networkObj = await network.connectToNetwork(req.headers.username);
-    const response = await network.invoke(networkObj, false, capitalize(userRole) + "Contract:uploadFile", agrs);
+    const response = await network.invoke(
+      networkObj,
+      false,
+      capitalize(userRole) + "Contract:uploadFile",
+      agrs
+    );
+
+    // Check if the chaincode returned an error
+    if (response.error) {
+      // Delete the uploaded file
+      await fs.unlink(req.file.path);
+      // Return an error response
+      return res.status(500).send({ message: "Error in chaincode execution" });
+    }
+
     res.status(200).send(response);
   } catch (error) {
-    console.error('Error in uploadFile:', error);
-    res.status(500).send({ message: 'Error processing file upload' });
+    console.error("Error in uploadFile:", error);
+    res.status(500).send({ message: "Error processing file upload" });
   }
 };
 
