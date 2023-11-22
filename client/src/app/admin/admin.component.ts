@@ -21,6 +21,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   // public fileRecords$?: Observable<Array<string>>;
   private sub?: Subscription;
   files: any[] = [];
+  public isDeleting = false;
 
   public headerNames = [
     new DisplayVal(EmployeeViewRecord.prototype.employeeId, 'Employee ID'),
@@ -62,8 +63,10 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   deleteFile(fileName: string): void {
+    this.isDeleting = true;
     this.adminService.deleteFile(fileName).subscribe(() => {
       this.loadFiles();
+      this.isDeleting = false;
     });
   }
 }

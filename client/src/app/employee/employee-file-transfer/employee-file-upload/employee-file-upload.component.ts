@@ -58,9 +58,10 @@ export class EmployeeFileUploadComponent {
       .subscribe({
         next: (response: any) => {
           console.log('File uploaded successfully', response);
-          this.uploadMessage = 'File uploaded successfully';
+          this.uploadMessage =
+            'File uploaded successfully - refreshing page in 1 second';
           this.isLoading = false; // Set isLoading to false when the upload finishes
-          setTimeout(() => location.reload(), 2000); // Wait 2 seconds before refreshing
+          setTimeout(() => location.reload(), 1000); // Wait 1 seconds before refreshing
 
           // Handle the response, maybe navigate away or reset the form
         },
@@ -68,7 +69,7 @@ export class EmployeeFileUploadComponent {
           console.error('Error uploading file', error);
           this.uploadMessage = 'Error uploading file';
           this.isLoading = false; // Set isLoading to false when the upload finishes
-          setTimeout(() => location.reload(), 2000); // Wait 2 seconds before refreshing
+          setTimeout(() => location.reload(), 1000); // Wait 1 seconds before refreshing
 
           // Handle the error, maybe show an error message to the user
         },

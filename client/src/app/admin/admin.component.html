@@ -33,4 +33,8 @@
       <p class="no-files">No files available.</p>
     </ng-template>
   </div>
+  <div *ngIf="isDeleting" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Deleting...</p>
+  </div>
 </div>
