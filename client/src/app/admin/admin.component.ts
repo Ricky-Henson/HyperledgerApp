@@ -18,8 +18,9 @@ import {
 export class AdminComponent implements OnInit, OnDestroy {
   public adminId: any;
   public employeeRecords$?: Observable<Array<EmployeeAdminViewRecord>>;
-  public fileRecords$?: Observable<Array<string>>;
+  // public fileRecords$?: Observable<Array<string>>;
   private sub?: Subscription;
+  files: any[] = [];
 
   public headerNames = [
     new DisplayVal(EmployeeViewRecord.prototype.employeeId, 'Employee ID'),
@@ -50,7 +51,14 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   public loadFiles(): void {
-    this.fileRecords$ = this.adminService.getFileListForAdmin();
+    this.adminService.getFileListForAdmin().subscribe(
+      (data) => {
+        this.files = data; // data should already be an array of filenames
+      },
+      (error) => {
+        console.error('Error fetching files', error);
+      }
+    );
   }
 
   deleteFile(fileName: string): void {

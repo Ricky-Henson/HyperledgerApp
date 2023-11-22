@@ -21,10 +21,7 @@
     <h2>Manage Files</h2>
   </div>
   <div class="file-list-container">
-    <ul
-      class="file-list"
-      *ngIf="fileRecords$ | async as files; else noFilesTemplate"
-    >
+    <ul class="file-list" *ngIf="files.length > 0; else noFilesTemplate">
       <li class="file-item" *ngFor="let file of files">
         <span class="file-name">{{ file.name }}</span>
         <button class="delete-btn" (click)="deleteFile(file.name)">
