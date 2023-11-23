@@ -15,9 +15,9 @@ const redis = require("redis");
  * @description enrol admin of office 3 in redis
  */
 async function initRedis3() {
-  redisUrl = "redis://127.0.0.1:6381";
-  redisPassword = "office3lithium";
-  redisClient = redis.createClient(redisUrl);
+  let redisUrl = "redis://127.0.0.1:6381";
+  let redisPassword = "office3lithium";
+  let redisClient = redis.createClient(redisUrl);
   redisClient.AUTH(redisPassword);
 
   const adminDetails3 = {
