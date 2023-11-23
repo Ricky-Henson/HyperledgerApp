@@ -137,30 +137,53 @@ exports.deleteFile = async (req, res) => {
 
     // Get the file name from the request
     const fileName = req.params.fileName;
-
+    console.log("fileName in admin-route:" + fileName);
+    // Get the part of the filename after 'EID[0-9]_EID[0-9]_'
+    const match = fileName.match(/EID[0-9]_EID[0-9]_(.*)/);
+    const originalname = match ? match[1] : "";
+    console.log("originalname in admin-route:" + originalname);
     // Compute the path to the file
-    const filePath = path.join(__dirname, '../upload', fileName);
+    const filePath = path.join(__dirname, "../upload", fileName);
 
     // Read the file data
     const fileData = await fs.readFile(filePath);
-    console.log("fileData in admin-route:", fileData);
-    // Compute the hash of the file
-    const fileHash = crypto.createHash('sha256').update(fileData).digest('hex');
+    // console.log("fileData in admin-route:", fileData.toString());
+
+    // Combine the originalname and the file data
+    const combinedData = originalname + fileData.toString();
+
+    // Compute the hash of the combined data
+    const fileHash = crypto
+      .createHash("sha256")
+      .update(combinedData)
+      .digest("hex");
     console.log("fileHash in admin-route:", fileHash);
-    const agrs = [JSON.stringify(fileHash)];
+
+    const args = [JSON.stringify(fileHash)];
     // Connect to Fabric Gateway
     const networkObj = await network.connectToNetwork(req.headers.username);
 
     // Invoke the smart contract function to delete the file
-    const response = await network.invoke(networkObj, false, 'AdminContract:deleteFile', agrs);
+    const response = await network.invoke(
+      networkObj,
+      false,
+      "AdminContract:deleteFile",
+      args
+    );
 
-    // Optionally, delete the file from the local storage
+    // Check if the chaincode returned an error
+    if (response.error) {
+      // Return an error response
+      return res.status(500).send({ message: "Error in chaincode execution" });
+    }
+
+    // If there's no error in the chaincode execution, delete the file
     await fs.unlink(filePath);
 
     res.status(200).send(response);
   } catch (error) {
-    console.error('Error in deleteFile:', error);
-    res.status(500).send({ message: 'Error processing file deletion' });
+    console.error("Error in deleteFile:", error);
+    res.status(500).send({ message: "Error processing file deletion" });
   }
 };
 
