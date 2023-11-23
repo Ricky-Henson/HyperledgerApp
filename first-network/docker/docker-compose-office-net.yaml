@@ -6,16 +6,16 @@
 version: "2"
 
 volumes:
-  orderer.lithium.com:
-  peer0.office1.lithium.com:
-  peer0.office2.lithium.com:
+  orderer.ccu.com:
+  peer0.office1.ccu.com:
+  peer0.office2.ccu.com:
 
 networks:
   office:
 
 services:
-  orderer.lithium.com:
-    container_name: orderer.lithium.com
+  orderer.ccu.com:
+    container_name: orderer.ccu.com
     image: hyperledger/fabric-orderer:$IMAGE_TAG
     environment:
       - FABRIC_LOGGING_SPEC=INFO
@@ -39,16 +39,16 @@ services:
     command: orderer
     volumes:
       - ../system-genesis-block/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-      - ../organizations/ordererOrganizations/lithium.com/orderers/orderer.lithium.com/msp:/var/hyperledger/orderer/msp
-      - ../organizations/ordererOrganizations/lithium.com/orderers/orderer.lithium.com/tls/:/var/hyperledger/orderer/tls
-      - orderer.lithium.com:/var/hyperledger/production/orderer
+      - ../organizations/ordererOrganizations/ccu.com/orderers/orderer.ccu.com/msp:/var/hyperledger/orderer/msp
+      - ../organizations/ordererOrganizations/ccu.com/orderers/orderer.ccu.com/tls/:/var/hyperledger/orderer/tls
+      - orderer.ccu.com:/var/hyperledger/production/orderer
     ports:
       - 7050:7050
     networks:
       - office
 
-  peer0.office1.lithium.com:
-    container_name: peer0.office1.lithium.com
+  peer0.office1.ccu.com:
+    container_name: peer0.office1.ccu.com
     image: hyperledger/fabric-peer:$IMAGE_TAG
     environment:
       #Generic peer variables
@@ -65,19 +65,19 @@ services:
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
       # Peer specific variabes
-      - CORE_PEER_ID=peer0.office1.lithium.com
-      - CORE_PEER_ADDRESS=peer0.office1.lithium.com:7051
+      - CORE_PEER_ID=peer0.office1.ccu.com
+      - CORE_PEER_ADDRESS=peer0.office1.ccu.com:7051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.office1.lithium.com:7052
+      - CORE_PEER_CHAINCODEADDRESS=peer0.office1.ccu.com:7052
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.office1.lithium.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.office1.lithium.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.office1.ccu.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.office1.ccu.com:7051
       - CORE_PEER_LOCALMSPID=office1MSP
     volumes:
       - /var/run/:/host/var/run/
-      - ../organizations/peerOrganizations/office1.lithium.com/peers/peer0.office1.lithium.com/msp:/etc/hyperledger/fabric/msp
-      - ../organizations/peerOrganizations/office1.lithium.com/peers/peer0.office1.lithium.com/tls:/etc/hyperledger/fabric/tls
-      - peer0.office1.lithium.com:/var/hyperledger/production
+      - ../organizations/peerOrganizations/office1.ccu.com/peers/peer0.office1.ccu.com/msp:/etc/hyperledger/fabric/msp
+      - ../organizations/peerOrganizations/office1.ccu.com/peers/peer0.office1.ccu.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.office1.ccu.com:/var/hyperledger/production
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
@@ -85,8 +85,8 @@ services:
     networks:
       - office
 
-  peer0.office2.lithium.com:
-    container_name: peer0.office2.lithium.com
+  peer0.office2.ccu.com:
+    container_name: peer0.office2.ccu.com
     image: hyperledger/fabric-peer:$IMAGE_TAG
     environment:
       #Generic peer variables
@@ -103,19 +103,19 @@ services:
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
       # Peer specific variabes
-      - CORE_PEER_ID=peer0.office2.lithium.com
-      - CORE_PEER_ADDRESS=peer0.office2.lithium.com:9051
+      - CORE_PEER_ID=peer0.office2.ccu.com
+      - CORE_PEER_ADDRESS=peer0.office2.ccu.com:9051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.office2.lithium.com:9052
+      - CORE_PEER_CHAINCODEADDRESS=peer0.office2.ccu.com:9052
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.office2.lithium.com:9051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.office2.lithium.com:9051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.office2.ccu.com:9051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.office2.ccu.com:9051
       - CORE_PEER_LOCALMSPID=office2MSP
     volumes:
       - /var/run/:/host/var/run/
-      - ../organizations/peerOrganizations/office2.lithium.com/peers/peer0.office2.lithium.com/msp:/etc/hyperledger/fabric/msp
-      - ../organizations/peerOrganizations/office2.lithium.com/peers/peer0.office2.lithium.com/tls:/etc/hyperledger/fabric/tls
-      - peer0.office2.lithium.com:/var/hyperledger/production
+      - ../organizations/peerOrganizations/office2.ccu.com/peers/peer0.office2.ccu.com/msp:/etc/hyperledger/fabric/msp
+      - ../organizations/peerOrganizations/office2.ccu.com/peers/peer0.office2.ccu.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.office2.ccu.com:/var/hyperledger/production
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:

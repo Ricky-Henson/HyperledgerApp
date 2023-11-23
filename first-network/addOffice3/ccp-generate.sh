@@ -29,8 +29,8 @@ function yaml_ccp {
 ORG=3
 P0PORT=11051
 CAPORT=11054
-PEERPEM=../organizations/peerOrganizations/office3.lithium.com/tlsca/tlsca.office3.lithium.com-cert.pem
-CAPEM=../organizations/peerOrganizations/office3.lithium.com/ca/ca.office3.lithium.com-cert.pem
+PEERPEM=../organizations/peerOrganizations/office3.ccu.com/tlsca/tlsca.office3.ccu.com-cert.pem
+CAPEM=../organizations/peerOrganizations/office3.ccu.com/ca/ca.office3.ccu.com-cert.pem
 
-echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > ../organizations/peerOrganizations/office3.lithium.com/connection-office3.json
-echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > ../organizations/peerOrganizations/office3.lithium.com/connection-office3.yaml
+echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > ../organizations/peerOrganizations/office3.ccu.com/connection-office3.json
+echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > ../organizations/peerOrganizations/office3.ccu.com/connection-office3.yaml

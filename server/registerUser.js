@@ -44,7 +44,7 @@ exports.enrollRegisterUser = async function (officeId, userId, attributes) {
 
       // build an instance of the fabric ca services client based on
       // the information in the network configuration
-      caClient = buildCAClient(FabricCAServices, ccp, "ca.office1.lithium.com");
+      caClient = buildCAClient(FabricCAServices, ccp, "ca.office1.ccu.com");
 
       mspOrg = "office1MSP";
       adminUserId = "office1admin";
@@ -54,7 +54,7 @@ exports.enrollRegisterUser = async function (officeId, userId, attributes) {
 
       // build an instance of the fabric ca services client based on
       // the information in the network configuration
-      caClient = buildCAClient(FabricCAServices, ccp, "ca.office2.lithium.com");
+      caClient = buildCAClient(FabricCAServices, ccp, "ca.office2.ccu.com");
 
       mspOrg = "office2MSP";
       adminUserId = "office2admin";
@@ -64,7 +64,7 @@ exports.enrollRegisterUser = async function (officeId, userId, attributes) {
 
       // build an instance of the fabric ca services client based on
       // the information in the network configuration
-      caClient = buildCAClient(FabricCAServices, ccp, "ca.office3.lithium.com");
+      caClient = buildCAClient(FabricCAServices, ccp, "ca.office3.ccu.com");
 
       mspOrg = "office3MSP";
       adminUserId = "office3admin";

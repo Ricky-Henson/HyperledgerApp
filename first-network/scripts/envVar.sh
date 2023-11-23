@@ -9,16 +9,16 @@
 source scriptUtils.sh
 
 export CORE_PEER_TLS_ENABLED=true
-export ORDERER_CA=${PWD}/organizations/ordererOrganizations/lithium.com/orderers/orderer.lithium.com/msp/tlscacerts/tlsca.lithium.com-cert.pem
-export PEER0_OFFICE1_CA=${PWD}/organizations/peerOrganizations/office1.lithium.com/peers/peer0.office1.lithium.com/tls/ca.crt
-export PEER0_OFFICE2_CA=${PWD}/organizations/peerOrganizations/office2.lithium.com/peers/peer0.office2.lithium.com/tls/ca.crt
-export PEER0_OFFICE3_CA=${PWD}/organizations/peerOrganizations/office3.lithium.com/peers/peer0.office3.lithium.com/tls/ca.crt
+export ORDERER_CA=${PWD}/organizations/ordererOrganizations/ccu.com/orderers/orderer.ccu.com/msp/tlscacerts/tlsca.ccu.com-cert.pem
+export PEER0_OFFICE1_CA=${PWD}/organizations/peerOrganizations/office1.ccu.com/peers/peer0.office1.ccu.com/tls/ca.crt
+export PEER0_OFFICE2_CA=${PWD}/organizations/peerOrganizations/office2.ccu.com/peers/peer0.office2.ccu.com/tls/ca.crt
+export PEER0_OFFICE3_CA=${PWD}/organizations/peerOrganizations/office3.ccu.com/peers/peer0.office3.ccu.com/tls/ca.crt
 
 # Set OrdererOrg.Admin globals
 setOrdererGlobals() {
   export CORE_PEER_LOCALMSPID="OrdererMSP"
-  export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/ordererOrganizations/lithium.com/orderers/orderer.lithium.com/msp/tlscacerts/tlsca.lithium.com-cert.pem
-  export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/ordererOrganizations/lithium.com/users/Admin@lithium.com/msp
+  export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/ordererOrganizations/ccu.com/orderers/orderer.ccu.com/msp/tlscacerts/tlsca.ccu.com-cert.pem
+  export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/ordererOrganizations/ccu.com/users/Admin@ccu.com/msp
 }
 
 # Set environment variables for the peer org
@@ -33,18 +33,18 @@ setGlobals() {
   if [ $USING_ORG -eq 1 ]; then
     export CORE_PEER_LOCALMSPID="office1MSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_OFFICE1_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/office1.lithium.com/users/Admin@office1.lithium.com/msp
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/office1.ccu.com/users/Admin@office1.ccu.com/msp
     export CORE_PEER_ADDRESS=localhost:7051
   elif [ $USING_ORG -eq 2 ]; then
     export CORE_PEER_LOCALMSPID="office2MSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_OFFICE2_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/office2.lithium.com/users/Admin@office2.lithium.com/msp
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/office2.ccu.com/users/Admin@office2.ccu.com/msp
     export CORE_PEER_ADDRESS=localhost:9051
 
   elif [ $USING_ORG -eq 3 ]; then
     export CORE_PEER_LOCALMSPID="office3MSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_OFFICE3_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/office3.lithium.com/users/Admin@office3.lithium.com/msp
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/office3.ccu.com/users/Admin@office3.ccu.com/msp
     export CORE_PEER_ADDRESS=localhost:11051
   else
     errorln "OFFICE Unknown"

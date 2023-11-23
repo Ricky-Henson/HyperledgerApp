@@ -160,7 +160,7 @@ exports.registerUser = async function (attributes) {
       const caClient = buildCAClient(
         FabricCAServices,
         ccp,
-        "ca.office1.lithium.com"
+        "ca.office1.ccu.com"
       );
       await registerAndEnrollUser(
         caClient,
@@ -175,7 +175,7 @@ exports.registerUser = async function (attributes) {
       const caClient = buildCAClient(
         FabricCAServices,
         ccp,
-        "ca.office2.lithium.com"
+        "ca.office2.ccu.com"
       );
       await registerAndEnrollUser(
         caClient,
@@ -190,7 +190,7 @@ exports.registerUser = async function (attributes) {
       const caClient = buildCAClient(
         FabricCAServices,
         ccp,
-        "ca.office3.lithium.com"
+        "ca.office3.ccu.com"
       );
       await registerAndEnrollUser(
         caClient,
@@ -227,13 +227,13 @@ exports.getAllEmployeesByOfficeId = async function (networkObj, officeId) {
     // TODO: Must be handled in a config file instead of using if
     if (officeId === 1) {
       const ccp = buildCCPOffice1();
-      caClient = buildCAClient(FabricCAServices, ccp, "ca.office1.lithium.com");
+      caClient = buildCAClient(FabricCAServices, ccp, "ca.office1.ccu.com");
     } else if (officeId === 2) {
       const ccp = buildCCPOffice2();
-      caClient = buildCAClient(FabricCAServices, ccp, "ca.office2.lithium.com");
+      caClient = buildCAClient(FabricCAServices, ccp, "ca.office2.ccu.com");
     } else if (officeId === 3) {
       const ccp = buildCCPOffice3();
-      caClient = buildCAClient(FabricCAServices, ccp, "ca.office3.lithium.com");
+      caClient = buildCAClient(FabricCAServices, ccp, "ca.office3.ccu.com");
     }
 
     // Use the identity service to get the user enrolled using the respective CA

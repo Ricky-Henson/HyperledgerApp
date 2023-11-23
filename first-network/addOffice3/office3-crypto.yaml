@@ -11,7 +11,7 @@ PeerOrgs:
   # Org3
   # ---------------------------------------------------------------------------
   - Name: office3
-    Domain: office3.lithium.com
+    Domain: office3.ccu.com
     EnableNodeOUs: true
     Template:
       Count: 1

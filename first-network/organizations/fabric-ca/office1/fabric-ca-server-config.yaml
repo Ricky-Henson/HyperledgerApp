@@ -130,7 +130,7 @@ registry:
   # Contains identity information which is used when LDAP is disabled
   identities:
      - name: office1admin
-       pass: office1lithium
+       pass: office1ccu
        type: client
        affiliation: ""
        attrs:

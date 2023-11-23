@@ -2,7 +2,7 @@ const client = require("./lib/init_redis")({
   host: "localhost",
   port: 6379,
 });
-client.auth("office1lithium");
+client.auth("office1ccu");
 
 client.SET("key1", "val1");
 

@@ -6,8 +6,8 @@ networks:
 services:
   redis1:
     image: "redis:latest"
-    container_name: redis.office1.lithium.com
-    command: redis-server --requirepass office1lithium
+    container_name: redis.office1.ccu.com
+    command: redis-server --requirepass office1ccu
     ports:
       - "6379:6379"
     networks:
@@ -15,8 +15,8 @@ services:
 
   redis2:
     image: "redis:latest"
-    container_name: redis.office2.lithium.com
-    command: redis-server --requirepass office2lithium
+    container_name: redis.office2.ccu.com
+    command: redis-server --requirepass office2ccu
     ports:
       - "6380:6379"
     networks:
@@ -24,8 +24,8 @@ services:
 
   redis3:
     image: "redis:latest"
-    container_name: redis.office3.lithium.com
-    command: redis-server --requirepass office3lithium
+    container_name: redis.office3.ccu.com
+    command: redis-server --requirepass office3ccu
     ports:
       - "6381:6379"
     networks:

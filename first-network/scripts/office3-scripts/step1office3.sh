@@ -39,7 +39,7 @@ fetchChannelConfig() {
 
   echo "Fetching the most recent configuration block for the channel"
   set -x
-  peer channel fetch config config_block.pb -o orderer.lithium.com:7050 --ordererTLSHostnameOverride orderer.lithium.com -c $CHANNEL --tls --cafile $ORDERER_CA
+  peer channel fetch config config_block.pb -o orderer.ccu.com:7050 --ordererTLSHostnameOverride orderer.ccu.com -c $CHANNEL --tls --cafile $ORDERER_CA
   { set +x; } 2>/dev/null
 
   echo "Decoding config block to JSON and isolating config to ${OUTPUT}"
@@ -87,7 +87,7 @@ fetchChannelConfig 1 ${CHANNEL_NAME} config.json
 
 # Modify the configuration to append the new org
 set -x
-jq -s '.[0] * {"channel_group":{"groups":{"Application":{"groups": {"office3MSP":.[1]}}}}}' config.json ./organizations/peerOrganizations/office3.lithium.com/office3.json > modified_config.json
+jq -s '.[0] * {"channel_group":{"groups":{"Application":{"groups": {"office3MSP":.[1]}}}}}' config.json ./organizations/peerOrganizations/office3.ccu.com/office3.json > modified_config.json
 { set +x; } 2>/dev/null
 
 # Compute a config update, based on the differences between config.json and modified_config.json, write it as a transaction to office3_update_in_envelope.pb
@@ -106,7 +106,7 @@ echo "========= Submitting transaction from a different peer (peer0.office2) whi
 echo
 setGlobals 2
 set -x
-peer channel update -f office3_update_in_envelope.pb -c ${CHANNEL_NAME} -o orderer.lithium.com:7050 --ordererTLSHostnameOverride orderer.lithium.com --tls --cafile ${ORDERER_CA}
+peer channel update -f office3_update_in_envelope.pb -c ${CHANNEL_NAME} -o orderer.ccu.com:7050 --ordererTLSHostnameOverride orderer.ccu.com --tls --cafile ${ORDERER_CA}
 { set +x; } 2>/dev/null
 
 echo

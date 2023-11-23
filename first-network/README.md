@@ -32,11 +32,11 @@ Before you can deploy the office network, you need to follow the instructions to
      export FABRIC_CFG_PATH=$PWD/../config/
 	export CORE_PEER_TLS_ENABLED=true
 	export CORE_PEER_LOCALMSPID="office1MSP"
-	export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/office1.lithium.com/peers/peer0.office1.lithium.com/tls/ca.crt
-     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/office1.lithium.com/users/Admin@office1.lithium.com/msp
+	export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/office1.ccu.com/peers/peer0.office1.ccu.com/tls/ca.crt
+     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/office1.ccu.com/users/Admin@office1.ccu.com/msp
      export CORE_PEER_ADDRESS=localhost:7051
    - If initLedger argument is added in deployCC command, then ignore the following command. If not, execute this statement
-     peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.lithium.com --tls --cafile ${PWD}/organizations/ordererOrganizations/lithium.com/orderers/orderer.lithium.com/msp/tlscacerts/tlsca.lithium.com-cert.pem -C officechannel -n employee --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/office1.lithium.com/peers/peer0.office1.lithium.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/office2.lithium.com/peers/peer0.office2.lithium.com/tls/ca.crt --peerAddresses localhost:11051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/office3.lithium.com/peers/peer0.office3.lithium.com/tls/ca.crt -c '{"function":"initLedger","Args":[]}'
+     peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.ccu.com --tls --cafile ${PWD}/organizations/ordererOrganizations/ccu.com/orderers/orderer.ccu.com/msp/tlscacerts/tlsca.ccu.com-cert.pem -C officechannel -n employee --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/office1.ccu.com/peers/peer0.office1.ccu.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/office2.ccu.com/peers/peer0.office2.ccu.com/tls/ca.crt --peerAddresses localhost:11051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/office3.ccu.com/peers/peer0.office3.ccu.com/tls/ca.crt -c '{"function":"initLedger","Args":[]}'
 
 6. Sample query - peer chaincode query -C officechannel -n employee -c '{"Args":["reademployee","employee1"]}'
 7. To bring the network down

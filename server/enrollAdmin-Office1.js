@@ -18,7 +18,7 @@ const {
   buildWallet,
 } = require("../employee-asset-transfer/application-javascript/AppUtil.js");
 const adminOffice1 = "office1admin";
-const adminOffice1Passwd = "office1lithium";
+const adminOffice1Passwd = "office1ccu";
 
 const mspOffice1 = "office1MSP";
 const walletPath = path.join(
@@ -42,7 +42,7 @@ exports.enrollAdminOffice1 = async function () {
     const caClient = buildCAClient(
       FabricCAServices,
       ccp,
-      "ca.office1.lithium.com"
+      "ca.office1.ccu.com"
     );
 
     // setup the wallet to hold the credentials of the application user

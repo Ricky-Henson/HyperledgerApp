@@ -14,24 +14,24 @@
   "organizations": {
     "office${ORG}": {
       "mspid": "office${ORG}MSP",
-      "peers": ["peer0.office${ORG}.lithium.com"],
-      "certificateAuthorities": ["ca.office${ORG}.lithium.com"]
+      "peers": ["peer0.office${ORG}.ccu.com"],
+      "certificateAuthorities": ["ca.office${ORG}.ccu.com"]
     }
   },
   "peers": {
-    "peer0.office${ORG}.lithium.com": {
+    "peer0.office${ORG}.ccu.com": {
       "url": "grpcs://localhost:${P0PORT}",
       "tlsCACerts": {
         "pem": "${PEERPEM}"
       },
       "grpcOptions": {
-        "ssl-target-name-override": "peer0.office${ORG}.lithium.com",
-        "hostnameOverride": "peer0.office${ORG}.lithium.com"
+        "ssl-target-name-override": "peer0.office${ORG}.ccu.com",
+        "hostnameOverride": "peer0.office${ORG}.ccu.com"
       }
     }
   },
   "certificateAuthorities": {
-    "ca.office${ORG}.lithium.com": {
+    "ca.office${ORG}.ccu.com": {
       "url": "https://localhost:${CAPORT}",
       "caName": "ca-office${ORG}",
       "tlsCACerts": {

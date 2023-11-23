@@ -129,7 +129,7 @@ function generateOffice3Definition() {
   echo "##########################################################"
    export FABRIC_CFG_PATH=$PWD
    set -x
-   configtxgen -printOrg office3MSP > ../organizations/peerOrganizations/office3.lithium.com/office3.json
+   configtxgen -printOrg office3MSP > ../organizations/peerOrganizations/office3.ccu.com/office3.json
    res=$?
    { set +x; } 2>/dev/null
    if [ $res -ne 0 ]; then
@@ -164,7 +164,7 @@ function addOffice3 () {
   fi
 
   # generate artifacts if they don't exist
-  if [ ! -d "../organizations/peerOrganizations/office3.lithium.com" ]; then
+  if [ ! -d "../organizations/peerOrganizations/office3.ccu.com" ]; then
     generateOffice3
     generateOffice3Definition
   fi

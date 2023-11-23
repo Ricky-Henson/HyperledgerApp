@@ -24,7 +24,7 @@ exports.buildCCPOffice1 = () => {
     "first-network",
     "organizations",
     "peerOrganizations",
-    "office1.lithium.com",
+    "office1.ccu.com",
     "connection-office1.json"
   );
   const fileExists = fs.existsSync(ccpPath);
@@ -55,7 +55,7 @@ exports.buildCCPOffice2 = () => {
     "first-network",
     "organizations",
     "peerOrganizations",
-    "office2.lithium.com",
+    "office2.ccu.com",
     "connection-office2.json"
   );
   const fileExists = fs.existsSync(ccpPath);
@@ -86,7 +86,7 @@ exports.buildCCPOffice3 = () => {
     "first-network",
     "organizations",
     "peerOrganizations",
-    "office3.lithium.com",
+    "office3.ccu.com",
     "connection-office3.json"
   );
   const fileExists = fs.existsSync(ccpPath);

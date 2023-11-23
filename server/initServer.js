@@ -69,7 +69,7 @@ async function initLedger() {
  */
 async function initRedis() {
   let redisUrl = "redis://127.0.0.1:6379";
-  let redisPassword = "office1lithium";
+  let redisPassword = "office1ccu";
   let redisClient = redis.createClient(redisUrl);
   redisClient.AUTH(redisPassword);
 
@@ -83,7 +83,7 @@ async function initRedis() {
   redisClient.QUIT();
 
   redisUrl = "redis://127.0.0.1:6380";
-  redisPassword = "office2lithium";
+  redisPassword = "office2ccu";
   redisClient = redis.createClient(redisUrl);
   redisClient.AUTH(redisPassword);
 

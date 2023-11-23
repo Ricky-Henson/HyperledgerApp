@@ -70,13 +70,13 @@ exports.createRedisClient = async function (officeId) {
   let redisPassword;
   if (officeId === 1) {
     redisUrl = "redis://127.0.0.1:6379";
-    redisPassword = "office1lithium";
+    redisPassword = "office1ccu";
   } else if (officeId === 2) {
     redisUrl = "redis://127.0.0.1:6380";
-    redisPassword = "office2lithium";
+    redisPassword = "office2ccu";
   } else if (officeId === 3) {
     redisUrl = "redis://127.0.0.1:6381";
-    redisPassword = "office3lithium";
+    redisPassword = "office3ccu";
   }
   const redisClient = redis.createClient(redisUrl);
   redisClient.AUTH(redisPassword);

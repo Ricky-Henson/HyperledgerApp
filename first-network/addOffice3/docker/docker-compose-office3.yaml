@@ -6,14 +6,14 @@
 version: "2"
 
 volumes:
-  peer0.office3.lithium.com:
+  peer0.office3.ccu.com:
 
 networks:
   office:
 
 services:
-  peer0.office3.lithium.com:
-    container_name: peer0.office3.lithium.com
+  peer0.office3.ccu.com:
+    container_name: peer0.office3.ccu.com
     image: hyperledger/fabric-peer:$IMAGE_TAG
     environment:
       #Generic peer variables
@@ -30,19 +30,19 @@ services:
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
       # Peer specific variabes
-      - CORE_PEER_ID=peer0.office3.lithium.com
-      - CORE_PEER_ADDRESS=peer0.office3.lithium.com:11051
+      - CORE_PEER_ID=peer0.office3.ccu.com
+      - CORE_PEER_ADDRESS=peer0.office3.ccu.com:11051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:11051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.office3.lithium.com:11052
+      - CORE_PEER_CHAINCODEADDRESS=peer0.office3.ccu.com:11052
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:11052
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.office3.lithium.com:11051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.office3.lithium.com:11051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.office3.ccu.com:11051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.office3.ccu.com:11051
       - CORE_PEER_LOCALMSPID=office3MSP
     volumes:
       - /var/run/:/host/var/run/
-      - ../../organizations/peerOrganizations/office3.lithium.com/peers/peer0.office3.lithium.com/msp:/etc/hyperledger/fabric/msp
-      - ../../organizations/peerOrganizations/office3.lithium.com/peers/peer0.office3.lithium.com/tls:/etc/hyperledger/fabric/tls
-      - peer0.office3.lithium.com:/var/hyperledger/production
+      - ../../organizations/peerOrganizations/office3.ccu.com/peers/peer0.office3.ccu.com/msp:/etc/hyperledger/fabric/msp
+      - ../../organizations/peerOrganizations/office3.ccu.com/peers/peer0.office3.ccu.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.office3.ccu.com:/var/hyperledger/production
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
@@ -61,13 +61,13 @@ services:
       - FABRIC_LOGGING_SPEC=INFO
       #- FABRIC_LOGGING_SPEC=DEBUG
       - CORE_PEER_ID=Office3cli
-      - CORE_PEER_ADDRESS=peer0.office3.lithium.com:11051
+      - CORE_PEER_ADDRESS=peer0.office3.ccu.com:11051
       - CORE_PEER_LOCALMSPID=office3MSP
       - CORE_PEER_TLS_ENABLED=true
-      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations/peerOrganizations/office3.lithium.com/peers/peer0.office3.lithium.com/tls/server.crt
-      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations/peerOrganizations/office3.lithium.com/peers/peer0.office3.lithium.com/tls/server.key
-      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations/peerOrganizations/office3.lithium.com/peers/peer0.office3.lithium.com/tls/ca.crt
-      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations/peerOrganizations/office3.lithium.com/users/Admin@office3.lithium.com/msp
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations/peerOrganizations/office3.ccu.com/peers/peer0.office3.ccu.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations/peerOrganizations/office3.ccu.com/peers/peer0.office3.ccu.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations/peerOrganizations/office3.ccu.com/peers/peer0.office3.ccu.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations/peerOrganizations/office3.ccu.com/users/Admin@office3.ccu.com/msp
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: /bin/bash
     volumes:
@@ -76,6 +76,6 @@ services:
       - ../../organizations:/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations
       - ../../scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
     depends_on:
-      - peer0.office3.lithium.com
+      - peer0.office3.ccu.com
     networks:
       - office

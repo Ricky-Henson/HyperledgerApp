@@ -29,17 +29,17 @@ function yaml_ccp {
 ORG=1
 P0PORT=7051
 CAPORT=7054
-PEERPEM=organizations/peerOrganizations/office1.lithium.com/tlsca/tlsca.office1.lithium.com-cert.pem
-CAPEM=organizations/peerOrganizations/office1.lithium.com/ca/ca.office1.lithium.com-cert.pem
+PEERPEM=organizations/peerOrganizations/office1.ccu.com/tlsca/tlsca.office1.ccu.com-cert.pem
+CAPEM=organizations/peerOrganizations/office1.ccu.com/ca/ca.office1.ccu.com-cert.pem
 
-echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/office1.lithium.com/connection-office1.json
-echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/office1.lithium.com/connection-office1.yaml
+echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/office1.ccu.com/connection-office1.json
+echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/office1.ccu.com/connection-office1.yaml
 
 ORG=2
 P0PORT=9051
 CAPORT=8054
-PEERPEM=organizations/peerOrganizations/office2.lithium.com/tlsca/tlsca.office2.lithium.com-cert.pem
-CAPEM=organizations/peerOrganizations/office2.lithium.com/ca/ca.office2.lithium.com-cert.pem
+PEERPEM=organizations/peerOrganizations/office2.ccu.com/tlsca/tlsca.office2.ccu.com-cert.pem
+CAPEM=organizations/peerOrganizations/office2.ccu.com/ca/ca.office2.ccu.com-cert.pem
 
-echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/office2.lithium.com/connection-office2.json
-echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/office2.lithium.com/connection-office2.yaml
+echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/office2.ccu.com/connection-office2.json
+echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/office2.ccu.com/connection-office2.yaml

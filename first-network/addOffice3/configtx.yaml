@@ -21,7 +21,7 @@ Organizations:
     # ID to load the MSP definition as
     ID: office3MSP
 
-    MSPDir: ../organizations/peerOrganizations/office3.lithium.com/msp
+    MSPDir: ../organizations/peerOrganizations/office3.ccu.com/msp
 
     Policies:
       Readers:
@@ -41,5 +41,5 @@ Organizations:
       # AnchorPeers defines the location of peers which can be used
       # for cross org gossip communication.  Note, this value is only
       # encoded in the genesis block in the Application section context
-      - Host: peer0.office3.lithium.com
+      - Host: peer0.office3.ccu.com
         Port: 11051

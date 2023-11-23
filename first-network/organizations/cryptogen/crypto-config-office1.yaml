@@ -11,7 +11,7 @@ PeerOrgs:
   # Org1
   # ---------------------------------------------------------------------------
   - Name: office1
-    Domain: office1.lithium.com
+    Domain: office1.ccu.com
     EnableNodeOUs: true
     # ---------------------------------------------------------------------------
     # "Specs"
@@ -29,8 +29,8 @@ PeerOrgs:
     #                 which obtains its values from the Spec.Hostname and
     #                 Org.Domain, respectively.
     # ---------------------------------------------------------------------------
-    #   - Hostname: foo # implicitly "foo.org1.lithium.com"
-    #     CommonName: foo27.org5.lithium.com # overrides Hostname-based FQDN set above
+    #   - Hostname: foo # implicitly "foo.org1.ccu.com"
+    #     CommonName: foo27.org5.ccu.com # overrides Hostname-based FQDN set above
     #   - Hostname: bar
     #   - Hostname: baz
     # ---------------------------------------------------------------------------

@@ -124,7 +124,7 @@ registry:
   # Contains identity information which is used when LDAP is disabled
   identities:
     - name: office3admin
-      pass: office3lithium
+      pass: office3ccu
       type: client
       affiliation: ""
       attrs:
@@ -301,16 +301,16 @@ signing:
 #     CA certificates though it can still issue end entity certificates.
 ###########################################################################
 csr:
-  cn: ca.office3.lithium.com
+  cn: ca.office3.ccu.com
   names:
     - C: US
       ST: "North Carolina"
       L: "Raleigh"
-      O: office3.lithium.com
+      O: office3.ccu.com
       OU:
   hosts:
     - localhost
-    - office3.lithium.com
+    - office3.ccu.com
   ca:
     expiry: 131400h
     pathlength: 1
@@ -348,9 +348,9 @@ bccsp:
 # the server config file except port, debug, and tls sections.
 #
 # Examples:
-# fabric-ca-server start -b office3admin:office3lithium --cacount 2
+# fabric-ca-server start -b office3admin:office3ccu --cacount 2
 #
-# fabric-ca-server start -b office3admin:office3lithium --cafiles ca/ca1/fabric-ca-server-config.yaml
+# fabric-ca-server start -b office3admin:office3ccu --cafiles ca/ca1/fabric-ca-server-config.yaml
 # --cafiles ca/ca2/fabric-ca-server-config.yaml
 #
 #############################################################################

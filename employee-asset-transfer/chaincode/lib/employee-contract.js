@@ -108,7 +108,7 @@ class EmployeeContract extends AdminContract {
    */
   async getClientId(ctx) {
     const clientIdentity = ctx.clientIdentity.getID();
-    // Ouput of the above - 'x509::/OU=client/CN=hoffice1admin::/C=US/ST=North Carolina/L=Durham/O=hoffice1.lithium.com/CN=ca.hoffice1.lithium.com'
+    // Ouput of the above - 'x509::/OU=client/CN=hoffice1admin::/C=US/ST=North Carolina/L=Durham/O=hoffice1.ccu.com/CN=ca.hoffice1.ccu.com'
     let identity = clientIdentity.split("::");
     identity = identity[1].split("/")[2].split("=");
     return identity[1].toString("utf8");

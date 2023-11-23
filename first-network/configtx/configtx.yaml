@@ -24,7 +24,7 @@ Organizations:
     ID: OrdererMSP
 
     # MSPDir is the filesystem path which contains the MSP configuration
-    MSPDir: ../organizations/ordererOrganizations/lithium.com/msp
+    MSPDir: ../organizations/ordererOrganizations/ccu.com/msp
 
     # Policies defines the set of policies at this level of the config tree
     # For organization policies, their canonical path is usually
@@ -41,7 +41,7 @@ Organizations:
         Rule: "OR('OrdererMSP.admin')"
 
     OrdererEndpoints:
-      - orderer.lithium.com:7050
+      - orderer.ccu.com:7050
 
   - &office1
     # DefaultOrg defines the organization which is used in the sampleconfig
@@ -51,7 +51,7 @@ Organizations:
     # ID to load the MSP definition as
     ID: office1MSP
 
-    MSPDir: ../organizations/peerOrganizations/office1.lithium.com/msp
+    MSPDir: ../organizations/peerOrganizations/office1.ccu.com/msp
 
     # Policies defines the set of policies at this level of the config tree
     # For organization policies, their canonical path is usually
@@ -75,7 +75,7 @@ Organizations:
       # AnchorPeers defines the location of peers which can be used
       # for cross org gossip communication.  Note, this value is only
       # encoded in the genesis block in the Application section context
-      - Host: peer0.office1.lithium.com
+      - Host: peer0.office1.ccu.com
         Port: 7051
 
   - &office2
@@ -86,7 +86,7 @@ Organizations:
     # ID to load the MSP definition as
     ID: office2MSP
 
-    MSPDir: ../organizations/peerOrganizations/office2.lithium.com/msp
+    MSPDir: ../organizations/peerOrganizations/office2.ccu.com/msp
 
     # Policies defines the set of policies at this level of the config tree
     # For organization policies, their canonical path is usually
@@ -109,7 +109,7 @@ Organizations:
       # AnchorPeers defines the location of peers which can be used
       # for cross org gossip communication.  Note, this value is only
       # encoded in the genesis block in the Application section context
-      - Host: peer0.office2.lithium.com
+      - Host: peer0.office2.ccu.com
         Port: 9051
 
 ################################################################################
@@ -220,14 +220,14 @@ Orderer: &OrdererDefaults # Orderer Type: The orderer implementation to start
   # as TLS validation.  The preferred way to specify orderer addresses is now
   # to include the OrdererEndpoints item in your org definition
   Addresses:
-    - orderer.lithium.com:7050
+    - orderer.ccu.com:7050
 
   EtcdRaft:
     Consenters:
-      - Host: orderer.lithium.com
+      - Host: orderer.ccu.com
         Port: 7050
-        ClientTLSCert: ../organizations/ordererOrganizations/lithium.com/orderers/orderer.lithium.com/tls/server.crt
-        ServerTLSCert: ../organizations/ordererOrganizations/lithium.com/orderers/orderer.lithium.com/tls/server.crt
+        ClientTLSCert: ../organizations/ordererOrganizations/ccu.com/orderers/orderer.ccu.com/tls/server.crt
+        ServerTLSCert: ../organizations/ordererOrganizations/ccu.com/orderers/orderer.ccu.com/tls/server.crt
 
   # Batch Timeout: The amount of time to wait before creating a batch
   BatchTimeout: 2s
