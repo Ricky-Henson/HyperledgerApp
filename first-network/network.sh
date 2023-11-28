@@ -363,7 +363,11 @@ function networkDown() {
 
   # Remove files from wallet
   rm -rf ../employee-asset-transfer/application-javascript/wallet/
-  infoln "The wallet has cleared."
+  infoln "The wallet has been cleared."
+
+  # Remove files from upload folder
+  rm -rf ../server/upload/*
+  infoln "The remaining uploaded files has been cleared."
 }
 
 # Obtain the OS and Architecture string that will be used to select the correct
