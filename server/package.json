@@ -4,7 +4,7 @@
   "description": "employee application implemented in JavaScript",
   "scripts": {
     "start": "./node_modules/nodemon/bin/nodemon.js src/server.js",
-    "initialize": "node initServer.js",
+    "initialize": "node addOffice3.js && node initServer.js",
     "lint": "eslint .",
     "api-doc": "cd ../../docs/API/ && npm start",
     "readme-doc": "cd ../../docs/ReadMe/readme-website && yarn run start"

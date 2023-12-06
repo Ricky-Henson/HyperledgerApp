@@ -8,7 +8,7 @@
 
 /* eslint-disable new-cap */
 const { enrollAdminOffice3 } = require("./enrollAdmin-Office3");
-const { ROLE_ADMIN } = require('./utils')
+const { ROLE_ADMIN } = require("./utils");
 const redis = require("redis");
 
 /**
@@ -21,13 +21,13 @@ async function initRedis3() {
   redisClient.AUTH(redisPassword);
 
   const adminDetails3 = {
-    username:"office3admin",
+    username: "office3admin",
     password: redisPassword,
-    role: ROLE_ADMIN
-  }
+    role: ROLE_ADMIN,
+  };
 
   redisClient.SET("office3admin", JSON.stringify(adminDetails3));
-  console.log("Done");
+  console.log("Processing to run node initServer.js");
   redisClient.QUIT();
   return;
 }
