@@ -55,7 +55,7 @@ exports.uploadFile = async (req, res) => {
       return res.status(400).send({ message: "No file provided" });
     }
 
-    const fileName = req.file.originalname;
+    const fileName = req.file.filename;;
     console.log("fileName in employee-route:" + fileName);
     const fileData = await fs.readFile(req.file.path);
     const combinedData = fileName + fileData.toString();

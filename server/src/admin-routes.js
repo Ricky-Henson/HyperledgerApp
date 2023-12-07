@@ -138,10 +138,7 @@ exports.deleteFile = async (req, res) => {
     // Get the file name from the request
     const fileName = req.params.fileName;
     console.log("fileName in admin-route:" + fileName);
-    // Get the part of the filename after 'EID[0-9]_EID[0-9]_'
-    const match = fileName.match(/EID[0-9]_EID[0-9]_(.*)/);
-    const originalname = match ? match[1] : "";
-    console.log("originalname in admin-route:" + originalname);
+
     // Compute the path to the file
     const filePath = path.join(__dirname, "../upload", fileName);
 
@@ -150,7 +147,7 @@ exports.deleteFile = async (req, res) => {
     // console.log("fileData in admin-route:", fileData.toString());
 
     // Combine the originalname and the file data
-    const combinedData = originalname + fileData.toString();
+    const combinedData = fileName + fileData.toString();
 
     // Compute the hash of the combined data
     const fileHash = crypto
