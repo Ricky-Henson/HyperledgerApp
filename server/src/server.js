@@ -1,12 +1,4 @@
 /* eslint-disable new-cap */
-/**
- * @author Jathin Sreenivas
- * @email jathin.sreenivas@stud.fra-uas.de
- * @create date 2020-12-26 11:31:42
- * @modify date 2021-03-14 21:12:15
- * @desc NodeJS APIs to interact with the fabric network.
- * @desc Look into API docs for the documentation of the routes
- */
 
 // Classes for Node Express
 const express = require("express");
@@ -39,16 +31,6 @@ const adminRoutes = require("./admin-routes");
 const { ROLE_EMPLOYEE, ROLE_ADMIN, CHANGE_TMP_PASSWORD } = require("../utils");
 const { createRedisClient, capitalize, getMessage } = require("../utils");
 const network = require("../../employee-asset-transfer/application-javascript/app.js");
-
-// TODO: We can start the server with https so encryption will be done for the data transferred ove the network
-// TODO: followed this link https://timonweb.com/javascript/running-expressjs-server-over-https/ to create certificate and added in the code
-/* https.createServer({
-  key: fs.readFileSync(path.join(__dirname, 'ssl', 'server.key')),
-  cert: fs.readFileSync(path.join(__dirname, 'ssl', 'server.cert')),
-}, app)
-  .listen(3001, function() {
-    console.log('Backend server running on 3001! Go to https://localhost:3001/');
-  });*/
 
 // Multer setup for file storage
 
@@ -178,11 +160,9 @@ app.delete("/logout", (req, res) => {
 app.post("/employee/register", authenticateJWT, adminRoutes.createEmployee);
 app.get("/admin/files", authenticateJWT, (req, res) => {
   if (req.user.role !== ROLE_ADMIN) {
-    return res
-      .status(403)
-      .send({
-        error: "Unauthorized request: Only admin can access this route",
-      });
+    return res.status(403).send({
+      error: "Unauthorized request: Only admin can access this route",
+    });
   }
   const directoryPath = path.join(__dirname, "../upload");
 

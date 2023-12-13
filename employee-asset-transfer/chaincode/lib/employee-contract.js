@@ -1,10 +1,3 @@
-/**
- * @author Varsha Kamath
- * @email varsha.kamath@stud.fra-uas.de
- * @create date 2021-01-14 21:50:38
- * @modify date 2021-02-05 20:03:33
- * @desc [Smartcontract to read, update Employee details in legder]
- */
 /*
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -21,30 +14,30 @@ class EmployeeContract extends AdminContract {
     return await super.readEmployee(ctx, employeeId);
   }
 
-  async uploadFile(ctx, fileHash)  {
-      // Log the received file hash for debugging purposes
-      console.log("Received fileHash:", fileHash);
-  
-      // Check if the fileHash is valid (non-empty string)
-      if (!fileHash || typeof fileHash !== 'string') {
-        throw new Error('Invalid file hash provided');
-      }
-  
-      // Use the file hash itself as a key for the ledger entry
-      // This requires that each file hash is unique
-      const key = fileHash;
-  
-      // Check if a record with this file hash already exists to prevent overwrites
-      const exists = await this.fileHashExists(ctx, key);
-      if (exists) {
-        throw new Error(`A file with hash ${key} already exists`);
-      }
-      const buffer = Buffer.from(fileHash);
-      console.log("Buffer:", buffer);
-      // Store the file hash in the ledger
-      await ctx.stub.putState(key, buffer);
+  async uploadFile(ctx, fileHash) {
+    // Log the received file hash for debugging purposes
+    console.log("Received fileHash:", fileHash);
+
+    // Check if the fileHash is valid (non-empty string)
+    if (!fileHash || typeof fileHash !== "string") {
+      throw new Error("Invalid file hash provided");
+    }
+
+    // Use the file hash itself as a key for the ledger entry
+    // This requires that each file hash is unique
+    const key = fileHash;
+
+    // Check if a record with this file hash already exists to prevent overwrites
+    const exists = await this.fileHashExists(ctx, key);
+    if (exists) {
+      throw new Error(`A file with hash ${key} already exists`);
+    }
+    const buffer = Buffer.from(fileHash);
+    console.log("Buffer:", buffer);
+    // Store the file hash in the ledger
+    await ctx.stub.putState(key, buffer);
   }
-  
+
   /**
    * Helper function to check if a file hash already exists in the ledger.
    * @param {Context} ctx The transaction context.
@@ -55,8 +48,6 @@ class EmployeeContract extends AdminContract {
     const data = await ctx.stub.getState(key);
     return data && data.length > 0;
   }
-  
-
 
   async deleteEmployee(ctx, employeeId) {
     const exist = await this.employeeExists(ctx, employeeId);
@@ -101,11 +92,6 @@ class EmployeeContract extends AdminContract {
     return asset;
   };
 
-  /**
-   * @author Jathin Sreenivas
-   * @param  {Context} ctx
-   * @description Get the client used to connect to the network.
-   */
   async getClientId(ctx) {
     const clientIdentity = ctx.clientIdentity.getID();
     // Ouput of the above - 'x509::/OU=client/CN=hoffice1admin::/C=US/ST=North Carolina/L=Durham/O=hoffice1.ccu.com/CN=ca.hoffice1.ccu.com'

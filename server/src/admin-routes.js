@@ -1,11 +1,4 @@
 /* eslint-disable new-cap */
-/**
- * @author Jathin Sreenivas
- * @email jathin.sreenivas@stud.fra-uas.de
- * @create date 2021-01-27 12:47:10
- * @modify date 2021-02-03 23:42:25
- * @desc Admin specific methods - API documentation in http://localhost:3002/ swagger editor.
- */
 
 // Bring common classes into scope, and Fabric SDK network class
 const {
@@ -91,9 +84,9 @@ exports.createEmployee = async (req, res) => {
     const userDetails = {
       username: employeeData.employeeId,
       password: employeeData.password,
-      role: ROLE_EMPLOYEE // Assuming this is the role constant for employees
+      role: ROLE_EMPLOYEE, // Assuming this is the role constant for employees
     };
-        
+
     await redisClient.SET(employeeData.employeeId, JSON.stringify(userDetails));
 
     // Register the new employee user
@@ -183,4 +176,3 @@ exports.deleteFile = async (req, res) => {
     res.status(500).send({ message: "Error processing file deletion" });
   }
 };
-

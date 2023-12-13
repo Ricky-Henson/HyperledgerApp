@@ -1,11 +1,3 @@
-/**
- * @author Jathin Sreenivas
- * @email jathin.sreenivas@stud.fra-uas.de
- * @create date 2021-01-27 12:44:51
- * @modify date 2021-03-14 21:24:41
- * @desc Employee specific methods - API documentation in http://localhost:3002/ swagger editor.
- */
-
 // Bring common classes into scope, and Fabric SDK network class
 const {
   ROLE_EMPLOYEE,
@@ -55,7 +47,7 @@ exports.uploadFile = async (req, res) => {
       return res.status(400).send({ message: "No file provided" });
     }
 
-    const fileName = req.file.filename;;
+    const fileName = req.file.filename;
     console.log("fileName in employee-route:" + fileName);
     const fileData = await fs.readFile(req.file.path);
     const combinedData = fileName + fileData.toString();

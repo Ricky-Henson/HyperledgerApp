@@ -1,10 +1,3 @@
-/**
- * @author Varsha Kamath
- * @email varsha.kamath@stud.fra-uas.de
- * @create date 2021-01-23 21:50:38
- * @modify date 2021-01-26 13:30:00
- * @desc [Admin Smartcontract to create, read Employee details in legder]
- */
 /*
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -14,7 +7,6 @@ let Employee = require("./Employee.js");
 const PrimaryContract = require("./primary-contract.js");
 
 class AdminContract extends PrimaryContract {
-
   //Delete the file from the ledger
   async deleteFile(ctx, fileHash) {
     const exists = await this.fileHashExists(ctx, fileHash);
@@ -23,12 +15,11 @@ class AdminContract extends PrimaryContract {
     }
     await ctx.stub.deleteState(fileHash);
   }
-  
+
   async fileHashExists(ctx, key) {
     const data = await ctx.stub.getState(key);
     return data && data.length > 0;
   }
-  
 
   //Returns the last employeeId in the set
   async getLatestEmployeeId(ctx) {
@@ -71,23 +62,6 @@ class AdminContract extends PrimaryContract {
     const buffer = Buffer.from(JSON.stringify(newEmployee));
     await ctx.stub.putState(newEmployee.employeeId, buffer);
   }
-
-  //   async createPatient(ctx, args) {
-  //     args = JSON.parse(args);
-
-  //     if (args.password === null || args.password === '') {
-  //         throw new Error(`Empty or null values should not be passed for password parameter`);
-  //     }
-
-  //     let newPatient = await new Patient(args.patientId, args.firstName, args.lastName, args.password, args.age,
-  //         args.phoneNumber, args.emergPhoneNumber, args.address, args.bloodGroup, args.changedBy, args.allergies);
-  //     const exists = await this.patientExists(ctx, newPatient.patientId);
-  //     if (exists) {
-  //         throw new Error(`The patient ${newPatient.patientId} already exists`);
-  //     }
-  //     const buffer = Buffer.from(JSON.stringify(newPatient));
-  //     await ctx.stub.putState(newPatient.patientId, buffer);
-  // }
 
   //Read Employee details based on employeeId
   async readEmployee(ctx, employeeId) {
