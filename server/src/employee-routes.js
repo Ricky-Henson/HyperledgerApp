@@ -69,7 +69,7 @@ exports.uploadFile = async (req, res) => {
     // Check if the chaincode returned an error
     if (response.error) {
       // Delete the uploaded file
-      await fs.unlink(req.file.path);
+      // await fs.unlink(req.file.path);
       // Return an error response
       return res.status(500).send({ message: "Error in chaincode execution" });
     }
